@@ -28,21 +28,6 @@ void myClient::connectingToServer()
     connect(clientSocket,SIGNAL(readyRead()),this,SLOT(readingData()));
     connect(clientSocket,SIGNAL(disconnect()),this,SLOT(disconnectedFromServer()));
 
-    //    if(clientSocket->waitForConnected(3000))
-//    {
-//        clientSocket->write("Hello \n");
-//        ui->ted->append("sending data\n");
-//        clientSocket->waitForBytesWritten(2000);
-//        while(clientSocket->waitForReadyRead(-1))
-//        {
-//            QByteArray data = clientSocket->readAll();
-//            ui->ted->append(data);
-//        }
-//    }
-//    else
-//    {
-//        ui->ted->append("connection refused.\n");
-//    }
 }
 
 
@@ -55,13 +40,13 @@ void myClient::readingData()
 
 void myClient::writingData()
 {
-    ui->ted->append("writing successfully! \n");
+    ui->ted->append("writing successfully!\n");
 }
 
 void myClient::connectedToServer()
 {
     ui->ted->append("connected Successfully!\n");
-    clientSocket->write("Hello \n");
+    clientSocket->write("Hello\n");
 }
 
 void myClient::disconnectedFromServer()
