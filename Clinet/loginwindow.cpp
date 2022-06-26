@@ -32,12 +32,22 @@ void LoginWindow::on_LoginButton_clicked()
 
     QJsonObject login;
 
-    login["header"]="register";
+    login["header"]="login";
     login["username"]=inpUsername;
     login["password"]=inpPassword;
 
     QJsonDocument d(login);
-    e.writedata(d);
+    e.writedata(d.toJson());
+    while(e.getSocket()->waitForReadyRead(-1));
+    QByteArray f = e.readingData();
+    QString e = QString(f);
+
+    if (e == "valid"){
+        //go to its account
+    }
+    else if (e == "not valid"){
+        //error
+    }
 
 
     message->setText("Successfully Logged In");  // delete this
@@ -99,14 +109,24 @@ void LoginWindow::on_SignUpButton_clicked()
         break;
     }   
 
-    QJsonObject login;
+    QJsonObject regist;
 
-    login["header"]="login";
-    login["username"]=inpUsername;
-    login["password"]=inpPassword;
+    regist["header"]="register";
+    regist["username"]=inpUsername;
+    regist["password"]=inpPassword;
 
-    QJsonDocument d(login);
-    e.writedata(d);
+    QJsonDocument d(regist);
+    e.writedata(d.toJson());
+    while(e.getSocket()->waitForReadyRead(-1));
+    QByteArray f = e.readingData();
+    QString e = QString(f);
+
+    if (e == "valid"){
+        //go to its account
+    }
+    else if (e == "not valid"){
+        //error
+    }
 
     //submit inpPass & inpUsername here
 

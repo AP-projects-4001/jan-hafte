@@ -10,9 +10,14 @@ myClient::myClient(QWidget *parent)
     //connect(ui->pbnConnect,SIGNAL(clicked()),this,SLOT(connectingToServer()));
 }
 
-void myClient::writedata(QJsonDocument d)
+void myClient::writedata(QByteArray d)
 {
-    clientSocket->write(d.toJson());
+    clientSocket->write(d);
+}
+
+QTcpSocket* myClient::getSocket()
+{
+    return clientSocket;
 }
 
 myClient::~myClient()
@@ -37,10 +42,11 @@ void myClient::connectingToServer()
 }
 
 
-void myClient::readingData()
+QByteArray myClient::readingData()
 {
     QByteArray data = clientSocket->readAll();
-    ui->ted->append(data);
+    qDebug()<<data;
+    return data;
 
 }
 

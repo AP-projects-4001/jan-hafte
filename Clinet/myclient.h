@@ -17,12 +17,13 @@ class myClient : public QMainWindow
 
 public:
     myClient(QWidget *parent = nullptr);
-    void writedata(QJsonDocument d);
+    void writedata(QByteArray d);
+    QTcpSocket* getSocket();
     ~myClient();
 
 public slots:
     void connectingToServer();
-    void readingData();
+    QByteArray readingData();
     void writingData();
     void connectedToServer();
     void disconnectedFromServer();
