@@ -78,7 +78,7 @@ void MyThread::readyRead()
         QByteArray data = file.readAll();
         if (checkValidUsername(readData["username"].toString(), data) == 0)
         {
-            socket->write("failed");
+            socket->write("not valid");
             return;
         }
         QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
@@ -93,7 +93,7 @@ void MyThread::readyRead()
         file.resize(0);
         file.write(newDoc.toJson());
         file.close();
-        socket->write("success");
+        socket->write("valid");
     }
     else if (header == "login")
     {
@@ -116,11 +116,11 @@ void MyThread::readyRead()
             QJsonObject user = myarr[i].toObject();
             if (user["username"].toString() == readData["username"].toString() && user["password"].toString() == readData["password"].toString())
             {
-                socket->write("success");
+                socket->write("valid");
                 return;
             }
         }
-        socket->write("failed");
+        socket->write("not valid");
     }
 
     // will write on server side window
