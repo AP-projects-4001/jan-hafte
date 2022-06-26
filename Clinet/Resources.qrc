@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/Graphics">
+        <file>Graphics/AP_Icon.svg</file>
+        <file>Graphics/Artboard 1@64x.png</file>
+        <file>Graphics/Artboard 1@96x.png</file>
+    </qresource>
+</RCC>

@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QTcpSocket>
 #include <QDebug>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class myClient; }
@@ -15,6 +17,7 @@ class myClient : public QMainWindow
 
 public:
     myClient(QWidget *parent = nullptr);
+    void writedata(QJsonDocument d);
     ~myClient();
 
 public slots:

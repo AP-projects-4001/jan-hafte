@@ -1,12 +1,18 @@
 #include "myclient.h"
 #include "ui_myclient.h"
+#include <QDebug>
 
 myClient::myClient(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::myClient)
 {
     ui->setupUi(this);
-    connect(ui->pbnConnect,SIGNAL(clicked()),this,SLOT(connectingToServer()));
+    //connect(ui->pbnConnect,SIGNAL(clicked()),this,SLOT(connectingToServer()));
+}
+
+void myClient::writedata(QJsonDocument d)
+{
+    clientSocket->write(d.toJson());
 }
 
 myClient::~myClient()
@@ -40,16 +46,16 @@ void myClient::readingData()
 
 void myClient::writingData()
 {
-    ui->ted->append("writing successfully!\n");
+    qDebug()<<"writing successfully!\n";
 }
 
 void myClient::connectedToServer()
 {
-    ui->ted->append("connected Successfully!\n");
-    clientSocket->write("Hello\n");
+    qDebug()<<"connected Successfully!\n";
+    //clientSocket->write("Hello\n");
 }
 
 void myClient::disconnectedFromServer()
 {
-    ui->ted->append("connection lost\n");
+    qDebug()<<"connection lost\n";
 }
