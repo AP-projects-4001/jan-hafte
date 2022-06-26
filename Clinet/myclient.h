@@ -23,13 +23,15 @@ public:
 
 public slots:
     void connectingToServer();
-    QByteArray readingData();
+    void readingData();
     void writingData();
     void connectedToServer();
     void disconnectedFromServer();
+    QByteArray getMsg();
 
 private:
     Ui::myClient *ui;
     QTcpSocket *clientSocket;
+    QByteArray msg;
 };
 #endif // MYCLIENT_H

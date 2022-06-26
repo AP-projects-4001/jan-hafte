@@ -42,11 +42,10 @@ void myClient::connectingToServer()
 }
 
 
-QByteArray myClient::readingData()
+void myClient::readingData()
 {
     QByteArray data = clientSocket->readAll();
-    qDebug()<<data;
-    return data;
+    msg = data;
 
 }
 
@@ -64,4 +63,9 @@ void myClient::connectedToServer()
 void myClient::disconnectedFromServer()
 {
     qDebug()<<"connection lost\n";
+}
+
+QByteArray myClient::getMsg()
+{
+    return msg;
 }

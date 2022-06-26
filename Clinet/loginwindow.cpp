@@ -38,20 +38,21 @@ void LoginWindow::on_LoginButton_clicked()
 
     QJsonDocument d(login);
     e.writedata(d.toJson());
-    while(e.getSocket()->waitForReadyRead(-1));
-    QByteArray f = e.readingData();
-    QString e = QString(f);
+    e.getSocket()->waitForReadyRead(1);
+    QByteArray f = e.getMsg();
 
-    if (e == "valid"){
-        //go to its account
+    if (f == "valid"){
+        message->setText("Successfully Logged In");  // delete this
+        message->show();
     }
-    else if (e == "not valid"){
-        //error
+    else if (f == "not valid"){
+        message->setText("UnSuccessfully Logged In");  // delete this
+        message->show();
     }
-
-
-    message->setText("Successfully Logged In");  // delete this
-    message->show();
+    else{
+        message->setText("error");  // delete this
+        message->show();
+    }
 }
 
 
@@ -100,11 +101,11 @@ void LoginWindow::on_SignUpButton_clicked()
         message->show();
         clearSignUpPage();
         return;
-    case -3:
-        message->setText("Password doesn't contain special characters");
-        message->show();
-        clearSignUpPage();
-        return;
+//    case -3:
+//        message->setText("Password doesn't contain special characters");
+//        message->show();
+//        clearSignUpPage();
+//        return;
     default:
         break;
     }   
@@ -117,21 +118,22 @@ void LoginWindow::on_SignUpButton_clicked()
 
     QJsonDocument d(regist);
     e.writedata(d.toJson());
-    while(e.getSocket()->waitForReadyRead(-1));
-    QByteArray f = e.readingData();
-    QString e = QString(f);
+    e.getSocket()->waitForReadyRead(1);
+    QByteArray f = e.getMsg();
 
-    if (e == "valid"){
-        //go to its account
+    if (f == "valid"){
+        message->setText("Successfully Logged In");  // delete this
+        message->show();
     }
-    else if (e == "not valid"){
-        //error
+    else if (f == "not valid"){
+        message->setText("UnSuccessfully Logged In");  // delete this
+        message->show();
+    }
+    else{
+        message->setText("error");  // delete this
+        message->show();
     }
 
-    //submit inpPass & inpUsername here
-
-    message->setText("Successfully Signed In"); // delete this, placeholder
-    message->show();
 }
 
 int LoginWindow::evaluatePasswordStrength(const QString &pass)
