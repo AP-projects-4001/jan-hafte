@@ -53,38 +53,51 @@ void MyThread::readyRead()
     QJsonDocument doc = QJsonDocument::fromJson(Data);
     QJsonObject readData = doc.object();
     QString header = readData["header"].toString();
-    if (header == "register")
+    if (header == "register") // {header:register, \
+		                          username: <username>, \
+                                  password: <password>}
     {
         QByteArray response = register_user(readData);
         socket->write(response);
     }
-    else if (header == "login")
+    else if (header == "login") // {header:login, \
+                                    username: <username> \
+                                    password: <password>}
     {
         QByteArray response = login_user(readData);
         socket->write(response);
     }
-    else if (header == "create_chat")
+    else if (header == "create_chat") // {header:create_chat, \
+                                         chatType: <group/channel/private_chat>, \
+                                         creator: <creator_username>, \
+                                         participants: [participants_username]}
     {
         // read chatType from readData
         QString chatType = readData["chatType"].toString();
         QByteArray response = create_chat(readData, chatType);
     }
-
-    // will write on server side window
-    // qDebug() << socketDescriptor << " Data in: " << Data;
-
-    // write to socket
-    // read file data from local
-    /*QFile file("C:/test.txt");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        return;
-    QTextStream in(&file);
-    QString line = in.readLine();
-    while (!line.isNull()) {
-        socket->write(line.toUtf8());
-        line = in.readLine();
-    }*/
+    else if (header == "search_user")
+    { // {header:search_user,\
+                                            searched_field: <input_field>}
+        QByteArray response = search_user(readData);
+        socket->write(response);
+    }
 }
+
+// will write on server side window
+// qDebug() << socketDescriptor << " Data in: " << Data;
+
+// write to socket
+// read file data from local
+/*QFile file("C:/test.txt");
+if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    return;
+QTextStream in(&file);
+QString line = in.readLine();
+while (!line.isNull()) {
+    socket->write(line.toUtf8());
+    line = in.readLine();
+}*/
 
 void MyThread::disconnected()
 {

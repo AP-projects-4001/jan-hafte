@@ -138,6 +138,7 @@ inline QByteArray login_user(QJsonObject readData)
 
 inline QByteArray create_chat(QJsonObject readData, QString chatType)
 {
+    // when I write this function, I understand it but now I cant
     QJsonObject response;
     QFile userFile(USERS_PATH);
     QFile chatFile(CHAT_PATH);
@@ -152,20 +153,52 @@ inline QByteArray create_chat(QJsonObject readData, QString chatType)
     QByteArray userData = userFile.readAll();
     QJsonDocument jsonDoc = QJsonDocument::fromJson(userData);
     QJsonObject jsonObj = jsonDoc.object();
-    QJsonArray database = jsonObj["users"].toArray();      // database is up
-    QJsonArray chatDatabase = jsonObj[chatType].toArray(); // chatDatabase is up
+
+    QByteArray chatData = chatFile.readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(chatData);
+    QJsonObject chatJson = jsonDoc.object();
+
+    QJsonArray userDatabse = jsonObj["users"].toArray();   // user database is up
+    QJsonArray chatDatabase = chatJson["chats"].toArray(); // chatDatabase is up
+
     QJsonObject newChat;
-    newChat["id"] = jsonObj[chatType].toArray().size() + 1;
+    newChat["id"] = chatJson[chatType].toArray().size() + 1;
     newChat["creator"] = readData["creator"].toString();
     newChat["participants"] = readData["participants"].toArray();
+    newChat["messages"] = QJsonArray();
     chatDatabase.append(newChat);
-    jsonObj[chatType] = chatDatabase;
-    QJsonDocument newDoc(jsonObj);
+    chatJson[chatType] = chatDatabase;
+    QJsonDocument newDoc(chatJson);
     chatFile.resize(0);
     chatFile.write(newDoc.toJson());
+    chatFile.close();
     update_chats(readData["creator"].toString(), chatType, readData["id"].toString());
     update_chats(readData["creator"].toString(), "all_chats", readData["id"].toString());
-    chatFile.close();
     return "DONE!";
     // save new chat to user file // CODE HERE //
+}
+
+inline QByteArray search_user(QJsonObject readData)
+{
+    QFile file(USERS_PATH);
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Error opening file";
+    }
+    QByteArray data = file.readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+    QJsonObject jsonObj = jsonDoc.object();
+    QJsonArray jsonArr = jsonObj["users"].toArray();
+    for (int i = 0; i < jsonArr.size(); i++)
+    {
+        QJsonObject user = jsonArr[i].toObject();
+        if (user["username"] == readData["searched_field"] || user["phone"] == readData["searched_field"])
+        {
+            QJsonObject found_user;
+            found_user["username"] = user["username"].toString();
+            found_user["phone"] = user["phone"].toString();
+            QJsonDocument newDoc(found_user);
+            return newDoc.toJson();
+        }
+    }
 }
