@@ -41,7 +41,7 @@ border-radius: 20px;
 border-style: solid;
 border-width: 2px;
 border-color: #9d9d9d;
-padding-left : 20px
+padding-left : 20px;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -101,6 +101,9 @@ padding-left : 20px
        </item>
        <item>
         <widget class="QLabel" name="Logo">
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -130,7 +133,7 @@ padding-left : 20px
        <item>
         <layout class="QVBoxLayout" name="Texts">
          <property name="spacing">
-          <number>5</number>
+          <number>8</number>
          </property>
          <property name="bottomMargin">
           <number>0</number>
@@ -138,7 +141,7 @@ padding-left : 20px
          <item>
           <widget class="QLabel" name="Lable_JohnHafteh">
            <property name="styleSheet">
-            <string notr="true">font: 800 20pt &quot;Helvetica Now Display&quot;;</string>
+            <string notr="true">font: 800 25pt &quot;Helvetica Now Display&quot;;</string>
            </property>
            <property name="text">
             <string>Jan Hafteh</string>
@@ -162,7 +165,7 @@ padding-left : 20px
            <item>
             <widget class="QLabel" name="label_FirstLine">
              <property name="styleSheet">
-              <string notr="true">font: 450 10pt &quot;Helvetica Now Display&quot;;</string>
+              <string notr="true">font: 400 13pt &quot;Helvetica Now Display&quot;;</string>
              </property>
              <property name="lineWidth">
               <number>0</number>
@@ -182,6 +185,9 @@ padding-left : 20px
              <property name="wordWrap">
               <bool>false</bool>
              </property>
+             <property name="margin">
+              <number>-1</number>
+             </property>
              <property name="indent">
               <number>-1</number>
              </property>
@@ -190,7 +196,7 @@ padding-left : 20px
            <item>
             <widget class="QLabel" name="label_secondLine">
              <property name="styleSheet">
-              <string notr="true">font: 450 10pt &quot;Helvetica Now Display&quot;;</string>
+              <string notr="true">font: 400 13pt &quot;Helvetica Now Display&quot;;</string>
              </property>
              <property name="lineWidth">
               <number>0</number>
@@ -209,6 +215,9 @@ padding-left : 20px
              </property>
              <property name="wordWrap">
               <bool>false</bool>
+             </property>
+             <property name="margin">
+              <number>-1</number>
              </property>
              <property name="indent">
               <number>-1</number>
@@ -291,7 +300,7 @@ border-color: #9d9d9d;
             <property name="styleSheet">
              <string notr="true">border-radius: 0px;
 border-width: 0px;
-font: 500 11pt &quot;Helvetica Now Display&quot;;
+font: 500 12pt &quot;Helvetica Now Display&quot;;
 padding-left: 5px;</string>
             </property>
             <property name="text">
@@ -347,7 +356,7 @@ padding-left: 5px;</string>
             <property name="font">
              <font>
               <family>Helvetica Now Display</family>
-              <pointsize>11</pointsize>
+              <pointsize>12</pointsize>
               <italic>false</italic>
               <bold>false</bold>
              </font>
@@ -355,7 +364,7 @@ padding-left: 5px;</string>
             <property name="styleSheet">
              <string notr="true">border-radius: 0px;
 border-width: 0px;
-font: 500 11pt &quot;Helvetica Now Display&quot;;
+font: 500 12pt &quot;Helvetica Now Display&quot;;
 padding-left: 5px;</string>
             </property>
             <property name="text">
@@ -408,7 +417,7 @@ padding-left: 5px;</string>
             <property name="styleSheet">
              <string notr="true">border-radius:10px;
 opacity: 1;
-font: 500 10pt &quot;Helvetica Now Display&quot;;
+font: 500 12pt &quot;Helvetica Now Display&quot;;
 text-decoration: underline;
 color:#956cec;
 
@@ -454,8 +463,11 @@ color: white;
             <property name="text">
              <string>Login</string>
             </property>
-            <property name="default">
+            <property name="autoDefault">
              <bool>true</bool>
+            </property>
+            <property name="default">
+             <bool>false</bool>
             </property>
             <property name="fd" stdset="0">
              <string/>
@@ -468,14 +480,17 @@ color: white;
        <widget class="QLabel" name="Header">
         <property name="geometry">
          <rect>
-          <x>20</x>
+          <x>30</x>
           <y>65</y>
-          <width>121</width>
+          <width>90</width>
           <height>51</height>
          </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">font: 800 24pt &quot;Helvetica Now Display&quot;;</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
         </property>
         <property name="text">
          <string>Login</string>
@@ -518,7 +533,7 @@ border-color: #9d9d9d;
            <x>20</x>
            <y>80</y>
            <width>291</width>
-           <height>303</height>
+           <height>301</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="SignUpArea">
@@ -530,7 +545,7 @@ border-color: #9d9d9d;
             <property name="styleSheet">
              <string notr="true">border-radius: 0px;
 border-width: 0px;
-font: 500 11pt &quot;Helvetica Now Display&quot;;
+font: 500 12pt &quot;Helvetica Now Display&quot;;
 padding-left: 5px;</string>
             </property>
             <property name="text">
@@ -586,7 +601,7 @@ padding-left: 5px;</string>
             <property name="font">
              <font>
               <family>Helvetica Now Display</family>
-              <pointsize>11</pointsize>
+              <pointsize>12</pointsize>
               <italic>false</italic>
               <bold>false</bold>
              </font>
@@ -594,7 +609,7 @@ padding-left: 5px;</string>
             <property name="styleSheet">
              <string notr="true">border-radius: 0px;
 border-width: 0px;
-font: 500 11pt &quot;Helvetica Now Display&quot;;
+font: 500 12pt &quot;Helvetica Now Display&quot;;
 padding-left: 5px;</string>
             </property>
             <property name="text">
@@ -675,10 +690,13 @@ padding-left: 5px;</string>
               <height>30</height>
              </size>
             </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
             <property name="styleSheet">
              <string notr="true">border-radius:10px;
 opacity: 1;
-font: 500 10pt &quot;Helvetica Now Display&quot;;
+font: 500 12pt &quot;Helvetica Now Display&quot;;
 text-decoration: underline;
 color:#956cec;
 
@@ -711,6 +729,9 @@ color:#956cec;
               <height>60</height>
              </size>
             </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
             <property name="styleSheet">
              <string notr="true">border-radius: 12px;
 background: #956cec;
@@ -721,8 +742,11 @@ color: white;
             <property name="text">
              <string>Sign Up</string>
             </property>
-            <property name="default">
+            <property name="autoDefault">
              <bool>true</bool>
+            </property>
+            <property name="default">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -732,9 +756,9 @@ color: white;
        <widget class="QLabel" name="Header_3">
         <property name="geometry">
          <rect>
-          <x>20</x>
+          <x>30</x>
           <y>65</y>
-          <width>161</width>
+          <width>125</width>
           <height>51</height>
          </rect>
         </property>
