@@ -9,6 +9,7 @@ LoginWindow::LoginWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     message = new QMessageBox(this);
+    message->setStyleSheet("");
     e.connectingToServer();
 }
 
@@ -102,7 +103,7 @@ void LoginWindow::on_SignUpButton_clicked()
         message->show();
     }
     else{
-        message->setText("error");  // delete this
+        message->setText("Error");  // delete this
         message->show();
     }
 

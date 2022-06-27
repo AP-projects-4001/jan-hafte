@@ -4,4 +4,24 @@
         <file>Graphics/Artboard 1@64x.png</file>
         <file>Graphics/Artboard 1@96x.png</file>
     </qresource>
+    <qresource prefix="/Fonts">
+        <file>Fonts/HelveticaNowDisplay-Black.otf</file>
+        <file>Fonts/HelveticaNowDisplay-BlackIta.otf</file>
+        <file>Fonts/HelveticaNowDisplay-Bold.otf</file>
+        <file>Fonts/HelveticaNowDisplay-BoldIta.otf</file>
+        <file>Fonts/HelveticaNowDisplay-ExtBdIta.otf</file>
+        <file>Fonts/HelveticaNowDisplay-ExtBlk.otf</file>
+        <file>Fonts/HelveticaNowDisplay-ExtBlkIta.otf</file>
+        <file>Fonts/HelveticaNowDisplay-ExtLt.otf</file>
+        <file>Fonts/HelveticaNowDisplay-ExtLtIta.otf</file>
+        <file>Fonts/HelveticaNowDisplay-ExtraBold.otf</file>
+        <file>Fonts/HelveticaNowDisplay-Light.otf</file>
+        <file>Fonts/HelveticaNowDisplay-LightIta.otf</file>
+        <file>Fonts/HelveticaNowDisplay-MedIta.otf</file>
+        <file>Fonts/HelveticaNowDisplay-Medium.otf</file>
+        <file>Fonts/HelveticaNowDisplay-RegIta.otf</file>
+        <file>Fonts/HelveticaNowDisplay-Regular.otf</file>
+        <file>Fonts/HelveticaNowDisplay-Thin.otf</file>
+        <file>Fonts/HelveticaNowDisplay-ThinIta.otf</file>
+    </qresource>
 </RCC>
