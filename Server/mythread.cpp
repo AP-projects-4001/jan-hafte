@@ -61,6 +61,58 @@ int checkValidUsername(QString username, QByteArray jsonDb)
     return 1;
 }
 
+inline QByteArray register_user(QJsonObject readData)
+{
+    QFile file("./user.json");
+    if (!file.open(QIODevice::ReadWrite))
+    {
+        qDebug() << "Error opening file";
+    }
+    QByteArray data = file.readAll();
+    if (checkValidUsername(readData["username"].toString(), data) == 0)
+    {
+        return "not valid";
+    }
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+    QJsonObject jsonObj = jsonDoc.object();
+    QJsonArray jsonArr = jsonObj["users"].toArray();
+    QJsonObject newUser;
+    newUser["username"] = readData["username"].toString();
+    newUser["password"] = readData["password"].toString();
+    jsonArr.append(newUser);
+    jsonObj["users"] = jsonArr;
+    QJsonDocument newDoc(jsonObj);
+    file.resize(0);
+    file.write(newDoc.toJson());
+    file.close();
+    return "valid";
+}
+
+inline QByteArray login_user(QJsonObject readData)
+{
+    QFile file("./user.json");
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Error opening file";
+    }
+    QByteArray data = file.readAll();
+    if (checkValidUsername(readData["username"].toString(), data) == 1)
+    {
+        return "not valid";
+    }
+    QJsonDocument mydoc = QJsonDocument::fromJson(data);
+    QJsonObject myobj = mydoc.object();
+    QJsonArray myarr = myobj["users"].toArray();
+    for (int i = 0; i < myarr.size(); i++)
+    {
+        QJsonObject user = myarr[i].toObject();
+        if (user["username"].toString() == readData["username"].toString() && user["password"].toString() == readData["password"].toString())
+        {
+            return "valid";
+        }
+    }
+}
+
 void MyThread::readyRead()
 {
     // get the information
@@ -70,61 +122,17 @@ void MyThread::readyRead()
     QString header = readData["header"].toString();
     if (header == "register")
     {
-        QFile file("./user.json");
-        if (!file.open(QIODevice::ReadWrite))
-        {
-            qDebug() << "Error opening file";
-        }
-        QByteArray data = file.readAll();
-        if (checkValidUsername(readData["username"].toString(), data) == 0)
-        {
-            socket->write("not valid");
-            return;
-        }
-        QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
-        QJsonObject jsonObj = jsonDoc.object();
-        QJsonArray jsonArr = jsonObj["users"].toArray();
-        QJsonObject newUser;
-        newUser["username"] = readData["username"].toString();
-        newUser["password"] = readData["password"].toString();
-        jsonArr.append(newUser);
-        jsonObj["users"] = jsonArr;
-        QJsonDocument newDoc(jsonObj);
-        file.resize(0);
-        file.write(newDoc.toJson());
-        file.close();
-        socket->write("valid");
+        QByteArray response = register_user(readData);
+        socket->write(response);
     }
     else if (header == "login")
     {
-        QFile file("./user.json");
-        if (!file.open(QIODevice::ReadOnly))
-        {
-            qDebug() << "Error opening file";
-        }
-        QByteArray data = file.readAll();
-        if (checkValidUsername(readData["username"].toString(), data) == 1)
-        {
-            socket->write("not valid");
-            return;
-        }
-        QJsonDocument mydoc = QJsonDocument::fromJson(data);
-        QJsonObject myobj = mydoc.object();
-        QJsonArray myarr = myobj["users"].toArray();
-        for (int i = 0; i < myarr.size(); i++)
-        {
-            QJsonObject user = myarr[i].toObject();
-            if (user["username"].toString() == readData["username"].toString() && user["password"].toString() == readData["password"].toString())
-            {
-                socket->write("valid");
-                return;
-            }
-        }
-        socket->write("not valid");
+        QByteArray response = login_user(readData);
+        socket->write(response);
     }
 
     // will write on server side window
-    qDebug() << socketDescriptor << " Data in: " << Data;
+    // qDebug() << socketDescriptor << " Data in: " << Data;
 
     // write to socket
     // read file data from local
