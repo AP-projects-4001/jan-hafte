@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>LoginWindow</class>
- <widget class="QWidget" name="LoginWindow">
+ <widget class="QDialog" name="LoginWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -55,7 +55,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="QWidget" name="entirePage" native="true">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -253,11 +253,11 @@ border-style: solid;
 border-width: 2px;
 border-color: #9d9d9d;
 padding-left: 10px;
-font: 12pt &quot;Helvetica Now Display&quot;;
+font: 12pt &quot;Helvetica Now Text&quot;;
 }</string>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="LoginPage">
        <widget class="QFrame" name="LoginFrame">
@@ -331,7 +331,7 @@ padding-left: 5px;</string>
             </property>
             <property name="font">
              <font>
-              <family>Helvetica Now Display</family>
+              <family>Helvetica Now Text</family>
               <pointsize>12</pointsize>
               <italic>false</italic>
               <bold>false</bold>
@@ -397,7 +397,7 @@ padding-left: 5px;</string>
             </property>
             <property name="font">
              <font>
-              <family>Helvetica Now Display</family>
+              <family>Helvetica Now Text</family>
               <pointsize>12</pointsize>
               <italic>false</italic>
               <bold>false</bold>
@@ -477,11 +477,11 @@ background: #956cec;
 font: 800 18pt &quot;Helvetica Now Display&quot;;
 color: white;
 }
-QPushButton:hover
+QPushButton#LoginButton :hover
 {
 background: #7152b3;
 }
-QPushButton:pressed 
+QPushButton#LoginButton :pressed 
 {
 background: white;
 border: 2px solid #956cec; 
@@ -600,7 +600,7 @@ padding-left: 5px;</string>
             </property>
             <property name="font">
              <font>
-              <family>Helvetica Now Display</family>
+              <family>Helvetica Now Text</family>
               <pointsize>12</pointsize>
               <italic>false</italic>
               <bold>false</bold>
@@ -669,7 +669,7 @@ padding-left: 5px;</string>
             </property>
             <property name="font">
              <font>
-              <family>Helvetica Now Display</family>
+              <family>Helvetica Now Text</family>
               <pointsize>12</pointsize>
               <italic>false</italic>
               <bold>false</bold>
@@ -711,7 +711,7 @@ padding-left: 5px;</string>
             </property>
             <property name="font">
              <font>
-              <family>Helvetica Now Display</family>
+              <family>Helvetica Now Text</family>
               <pointsize>12</pointsize>
               <italic>false</italic>
               <bold>false</bold>

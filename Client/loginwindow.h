@@ -9,7 +9,7 @@ namespace Ui {
 class LoginWindow;
 }
 
-class LoginWindow : public QWidget
+class LoginWindow : public QDialog
 {
     Q_OBJECT
 

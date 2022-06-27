@@ -3,7 +3,7 @@
 #include <QRegularExpression>
 
 LoginWindow::LoginWindow(QWidget *parent) :
-    QWidget(parent),
+    QDialog(parent),
     ui(new Ui::LoginWindow)
 {
     ui->setupUi(this);
@@ -22,7 +22,6 @@ LoginWindow::~LoginWindow()
 {
     delete ui;
 }
-
 
 void LoginWindow::on_LoginButton_clicked()
 {
