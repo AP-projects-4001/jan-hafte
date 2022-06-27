@@ -32,6 +32,7 @@ private:
     QMessageBox *message;
 
     int evaluatePasswordStrength(const QString& pass);
+    int checkSignUpInputForError (const QString& userN, const QString& pass, const QString& passR);
     void clearLoginPage();
     void clearSignUpPage();
     myClient e;

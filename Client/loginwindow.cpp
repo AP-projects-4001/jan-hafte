@@ -46,7 +46,7 @@ void LoginWindow::on_LoginButton_clicked()
         message->show();
     }
     else if (f == "not valid"){
-        message->setText("UnSuccessfully Logged In");  // delete this
+        message->setText("Login Failed, Wrong Credentials");  // delete this
         message->show();
     }
     else{
@@ -58,7 +58,7 @@ void LoginWindow::on_LoginButton_clicked()
 
 void LoginWindow::on_SignUpInsteadButton_clicked()
 {
-   clearLoginPage();
+    clearLoginPage();
     ui->Pages->setCurrentIndex(1);
 }
 
@@ -76,39 +76,11 @@ void LoginWindow::on_SignUpButton_clicked()
     QString inpPassword = ui->lineEdit_PasswordNew->text();
     QString inpPasswordReenter = ui->lineEdit_PasswordReenter->text();
 
-    if(inpUsername.isEmpty() || inpPassword.isEmpty()) {
-        message->setText("Please Fill Every Field");
-        message->show();
+    int eval = checkSignUpInputForError(inpUsername, inpPassword, inpPasswordReenter);
+    if (eval != 0) {
         clearSignUpPage();
         return;
     }
-
-    if(QString::compare(inpPassword, inpPasswordReenter, Qt::CaseSensitive) != 0) {
-        message->setText("Passwords don't match!");
-        message->show();
-        clearSignUpPage();
-        return;
-    }
-
-    switch (evaluatePasswordStrength(inpPassword)) {
-    case -1:
-        message->setText("Password is too Short");
-        message->show();
-        clearSignUpPage();
-        return;
-    case -2:
-        message->setText("Password doesn't contain both lower and uppercase");
-        message->show();
-        clearSignUpPage();
-        return;
-//    case -3:
-//        message->setText("Password doesn't contain special characters");
-//        message->show();
-//        clearSignUpPage();
-//        return;
-    default:
-        break;
-    }   
 
     QJsonObject regist;
 
@@ -122,11 +94,11 @@ void LoginWindow::on_SignUpButton_clicked()
     QByteArray f = e.getMsg();
 
     if (f == "valid"){
-        message->setText("Successfully Logged In");  // delete this
+        message->setText("Successfully Signed Up");  // delete this
         message->show();
     }
     else if (f == "not valid"){
-        message->setText("UnSuccessfully Logged In");  // delete this
+        message->setText("Sign Up Failed");  // delete this
         message->show();
     }
     else{
@@ -136,17 +108,66 @@ void LoginWindow::on_SignUpButton_clicked()
 
 }
 
+int LoginWindow::checkSignUpInputForError(const QString &userN, const QString &pass, const QString &passR)
+{
+    if(userN.isEmpty() || pass.isEmpty()) {
+        message->setText("Please Fill Every Field");
+        message->show();
+        return - 1;
+    }
+
+    if(userN.contains(QRegularExpression("\\W"))) {
+        message->setText("Username Invalid.\nOnly letters, numbers and underscore");
+        message->show();
+        return -1;
+    }
+
+    if(QString::compare(pass, passR, Qt::CaseSensitive) != 0) {
+        message->setText("Passwords don't match!");
+        message->show();
+        return -1;
+    }
+
+    switch (evaluatePasswordStrength(pass)) {
+    case -1:
+        message->setText("Password is too Short");
+        message->show();
+        return -1;
+    case -2:
+        message->setText("Password must contain lowercase & uppercase characters");
+        message->show();
+        return -1;
+    case -3:
+        message->setText("Password must contain numbers");
+        message->show();
+        return -1;
+    case -4:
+        message->setText("Password must contain special characters");
+        message->show();
+        return -1;
+    default:
+        break;
+    }
+
+    return 0;
+}
+
 int LoginWindow::evaluatePasswordStrength(const QString &pass)
 {
-    if (pass.length() <= 8) {
+    static QRegularExpression regEx;
+    if (pass.length() < 8) {
         return - 1;
     }
     if (QString::compare(pass, pass.toLower(), Qt::CaseSensitive) == 0) {
         return - 2;
     }
-    QRegularExpression RegEx("[!@#$%^&()_+]0123456789");
-    if (!pass.contains(RegEx)) {
+    regEx.setPattern(R"([0-9])");
+    if (!pass.contains(regEx)) {
         return - 3;
+    }
+    regEx.setPattern(R"([ !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~0-9])");
+    if (!pass.contains(regEx)) {
+        return - 4;
     }
     return 0;
 }
