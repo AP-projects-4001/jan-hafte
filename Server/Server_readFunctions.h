@@ -138,34 +138,105 @@ inline QByteArray login_user(QJsonObject readData)
 
 inline QByteArray create_chat(QJsonObject readData, QString chatType)
 {
-    QJsonObject response;
+    // when I write this function, I understand it but now I cant
+    int placer = -1;
+    if (chatType == "channel")
+    {
+        placer = 0;
+    }
+    else if (chatType == "group")
+    {
+        placer = 1;
+    }
+    else if (chatType == "private_chat")
+    {
+        placer = 2;
+    }
     QFile userFile(USERS_PATH);
     QFile chatFile(CHAT_PATH);
     if (!userFile.open(QIODevice::ReadWrite))
     {
         qDebug() << "Error opening file";
     }
-    if (!chatFile.open(QIODevice::ReadWrite))
+    if (!chatFile.open(QIODevice::ReadWrite | QIODevice::Append))
     {
         qDebug() << "Error opening file";
     }
+    if (chatFile.pos() == 0)
+    {
+        QJsonObject channel_object, group_object, private_chat_object, allObject;
+        QJsonArray all_array;
+        channel_object["channel"] = all_array;
+        group_object["group"] = all_array;
+        private_chat_object["private_chat"] = all_array;
+        all_array.append(channel_object);
+        all_array.append(group_object);
+        all_array.append(private_chat_object);
+        allObject["chats"] = all_array;
+        chatFile.write(QJsonDocument(allObject).toJson());
+        chatFile.close();
+        QFile chatFile(CHAT_PATH);
+        if (!chatFile.open(QIODevice::ReadWrite))
+        {
+            qDebug() << "Error opening file";
+        }
+    }
+    chatFile.seek(0);
     QByteArray userData = userFile.readAll();
     QJsonDocument jsonDoc = QJsonDocument::fromJson(userData);
     QJsonObject jsonObj = jsonDoc.object();
-    QJsonArray database = jsonObj["users"].toArray();      // database is up
-    QJsonArray chatDatabase = jsonObj[chatType].toArray(); // chatDatabase is up
+
+    QByteArray chatData = chatFile.readAll();
+    QJsonDocument chatDoc = QJsonDocument::fromJson(chatData);
+    QJsonObject chatJson = chatDoc.object();
+
+    QJsonArray userDatabse = jsonObj["users"].toArray();   // user database is up
+    QJsonArray chatDatabase = chatJson["chats"].toArray(); // chatDatabase is up
+
+    QJsonObject tmp = chatDatabase[placer].toObject();
+    QJsonArray tmp_array = tmp[chatType].toArray();
+
     QJsonObject newChat;
-    newChat["id"] = jsonObj[chatType].toArray().size() + 1;
+    newChat["id"] = QString::number(tmp_array.size() + 1);
     newChat["creator"] = readData["creator"].toString();
     newChat["participants"] = readData["participants"].toArray();
-    chatDatabase.append(newChat);
-    jsonObj[chatType] = chatDatabase;
-    QJsonDocument newDoc(jsonObj);
+    newChat["messages"] = QJsonArray();
+    tmp_array.append(newChat);
+    tmp[chatType] = tmp_array;
+    chatDatabase[placer] = tmp;
+    QJsonArray temp_2 = chatDatabase;
+    chatJson["chats"] = temp_2;
+    QJsonDocument newDoc(chatJson);
     chatFile.resize(0);
     chatFile.write(newDoc.toJson());
-    update_chats(readData["creator"].toString(), chatType, readData["id"].toString());
-    update_chats(readData["creator"].toString(), "all_chats", readData["id"].toString());
     chatFile.close();
+    update_chats(readData["creator"].toString(), chatType, newChat["id"].toString());
+    update_chats(readData["creator"].toString(), "all_chats", newChat["id"].toString());
     return "DONE!";
     // save new chat to user file // CODE HERE //
+}
+
+inline QByteArray search_user(QJsonObject readData)
+{
+    QFile file(USERS_PATH);
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Error opening file";
+    }
+    QByteArray data = file.readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+    QJsonObject jsonObj = jsonDoc.object();
+    QJsonArray jsonArr = jsonObj["users"].toArray();
+    for (int i = 0; i < jsonArr.size(); i++)
+    {
+        QJsonObject user = jsonArr[i].toObject();
+        if (user["username"] == readData["searched_field"] || user["phone"] == readData["searched_field"])
+        {
+            QJsonObject found_user;
+            found_user["username"] = user["username"].toString();
+            found_user["phone"] = user["phone"].toString();
+            QJsonDocument newDoc(found_user);
+            return newDoc.toJson();
+        }
+    }
 }
