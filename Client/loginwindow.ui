@@ -36,13 +36,7 @@
     <normaloff>:/Graphics/Graphics/Artboard 1@64x.png</normaloff>:/Graphics/Graphics/Artboard 1@64x.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">QLineEdit {
-border-radius: 20px;
-border-style: solid;
-border-width: 2px;
-border-color: #9d9d9d;
-padding-left : 20px;
-}</string>
+   <string notr="true"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -252,8 +246,18 @@ padding-left : 20px;
         <height>600</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QLineEdit {
+border-radius: 20px;
+border-style: solid;
+border-width: 2px;
+border-color: #9d9d9d;
+padding-left: 10px;
+font: 12pt &quot;Helvetica Now Display&quot;;
+}</string>
+      </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="LoginPage">
        <widget class="QFrame" name="LoginFrame">
@@ -328,7 +332,9 @@ padding-left: 5px;</string>
             <property name="font">
              <font>
               <family>Helvetica Now Display</family>
-              <pointsize>11</pointsize>
+              <pointsize>12</pointsize>
+              <italic>false</italic>
+              <bold>false</bold>
              </font>
             </property>
             <property name="styleSheet">
@@ -392,7 +398,9 @@ padding-left: 5px;</string>
             <property name="font">
              <font>
               <family>Helvetica Now Display</family>
-              <pointsize>11</pointsize>
+              <pointsize>12</pointsize>
+              <italic>false</italic>
+              <bold>false</bold>
              </font>
             </property>
             <property name="styleSheet">
@@ -416,7 +424,6 @@ padding-left: 5px;</string>
             </property>
             <property name="styleSheet">
              <string notr="true">border-radius:10px;
-opacity: 1;
 font: 500 12pt &quot;Helvetica Now Display&quot;;
 text-decoration: underline;
 color:#956cec;
@@ -450,21 +457,42 @@ color:#956cec;
               <height>60</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <family>Helvetica Now Display</family>
+              <pointsize>18</pointsize>
+              <italic>false</italic>
+              <bold>true</bold>
+              <kerning>true</kerning>
+             </font>
+            </property>
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="styleSheet">
-             <string notr="true">border-radius: 12px;
+             <string notr="true">QPushButton#LoginButton 
+{
+border-radius: 12px;
 background: #956cec;
 font: 800 18pt &quot;Helvetica Now Display&quot;;
 color: white;
-</string>
+}
+QPushButton:hover
+{
+background: #7152b3;
+}
+QPushButton:pressed 
+{
+background: white;
+border: 2px solid #956cec; 
+color: #956cec;
+}</string>
             </property>
             <property name="text">
              <string>Login</string>
             </property>
             <property name="autoDefault">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="default">
              <bool>false</bool>
@@ -573,7 +601,9 @@ padding-left: 5px;</string>
             <property name="font">
              <font>
               <family>Helvetica Now Display</family>
-              <pointsize>11</pointsize>
+              <pointsize>12</pointsize>
+              <italic>false</italic>
+              <bold>false</bold>
              </font>
             </property>
             <property name="styleSheet">
@@ -583,10 +613,13 @@ padding-left: 5px;</string>
              <string/>
             </property>
             <property name="frame">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="cursorPosition">
              <number>0</number>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
             <property name="placeholderText">
              <string>Set a username</string>
@@ -637,14 +670,25 @@ padding-left: 5px;</string>
             <property name="font">
              <font>
               <family>Helvetica Now Display</family>
-              <pointsize>11</pointsize>
+              <pointsize>12</pointsize>
+              <italic>false</italic>
+              <bold>false</bold>
              </font>
             </property>
             <property name="styleSheet">
              <string notr="true"/>
             </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
             <property name="echoMode">
-             <enum>QLineEdit::Password</enum>
+             <enum>QLineEdit::Normal</enum>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
             <property name="placeholderText">
              <string>Enter a secure password</string>
@@ -668,14 +712,22 @@ padding-left: 5px;</string>
             <property name="font">
              <font>
               <family>Helvetica Now Display</family>
-              <pointsize>11</pointsize>
+              <pointsize>12</pointsize>
+              <italic>false</italic>
+              <bold>false</bold>
              </font>
             </property>
             <property name="styleSheet">
              <string notr="true"/>
             </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
             <property name="echoMode">
-             <enum>QLineEdit::Password</enum>
+             <enum>QLineEdit::Normal</enum>
             </property>
             <property name="placeholderText">
              <string>Reenter the password</string>
