@@ -20,7 +20,7 @@ public:
     myClient(QWidget *parent = nullptr);
     void writedata(QByteArray d);
     QTcpSocket* getSocket();
-    QByteArray getMsg();
+    QJsonObject getMsg();
     ~myClient();
 
 public slots:
@@ -33,6 +33,6 @@ public slots:
 private:
     Ui::myClient *ui;
     QTcpSocket *clientSocket;
-    QByteArray msg;
+    QJsonObject msg;
 };
 #endif // MYCLIENT_H

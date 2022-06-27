@@ -39,13 +39,11 @@ void LoginWindow::on_LoginButton_clicked()
     QJsonDocument d(login);
     e.writedata(d.toJson());
     e.getSocket()->waitForReadyRead(-1);
-    QByteArray data = e.getMsg();
-    QJsonDocument f = QJsonDocument::fromJson(data);
-    QJsonObject all = f.object();
-    QString status = all["status"].toString();
+    QJsonObject data = e.getMsg();
+    QString status = data["status"].toString();
 
     if (status == "valid"){
-        QJsonArray content = all["content"].toArray();
+        QJsonArray content = data["content"].toArray();
 
         for (auto i = content.begin(); i != content.end(); i++){
 
@@ -101,13 +99,11 @@ void LoginWindow::on_SignUpButton_clicked()
     QJsonDocument d(regist);
     e.writedata(d.toJson());
     e.getSocket()->waitForReadyRead(-1);
-    QByteArray data = e.getMsg();
-    QJsonDocument f = QJsonDocument::fromJson(data);
-    QJsonObject all = f.object();
-    QString status = all["status"].toString();
+    QJsonObject data = e.getMsg();
+    QString status = data["status"].toString();
 
     if (status == "valid"){
-        QJsonArray content = all["content"].toArray();
+        QJsonArray content = data["content"].toArray();
 
         for (auto i = content.begin(); i != content.end(); i++){
 

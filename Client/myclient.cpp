@@ -45,9 +45,9 @@ void myClient::connectingToServer()
 void myClient::readingData()
 {
     QByteArray data = clientSocket->readAll();
-//    QJsonDocument d = QJsonDocument::fromJson(data);
-//    QJsonObject all = d.object();
-    msg = data;
+    QJsonDocument d = QJsonDocument::fromJson(data);
+    QJsonObject all = d.object();
+    msg = all;
 
 }
 
@@ -67,7 +67,7 @@ void myClient::disconnectedFromServer()
     qDebug()<<"connection lost\n";
 }
 
-QByteArray myClient::getMsg()
+QJsonObject myClient::getMsg()
 {
     return msg;
 }
