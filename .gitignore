@@ -1,5 +1,6 @@
 ap.pro*
 socialMedia.pdf
 build*/
-
+Client/myClient.pro.user.*
+Server/Server.pro.user.*
 

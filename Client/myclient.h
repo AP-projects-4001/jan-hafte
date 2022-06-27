@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class myClient; }
@@ -19,6 +20,7 @@ public:
     myClient(QWidget *parent = nullptr);
     void writedata(QByteArray d);
     QTcpSocket* getSocket();
+    QJsonObject getMsg();
     ~myClient();
 
 public slots:
@@ -27,11 +29,10 @@ public slots:
     void writingData();
     void connectedToServer();
     void disconnectedFromServer();
-    QByteArray getMsg();
 
 private:
     Ui::myClient *ui;
     QTcpSocket *clientSocket;
-    QByteArray msg;
+    QJsonObject msg;
 };
 #endif // MYCLIENT_H

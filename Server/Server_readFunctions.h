@@ -5,8 +5,13 @@
 #include <QJsonValue>
 #include <QDebug>
 #include <QFile>
+#include <QList>
+#include <vector>
 
 using namespace std;
+
+QString USERS_PATH = "./users.json";
+QString CHAT_PATH = "./chats.json";
 
 int checkValidUsername(QString username, QByteArray jsonDb)
 {
@@ -24,17 +29,46 @@ int checkValidUsername(QString username, QByteArray jsonDb)
     return 1;
 }
 
+void update_chats(QString username, QString chatType, QString value)
+{
+    QFile file(USERS_PATH);
+    file.open(QIODevice::ReadWrite);
+    QByteArray jsonDb = file.readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonDb);
+    QJsonObject jsonObj = jsonDoc.object();
+    QJsonArray jsonArr = jsonObj["users"].toArray();
+    for (int i = 0; i < jsonArr.size(); i++)
+    {
+        QJsonObject user = jsonArr[i].toObject();
+        if (user["username"].toString() == username)
+        {
+            QJsonArray chat = user[chatType].toArray();
+            chat.append(value);
+            user[chatType] = chat;
+            jsonArr[i] = user;
+            jsonObj["users"] = jsonArr;
+            jsonDoc.setObject(jsonObj);
+            file.resize(0);
+            file.write(jsonDoc.toJson());
+            file.close();
+            return;
+        }
+    }
+}
+
 inline QByteArray register_user(QJsonObject readData)
 {
-    QFile file("./user.json");
+    QFile file(USERS_PATH);
     if (!file.open(QIODevice::ReadWrite))
     {
         qDebug() << "Error opening file";
     }
+    QJsonObject response;
     QByteArray data = file.readAll();
     if (checkValidUsername(readData["username"].toString(), data) == 0)
     {
-        return "not valid";
+        response["status"] = "not valid";
+        return QJsonDocument(response).toJson();
     }
     QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
     QJsonObject jsonObj = jsonDoc.object();
@@ -53,7 +87,6 @@ inline QByteArray register_user(QJsonObject readData)
     file.resize(0);
     file.write(newDoc.toJson());
     file.close();
-    QJsonObject response;
     response["status"] = "valid";
     return QJsonDocument(response).toJson();
 }
@@ -62,7 +95,7 @@ inline QByteArray login_user(QJsonObject readData)
 {
     int flag = 0;
     QJsonObject response;
-    QFile file("./user.json");
+    QFile file(USERS_PATH);
     if (!file.open(QIODevice::ReadOnly))
     {
         qDebug() << "Error opening file";
@@ -77,11 +110,17 @@ inline QByteArray login_user(QJsonObject readData)
     QJsonObject myobj = mydoc.object();
     QJsonArray content_array;
     QJsonArray myarr = myobj["users"].toArray();
+    vector<QString> all_chats_vector;
     for (int i = 0; i < myarr.size(); i++)
     {
         QJsonObject user = myarr[i].toObject();
         if (user["username"].toString() == readData["username"].toString() && user["password"].toString() == readData["password"].toString())
         {
+            foreach (QJsonValue x, user["all_chats"].toArray())
+            {
+                all_chats_vector.push_back(x.toString());
+            }
+            // all_chat_vector contains all chat id that user has
             flag = 1;
         }
     }
@@ -95,4 +134,38 @@ inline QByteArray login_user(QJsonObject readData)
         response["status"] = "not valid";
     }
     return QJsonDocument(response).toJson();
+}
+
+inline QByteArray create_chat(QJsonObject readData, QString chatType)
+{
+    QJsonObject response;
+    QFile userFile(USERS_PATH);
+    QFile chatFile(CHAT_PATH);
+    if (!userFile.open(QIODevice::ReadWrite))
+    {
+        qDebug() << "Error opening file";
+    }
+    if (!chatFile.open(QIODevice::ReadWrite))
+    {
+        qDebug() << "Error opening file";
+    }
+    QByteArray userData = userFile.readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(userData);
+    QJsonObject jsonObj = jsonDoc.object();
+    QJsonArray database = jsonObj["users"].toArray();      // database is up
+    QJsonArray chatDatabase = jsonObj[chatType].toArray(); // chatDatabase is up
+    QJsonObject newChat;
+    newChat["id"] = jsonObj[chatType].toArray().size() + 1;
+    newChat["creator"] = readData["creator"].toString();
+    newChat["participants"] = readData["participants"].toArray();
+    chatDatabase.append(newChat);
+    jsonObj[chatType] = chatDatabase;
+    QJsonDocument newDoc(jsonObj);
+    chatFile.resize(0);
+    chatFile.write(newDoc.toJson());
+    update_chats(readData["creator"].toString(), chatType, readData["id"].toString());
+    update_chats(readData["creator"].toString(), "all_chats", readData["id"].toString());
+    chatFile.close();
+    return "DONE!";
+    // save new chat to user file // CODE HERE //
 }

@@ -63,6 +63,12 @@ void MyThread::readyRead()
         QByteArray response = login_user(readData);
         socket->write(response);
     }
+    else if (header == "create_chat")
+    {
+        // read chatType from readData
+        QString chatType = readData["chatType"].toString();
+        QByteArray response = create_chat(readData, chatType);
+    }
 
     // will write on server side window
     // qDebug() << socketDescriptor << " Data in: " << Data;

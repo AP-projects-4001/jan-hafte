@@ -1,6 +1,5 @@
 #include "loginwindow.h"
 #include "ui_loginwindow.h"
-
 #include <QRegularExpression>
 
 LoginWindow::LoginWindow(QWidget *parent) :
@@ -45,14 +44,22 @@ void LoginWindow::on_LoginButton_clicked()
 
     QJsonDocument d(login);
     e.writedata(d.toJson());
-    e.getSocket()->waitForReadyRead(1);
-    QByteArray f = e.getMsg();
+    e.getSocket()->waitForReadyRead(-1);
+    QJsonObject data = e.getMsg();
+    QString status = data["status"].toString();
 
-    if (f == "valid"){
+    if (status == "valid"){
+        QJsonArray content = data["content"].toArray();
+
+        for (auto i = content.begin(); i != content.end(); i++){
+
+            //show on chat screen
+
+        }
         message->setText("Successfully Logged In");  // delete this
         message->show();
     }
-    else if (f == "not valid"){
+    else if (status == "not valid"){
         message->setText("Login Failed, Wrong Credentials");  // delete this
         message->show();
     }
@@ -97,14 +104,22 @@ void LoginWindow::on_SignUpButton_clicked()
 
     QJsonDocument d(regist);
     e.writedata(d.toJson());
-    e.getSocket()->waitForReadyRead(1);
-    QByteArray f = e.getMsg();
+    e.getSocket()->waitForReadyRead(-1);
+    QJsonObject data = e.getMsg();
+    QString status = data["status"].toString();
 
-    if (f == "valid"){
-        message->setText("Successfully Signed Up");  // delete this
+    if (status == "valid"){
+        QJsonArray content = data["content"].toArray();
+
+        for (auto i = content.begin(); i != content.end(); i++){
+
+            //show on chat screen
+
+        }
+        message->setText("Successfully Logged In");  // delete this
         message->show();
     }
-    else if (f == "not valid"){
+    else if (status == "not valid"){
         message->setText("Sign Up Failed");  // delete this
         message->show();
     }
