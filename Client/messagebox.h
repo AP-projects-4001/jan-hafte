@@ -14,6 +14,8 @@ class MessageBox : public QWidget
 public:
     explicit MessageBox(QWidget *parent = nullptr);
 
+    void setText(const QString text);
+
 signals:
 
 private:
@@ -23,7 +25,6 @@ private:
 
     QHBoxLayout *horizontalLayout;
     QVBoxLayout *verticalLayout;
-
 };
 
 #endif // MESSAGEBOX_H

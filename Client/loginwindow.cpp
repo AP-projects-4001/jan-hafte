@@ -8,6 +8,7 @@ LoginWindow::LoginWindow(QWidget *parent) :
     ui(new Ui::LoginWindow)
 {
     ui->setupUi(this);
+    ui->LoginButton->setFocus();
     message = new QMessageBox(this);
     message->setWindowFlags (Qt::Popup | Qt::CustomizeWindowHint);
     message->setStyleSheet("QAbstractButton{border-radius: 15px; font: 800 14pt \"Helvetica Now Display\"; background: #956cec; color:white; min-width:75px; min-height:30px; transition: border-width 2s;}"
@@ -76,6 +77,7 @@ void LoginWindow::on_SignUpInsteadButton_clicked()
 {
     clearLoginPage();
     ui->Pages->setCurrentIndex(1);
+    ui->SignUpButton->setFocus();
 }
 
 
@@ -83,6 +85,7 @@ void LoginWindow::on_LoginInsteadButton_clicked()
 {
     clearSignUpPage();
     ui->Pages->setCurrentIndex(0);
+    ui->LoginButton->setFocus();
 }
 
 

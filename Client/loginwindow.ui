@@ -422,6 +422,9 @@ padding-left: 5px;</string>
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
             <property name="styleSheet">
              <string notr="true">border-radius:10px;
 font: 500 12pt &quot;Helvetica Now Display&quot;;
@@ -744,6 +747,9 @@ padding-left: 5px;</string>
             </property>
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="styleSheet">
              <string notr="true">border-radius:10px;

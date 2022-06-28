@@ -3,7 +3,7 @@
 MessageBox::MessageBox(QWidget *parent)
     : QWidget{parent}
 {
-    messageFrame = new QFrame (this);
+    messageFrame = new QFrame(this);
     messageFrame->setObjectName("frame");
     messageFrame->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
     messageFrame->setMaximumWidth(300);
@@ -31,5 +31,11 @@ MessageBox::MessageBox(QWidget *parent)
 
     messageText->setWordWrap(true);
     messageText->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
-    messageText->setText("This Is a Test\n PAOdnakldmal;dsjap;dmA:SJd\n oajsdnadjhalsdha;sld");
+
+    parent->layout()->addWidget(this);
+}
+
+void MessageBox::setText(const QString text)
+{
+    messageText->setText(text);
 }

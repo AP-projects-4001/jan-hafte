@@ -8,17 +8,21 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    messageTest = new MessageBox[20];
-
-    for (int i = 0; i < 20 ; i++) {
-        messageTest[i].setParent(ui->chatViewScrollAreaContent);
-        ui->chatViewScrollAreaContent->layout()->addWidget(&messageTest[i]);
-    }
-
 }
 
 MainWindow::~MainWindow()
 {
-    delete[] messageTest;
     delete ui;
 }
+
+void MainWindow::on_sendButton_clicked()
+{
+    QString inpMessage = ui->chatLineEdit->toPlainText().trimmed();
+    ui->chatLineEdit->clear();
+    if(inpMessage.isEmpty()) return;
+    MessageBox *message = new MessageBox(ui->chatViewScrollAreaContent);
+    message->setText(inpMessage);
+    listOfMessages.append(message);
+
+}
+
