@@ -12,6 +12,25 @@ using namespace std;
 
 QString USERS_PATH = "./users.json";
 QString CHAT_PATH = "./chats.json";
+QString MESSAGES_PATH = "./messages.json";
+
+int foundPlacer(QString chatType)
+{
+    int placer = -1;
+    if (chatType == "channel")
+    {
+        placer = 0;
+    }
+    else if (chatType == "group")
+    {
+        placer = 1;
+    }
+    else if (chatType == "private_chat")
+    {
+        placer = 2;
+    }
+    return placer;
+}
 
 int checkValidUsername(QString username, QByteArray jsonDb)
 {
@@ -54,6 +73,39 @@ void update_chats(QString username, QString chatType, QString value)
             return;
         }
     }
+}
+
+void update_messages_in_chatDB(QString chatType, QString chat_id, QString msg_id)
+{
+    QFile file(CHAT_PATH);
+    file.open(QIODevice::ReadWrite);
+    int placer = foundPlacer(chatType);
+    QByteArray jsonDb = file.readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonDb);
+    QJsonObject jsonObj = jsonDoc.object();
+    QJsonArray jsonArr = jsonObj["chats"].toArray();
+    QJsonObject chat_temp = jsonArr[placer].toObject();
+    QJsonArray chat_temp2 = chat_temp["channel"].toArray();
+    for (int i = 0; i < chat_temp2.size(); i++)
+    {
+        QJsonObject arrTemp = chat_temp2[i].toObject();
+        if (arrTemp["id"] == chat_id)
+        {
+            QJsonArray myMessages = arrTemp["messages"].toArray();
+            myMessages.append(msg_id);
+            arrTemp["messages"] = myMessages;
+            chat_temp2[i] = arrTemp;
+            chat_temp["channel"] = chat_temp2;
+            jsonArr[placer] = chat_temp;
+            jsonObj["chats"] = jsonArr;
+            jsonDoc.setObject(jsonObj);
+            file.resize(0);
+            file.write(jsonDoc.toJson());
+            file.close();
+            return;
+        }
+    }
+    return;
 }
 
 inline QByteArray register_user(QJsonObject readData)
@@ -139,19 +191,7 @@ inline QByteArray login_user(QJsonObject readData)
 inline QByteArray create_chat(QJsonObject readData, QString chatType)
 {
     // when I write this function, I understand it but now I cant
-    int placer = -1;
-    if (chatType == "channel")
-    {
-        placer = 0;
-    }
-    else if (chatType == "group")
-    {
-        placer = 1;
-    }
-    else if (chatType == "private_chat")
-    {
-        placer = 2;
-    }
+    int placer = foundPlacer(chatType);
     QFile userFile(USERS_PATH);
     QFile chatFile(CHAT_PATH);
     if (!userFile.open(QIODevice::ReadWrite))
@@ -239,4 +279,32 @@ inline QByteArray search_user(QJsonObject readData)
             return newDoc.toJson();
         }
     }
+}
+
+inline QByteArray save_message(QJsonObject readData)
+{
+    QFile file(MESSAGES_PATH);
+    if (!file.open(QIODevice::ReadWrite))
+    {
+        qDebug() << "Error opening file";
+    }
+    QByteArray data = file.readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+    QJsonObject jsonObj = jsonDoc.object();
+    QJsonArray jsonArr = jsonObj["messages"].toArray();
+    QJsonObject newMessage;
+    newMessage["id"] = QString::number(jsonArr.size() + 1);
+    newMessage["sender"] = readData["sender"].toString();
+    newMessage["message_text"] = readData["message_text"].toString();
+    newMessage["time"] = readData["time"].toString();
+    newMessage["chat_id"] = readData["chat_id"].toString();
+    newMessage["chat_type"] = readData["chat_type"].toString();
+    jsonArr.append(newMessage);
+    jsonObj["messages"] = jsonArr;
+    QJsonDocument newDoc(jsonObj);
+    file.resize(0);
+    update_messages_in_chatDB(readData["chat_type"].toString(), readData["chat_id"].toString(), newMessage["id"].toString());
+    file.write(newDoc.toJson());
+    file.close();
+    return "DONE!";
 }

@@ -82,6 +82,16 @@ void MyThread::readyRead()
         QByteArray response = search_user(readData);
         socket->write(response);
     }
+    else if (header == "save_message")
+    { // {header: save_message, \
+                                             chat_id: <chat_id>, \
+											 sender: <sender_username>, \
+											 message_text: <message>  \
+                                             time: <time> \
+                                             chat_type: <chat_type>}
+        QByteArray response = save_message(readData);
+        socket->write(response);
+    }
 }
 
 // will write on server side window
