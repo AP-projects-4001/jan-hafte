@@ -62,16 +62,44 @@ void update_chats(QString username, QString chatType, QString value)
         QJsonObject user = jsonArr[i].toObject();
         if (user["username"].toString() == username)
         {
-            QJsonArray chat = user[chatType].toArray();
-            chat.append(value);
-            user[chatType] = chat;
-            jsonArr[i] = user;
-            jsonObj["users"] = jsonArr;
-            jsonDoc.setObject(jsonObj);
-            file.resize(0);
-            file.write(jsonDoc.toJson());
-            file.close();
-            return;
+            if (chatType != "all_chats")
+            {
+                QJsonArray chat = user[chatType].toArray();
+                chat.append(value);
+                user[chatType] = chat;
+                jsonArr[i] = user;
+                jsonObj["users"] = jsonArr;
+                jsonDoc.setObject(jsonObj);
+                file.resize(0);
+                file.write(jsonDoc.toJson());
+                file.close();
+                return;
+            }
+            else
+            {
+                QJsonArray chat = user["all_chats"].toArray();
+                QJsonObject chatObj;
+                chatObj["id"] = value;
+                chatObj["last_message"] = "";
+                chatObj["last_message_time"] = "";
+                chat.append(chatObj);
+                user["all_chats"] = chat;
+                jsonArr[i] = user;
+                jsonObj["users"] = jsonArr;
+                jsonDoc.setObject(jsonObj);
+                file.resize(0);
+                file.write(jsonDoc.toJson());
+                file.close();
+                /*chat.append(value);
+                user["all_chats"] = chat;
+                jsonArr[i] = user;
+                jsonObj["users"] = jsonArr;
+                jsonDoc.setObject(jsonObj);
+                file.resize(0);
+                file.write(jsonDoc.toJson());
+                file.close();
+                return;*/
+            }
         }
     }
 }
@@ -177,6 +205,7 @@ inline QByteArray login_user(QJsonObject readData)
                 all_chats_vector.push_back(x.toString());
             }
             // all_chat_vector contains all chat id that user has
+
             flag = 1;
         }
     }
@@ -317,3 +346,6 @@ inline QByteArray get_messages(QJsonObject readData)
     QJsonDocument newDoc(messages);
     return newDoc.toJson();
 }
+
+// TODO: add name for group & channnel \
+         add profile photo

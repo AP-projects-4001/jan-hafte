@@ -113,7 +113,7 @@ void MyThread::readyRead()
     else if (header == "create_chat") // {header:create_chat, \
                                          chatType: <group/channel/private_chat>, \
                                          creator: <creator_username>, \
-                                         participants: [participants_username]}
+                                         participants: QJsonArray(QStrings)}
     {
         // read chatType from readData
         QString chatType = readData["chatType"].toString();
