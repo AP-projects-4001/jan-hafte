@@ -3,6 +3,8 @@
         <file>Graphics/AP_Icon.svg</file>
         <file>Graphics/Artboard 1@64x.png</file>
         <file>Graphics/Artboard 1@96x.png</file>
+        <file>Graphics/Message Bubble.svg</file>
+        <file>Graphics/Message Bubble Other.svg</file>
     </qresource>
     <qresource prefix="/Fonts">
         <file>Fonts/HelveticaNowDisplay-Black.otf</file>

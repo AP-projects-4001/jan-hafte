@@ -12,11 +12,13 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    messagebox.cpp \
     myclient.cpp \
     loginwindow.cpp
 
 HEADERS += \
     mainwindow.h \
+    messagebox.h \
     myclient.h \
     loginwindow.h
 
