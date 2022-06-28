@@ -48,6 +48,45 @@ void MyThread::run()
 
 void MyThread::readyRead()
 {
+
+    QFile msgFile("./messages.json");
+    QFile usrFile("./users.json");
+    QFile chtFile("./chats.json");
+    if (msgFile.size() < 7)
+    {
+        QJsonObject obj;
+        msgFile.open(QIODevice::WriteOnly);
+        obj["messages"] = QJsonArray();
+        QJsonDocument doc(obj);
+        msgFile.write(doc.toJson());
+        msgFile.close();
+    }
+    if (usrFile.size() < 7)
+    {
+        QJsonObject obj;
+        usrFile.open(QIODevice::WriteOnly);
+        obj["users"] = QJsonArray();
+        QJsonDocument doc(obj);
+        usrFile.write(doc.toJson());
+        usrFile.close();
+    }
+    if (chtFile.size() < 7)
+    {
+        QJsonObject obj, channel, group, private_chat;
+        channel["channel"] = QJsonArray();
+        group["group"] = QJsonArray();
+        private_chat["private_chat"] = QJsonArray();
+        QJsonArray chatArray;
+        chatArray.append(channel);
+        chatArray.append(group);
+        chatArray.append(private_chat);
+        chtFile.open(QIODevice::WriteOnly);
+        obj["chats"] = chatArray;
+        QJsonDocument doc(obj);
+        chtFile.write(doc.toJson());
+        chtFile.close();
+    }
+
     // get the information
     QByteArray Data = socket->readAll();
     QJsonDocument doc = QJsonDocument::fromJson(Data);
@@ -55,7 +94,11 @@ void MyThread::readyRead()
     QString header = readData["header"].toString();
     if (header == "register") // {header:register, \
 		                          username: <username>, \
-                                  password: <password>}
+                                  password: <password>} \
+		                          phone: <phone> \
+                                  birthday: <birthday> \
+                                  email: <email> \
+                                  }
     {
         QByteArray response = register_user(readData);
         socket->write(response);
@@ -90,6 +133,13 @@ void MyThread::readyRead()
                                              time: <time> \
                                              chat_type: <chat_type>}
         QByteArray response = save_message(readData);
+        socket->write(response);
+    }
+    else if (header == "get_messages")
+    { // {header: get_message, \\
+                                            chat_id: <chat_id>, \
+											chat_type: <chat_type>}
+        QByteArray response = get_messages(readData);
         socket->write(response);
     }
 }

@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QList>
 #include <vector>
+#include <QUuid>
 
 using namespace std;
 
@@ -85,7 +86,7 @@ void update_messages_in_chatDB(QString chatType, QString chat_id, QString msg_id
     QJsonObject jsonObj = jsonDoc.object();
     QJsonArray jsonArr = jsonObj["chats"].toArray();
     QJsonObject chat_temp = jsonArr[placer].toObject();
-    QJsonArray chat_temp2 = chat_temp["channel"].toArray();
+    QJsonArray chat_temp2 = chat_temp[chatType].toArray();
     for (int i = 0; i < chat_temp2.size(); i++)
     {
         QJsonObject arrTemp = chat_temp2[i].toObject();
@@ -95,7 +96,7 @@ void update_messages_in_chatDB(QString chatType, QString chat_id, QString msg_id
             myMessages.append(msg_id);
             arrTemp["messages"] = myMessages;
             chat_temp2[i] = arrTemp;
-            chat_temp["channel"] = chat_temp2;
+            chat_temp[chatType] = chat_temp2;
             jsonArr[placer] = chat_temp;
             jsonObj["chats"] = jsonArr;
             jsonDoc.setObject(jsonObj);
@@ -129,6 +130,9 @@ inline QByteArray register_user(QJsonObject readData)
     QJsonObject newUser;
     newUser["username"] = readData["username"].toString();
     newUser["password"] = readData["password"].toString();
+    newUser["phone"] = readData["phone"].toString();
+    newUser["email"] = readData["email"].toString();
+    newUser["birthday"] = readData["birthday"].toString();
     newUser["all_chats"] = all_chat;
     newUser["private_chat"] = private_chat;
     newUser["group_chat"] = group_chat;
@@ -198,30 +202,10 @@ inline QByteArray create_chat(QJsonObject readData, QString chatType)
     {
         qDebug() << "Error opening file";
     }
-    if (!chatFile.open(QIODevice::ReadWrite | QIODevice::Append))
+    if (!chatFile.open(QIODevice::ReadWrite))
     {
         qDebug() << "Error opening file";
     }
-    if (chatFile.pos() == 0)
-    {
-        QJsonObject channel_object, group_object, private_chat_object, allObject;
-        QJsonArray all_array;
-        channel_object["channel"] = all_array;
-        group_object["group"] = all_array;
-        private_chat_object["private_chat"] = all_array;
-        all_array.append(channel_object);
-        all_array.append(group_object);
-        all_array.append(private_chat_object);
-        allObject["chats"] = all_array;
-        chatFile.write(QJsonDocument(allObject).toJson());
-        chatFile.close();
-        QFile chatFile(CHAT_PATH);
-        if (!chatFile.open(QIODevice::ReadWrite))
-        {
-            qDebug() << "Error opening file";
-        }
-    }
-    chatFile.seek(0);
     QByteArray userData = userFile.readAll();
     QJsonDocument jsonDoc = QJsonDocument::fromJson(userData);
     QJsonObject jsonObj = jsonDoc.object();
@@ -229,15 +213,16 @@ inline QByteArray create_chat(QJsonObject readData, QString chatType)
     QByteArray chatData = chatFile.readAll();
     QJsonDocument chatDoc = QJsonDocument::fromJson(chatData);
     QJsonObject chatJson = chatDoc.object();
+    // qDebug() << chatJson;
 
     QJsonArray userDatabse = jsonObj["users"].toArray();   // user database is up
     QJsonArray chatDatabase = chatJson["chats"].toArray(); // chatDatabase is up
 
+    // qDebug() << chatDatabase;
     QJsonObject tmp = chatDatabase[placer].toObject();
     QJsonArray tmp_array = tmp[chatType].toArray();
-
     QJsonObject newChat;
-    newChat["id"] = QString::number(tmp_array.size() + 1);
+    newChat["id"] = QUuid::createUuid().toString().remove("{").remove("}");
     newChat["creator"] = readData["creator"].toString();
     newChat["participants"] = readData["participants"].toArray();
     newChat["messages"] = QJsonArray();
@@ -307,4 +292,28 @@ inline QByteArray save_message(QJsonObject readData)
     file.write(newDoc.toJson());
     file.close();
     return "DONE!";
+}
+
+inline QByteArray get_messages(QJsonObject readData)
+{
+    QFile file(MESSAGES_PATH);
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Error opening file";
+    }
+    QByteArray data = file.readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+    QJsonObject jsonObj = jsonDoc.object();
+    QJsonArray jsonArr = jsonObj["messages"].toArray();
+    QJsonArray messages;
+    for (int i = 0; i < jsonArr.size(); i++)
+    {
+        QJsonObject message = jsonArr[i].toObject();
+        if (message["chat_id"] == readData["chat_id"] && message["chat_type"] == readData["chat_type"])
+        {
+            messages.append(message);
+        }
+    }
+    QJsonDocument newDoc(messages);
+    return newDoc.toJson();
 }
