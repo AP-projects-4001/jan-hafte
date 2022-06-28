@@ -1,6 +1,7 @@
 #include "loginwindow.h"
 #include "ui_loginwindow.h"
 #include <QRegularExpression>
+#include <QDebug>
 
 LoginWindow::LoginWindow(QWidget *parent) :
     QDialog(parent),
@@ -52,11 +53,13 @@ void LoginWindow::on_LoginButton_clicked()
 
         for (auto i = content.begin(); i != content.end(); i++){
 
-            //show on chat screen
+            //show on chat screen WTF
 
         }
         message->setText("Successfully Logged In");  // delete this
         message->show();
+        message->exec();
+        this->close();
     }
     else if (status == "not valid"){
         message->setText("Login Failed, Wrong Credentials");  // delete this
@@ -115,7 +118,7 @@ void LoginWindow::on_SignUpButton_clicked()
             //show on chat screen
 
         }
-        message->setText("Successfully Logged In");  // delete this
+        message->setText("Successfully Signed In");  // delete this
         message->show();
     }
     else if (status == "not valid"){

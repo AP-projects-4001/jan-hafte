@@ -26,7 +26,10 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,0,4">
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="4,0,4">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -95,6 +98,9 @@
               <height>50</height>
              </size>
             </property>
+            <property name="styleSheet">
+             <string notr="true">background:white;</string>
+            </property>
            </widget>
           </item>
           <item>
@@ -127,7 +133,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>192</width>
+                <width>242</width>
                 <height>462</height>
                </rect>
               </property>
@@ -242,6 +248,9 @@
            <height>50</height>
           </size>
          </property>
+         <property name="styleSheet">
+          <string notr="true">background:white;</string>
+         </property>
         </widget>
        </item>
        <item>
@@ -259,6 +268,9 @@
            </property>
            <item>
             <widget class="QScrollArea" name="chatViewScrollArea">
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="horizontalScrollBarPolicy">
               <enum>Qt::ScrollBarAlwaysOff</enum>
              </property>
@@ -273,7 +285,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>722</width>
+                <width>672</width>
                 <height>414</height>
                </rect>
               </property>
@@ -352,7 +364,7 @@
                   <item>
                    <widget class="QFrame" name="messageBox">
                     <property name="sizePolicy">
-                     <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                       <horstretch>0</horstretch>
                       <verstretch>0</verstretch>
                      </sizepolicy>
@@ -369,7 +381,8 @@
                     <property name="styleSheet">
                      <string notr="true">QFrame#messageBox {
 border: 15px solid;
-border-image: url(:/Graphics/Graphics/Message Bubble.svg) 15 round
+border-image: url(:/Graphics/Graphics/Message Bubble.svg) 15 round;
+padding-right:30px;
 }</string>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -405,6 +418,9 @@ border-image: url(:/Graphics/Graphics/Message Bubble.svg) 15 round
                          <height>16777215</height>
                         </size>
                        </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::LeftToRight</enum>
+                       </property>
                        <property name="styleSheet">
                         <string notr="true"/>
                        </property>
@@ -418,7 +434,7 @@ border-image: url(:/Graphics/Graphics/Message Bubble.svg) 15 round
                         <number>0</number>
                        </property>
                        <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;This is a test&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;نیسسیشسی&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                        <property name="textFormat">
                         <enum>Qt::AutoText</enum>
@@ -498,9 +514,12 @@ border-image: url(:/Graphics/Graphics/Message Bubble.svg) 15 round
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>400</width>
+                  <width>350</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
                 </property>
                 <property name="verticalScrollBarPolicy">
                  <enum>Qt::ScrollBarAlwaysOff</enum>

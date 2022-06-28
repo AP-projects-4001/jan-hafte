@@ -5,7 +5,7 @@ MessageBox::MessageBox(QWidget *parent)
 {
     messageFrame = new QFrame (this);
     messageFrame->setObjectName("frame");
-    messageFrame->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+    messageFrame->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
     messageFrame->setMaximumWidth(300);
 
     horizontalLayout = new QHBoxLayout();
@@ -26,10 +26,10 @@ MessageBox::MessageBox(QWidget *parent)
 
     messageFrame->setLayout(verticalLayout);
 
-    QString style = "QFrame#frame{ border: 15px solid; border-image: url(:/Graphics/Graphics/Message Bubble.svg) 15 round}";
+    QString style = "QFrame#frame{ border: 15px solid; border-image: url(:/Graphics/Graphics/Message Bubble.svg) 15 round; padding-right:30px;}";
     messageFrame->setStyleSheet(style);
 
     messageText->setWordWrap(true);
     messageText->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
-    messageText->setText("This Is a Test");
+    messageText->setText("This Is a Test\n PAOdnakldmal;dsjap;dmA:SJd\n oajsdnadjhalsdha;sld");
 }
