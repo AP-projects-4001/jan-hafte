@@ -14,13 +14,15 @@ SOURCES += \
     mainwindow.cpp \
     messagebox.cpp \
     myclient.cpp \
-    loginwindow.cpp
+    loginwindow.cpp \
+    mythread.cpp
 
 HEADERS += \
     mainwindow.h \
     messagebox.h \
     myclient.h \
-    loginwindow.h
+    loginwindow.h \
+    mythread.h
 
 FORMS += \
     mainwindow.ui \

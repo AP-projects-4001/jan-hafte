@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QMessageBox>
 #include "myclient.h"
+#include <QThread>
 
 namespace Ui {
 class LoginWindow;

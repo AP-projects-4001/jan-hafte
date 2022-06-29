@@ -7,6 +7,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    MyThread *thread = new MyThread();
+    connect(thread,SIGNAL(recievemassage(QJsonObject)),this,SLOT(getdata()));
+
+}
+
+void MainWindow::getdata()
+{
+
 
 }
 
@@ -25,4 +33,51 @@ void MainWindow::on_sendButton_clicked()
     listOfMessages.append(message);
 
 }
+
+void MainWindow::gettingchat()
+{
+    QJsonObject o;
+    o["header"]="gettingchat";
+    o["chat_type"] = chat_type;
+    o["username"]=user_unique_id;
+    o["chat_id"]=chat_unique_id;
+    QJsonDocument d(o);
+    e.writedata(d.toJson());
+
+    //show them on chat
+}
+
+void MainWindow::createpv()
+{
+    QJsonObject o;
+    o["header"]="create_chat";
+    o["chatType"] = "private_chat";
+    o["creator"]=user_unique_id;
+    o["participants"] = participants_username;
+    QJsonDocument d(o);
+    e.writedata(d.toJson());
+}
+
+void MainWindow::creategroup()
+{
+    QJsonObject o;
+    o["header"]="create_chat";
+    o["chatType"] = "group";
+    o["creator"]=user_unique_id;
+    o["participants"] = participants_username;
+    QJsonDocument d(o);
+    e.writedata(d.toJson());
+}
+
+void MainWindow::createchannel()
+{
+    QJsonObject o;
+    o["header"]="create_chat";
+    o["chatType"] = "channel";
+    o["creator"]=user_unique_id;
+    o["participants"] = participants_username;
+    QJsonDocument d(o);
+    e.writedata(d.toJson());
+}
+
 

@@ -45,31 +45,7 @@ void LoginWindow::on_LoginButton_clicked()
 
     QJsonDocument d(login);
     e.writedata(d.toJson());
-    e.getSocket()->waitForReadyRead(-1);
-    QJsonObject data = e.getMsg();
-    QString status = data["status"].toString();
 
-    if (status == "valid"){
-        QJsonArray content = data["content"].toArray();
-
-        for (auto i = content.begin(); i != content.end(); i++){
-
-            //show on chat screen WTF
-
-        }
-        message->setText("Successfully Logged In");  // delete this
-        message->show();
-        message->exec();
-        this->close();
-    }
-    else if (status == "not valid"){
-        message->setText("Login Failed, Wrong Credentials");  // delete this
-        message->show();
-    }
-    else{
-        message->setText("error");  // delete this
-        message->show();
-    }
 }
 
 
