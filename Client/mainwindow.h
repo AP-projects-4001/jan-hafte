@@ -6,6 +6,7 @@
 #include <QList>
 #include "myclient.h"
 #include "mythread.h"
+#include "chatlable.h"
 
 namespace Ui {
 class MainWindow;
@@ -37,6 +38,7 @@ private:
     QString user_id;
     QJsonObject all;
     QList <MessageBox*> listOfMessages;
+    QList <ChatLable> listOfChats;
 };
 
 #endif // MAINWINDOW_H

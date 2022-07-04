@@ -1,9 +1,11 @@
 #ifndef CHATLABLE_H
 #define CHATLABLE_H
 
-#include <QWidget>
+#include <QFrame>
+#include <QLabel>
+#include <QLayout>
 
-class ChatLable : public QWidget
+class ChatLable : public QFrame
 {
     Q_OBJECT
 public:
@@ -11,6 +13,10 @@ public:
 
 signals:
 
+private:
+    QLabel *nameField;
+    QLabel *lastMessageField;
+    QLabel *profilePicSlot;
 };
 
 #endif // CHATLABLE_H

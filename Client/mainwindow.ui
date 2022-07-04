@@ -29,7 +29,7 @@
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout" stretch="4,0,4">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,0,5">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -95,7 +95,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>50</height>
+              <height>64</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -105,13 +105,26 @@
           </item>
           <item>
            <widget class="QPushButton" name="createNewChatButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>50</height>
+             </size>
+            </property>
             <property name="text">
              <string>New Chat</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="searchBar"/>
+           <widget class="QLineEdit" name="searchBar">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -133,71 +146,61 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>234</width>
-                <height>461</height>
+                <width>253</width>
+                <height>414</height>
                </rect>
               </property>
-              <widget class="QFrame" name="frame">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>90</y>
-                 <width>341</width>
-                 <height>64</height>
-                </rect>
+              <layout class="QVBoxLayout" name="verticalLayout_9">
+               <property name="spacing">
+                <number>0</number>
                </property>
-               <property name="styleSheet">
-                <string notr="true">background: white;</string>
+               <property name="leftMargin">
+                <number>0</number>
                </property>
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
+               <property name="topMargin">
+                <number>0</number>
                </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
+               <property name="rightMargin">
+                <number>0</number>
                </property>
-               <widget class="QLabel" name="label">
-                <property name="geometry">
-                 <rect>
-                  <x>0</x>
-                  <y>0</y>
-                  <width>64</width>
-                  <height>64</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="pixmap">
-                 <pixmap resource="Resources.qrc">:/Graphics/Graphics/Artboard 1@64x.png</pixmap>
-                </property>
-               </widget>
-               <widget class="QLabel" name="label_2">
-                <property name="geometry">
-                 <rect>
-                  <x>70</x>
-                  <y>10</y>
-                  <width>151</width>
-                  <height>20</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>TextLabel</string>
-                </property>
-               </widget>
-               <widget class="QLabel" name="label_3">
-                <property name="geometry">
-                 <rect>
-                  <x>70</x>
-                  <y>30</y>
-                  <width>161</width>
-                  <height>20</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>TextLabel</string>
-                </property>
-               </widget>
-              </widget>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QWidget" name="chatListAreaContentSlot" native="true">
+                 <layout class="QVBoxLayout" name="verticalLayout_11">
+                  <property name="spacing">
+                   <number>5</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
              </widget>
             </widget>
            </item>
@@ -242,10 +245,13 @@
        </property>
        <item>
         <widget class="QWidget" name="topInfoBarArea" native="true">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>64</height>
           </size>
          </property>
          <property name="styleSheet">
@@ -259,7 +265,7 @@
           <number>0</number>
          </property>
          <widget class="QWidget" name="chatViewArea">
-          <layout class="QVBoxLayout" name="verticalLayout_8" stretch="10,1">
+          <layout class="QVBoxLayout" name="verticalLayout_8" stretch="20,1">
            <property name="spacing">
             <number>5</number>
            </property>
@@ -285,8 +291,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>680</width>
-                <height>416</height>
+                <width>661</width>
+                <height>439</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -327,19 +333,46 @@
            </item>
            <item>
             <widget class="QWidget" name="chatViewTypeArea" native="true">
-             <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,0,0">
               <property name="sizeConstraint">
                <enum>QLayout::SetMinimumSize</enum>
               </property>
               <item>
                <widget class="QWidget" name="attachButtonArea" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="minimumSize">
                  <size>
-                  <width>100</width>
+                  <width>0</width>
                   <height>0</height>
                  </size>
                 </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>32</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
                 <layout class="QVBoxLayout" name="verticalLayout_5">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <item>
                   <spacer name="verticalSpacer">
                    <property name="orientation">
@@ -355,8 +388,23 @@
                  </item>
                  <item>
                   <widget class="QPushButton" name="attachButton">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>32</width>
+                     <height>32</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">border-image: url(:/Graphics/Graphics/icons8_attach_64px.png) 0 round;</string>
+                   </property>
                    <property name="text">
-                    <string>atach</string>
+                    <string/>
                    </property>
                   </widget>
                  </item>
@@ -366,15 +414,15 @@
               <item>
                <widget class="QTextEdit" name="chatLineEdit">
                 <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>350</width>
-                  <height>0</height>
+                  <width>400</width>
+                  <height>25</height>
                  </size>
                 </property>
                 <property name="layoutDirection">
@@ -403,7 +451,34 @@ p, li { white-space: pre-wrap; }
               </item>
               <item>
                <widget class="QWidget" name="emojiButtonArea" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>32</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <layout class="QVBoxLayout" name="verticalLayout_6">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <item>
                   <spacer name="verticalSpacer_2">
                    <property name="orientation">
@@ -419,8 +494,23 @@ p, li { white-space: pre-wrap; }
                  </item>
                  <item>
                   <widget class="QPushButton" name="emojiButton">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>32</width>
+                     <height>32</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">border-image: url(:/Graphics/Graphics/icons8_happy_64px.png) 0 round;</string>
+                   </property>
                    <property name="text">
-                    <string>emoj</string>
+                    <string/>
                    </property>
                   </widget>
                  </item>
@@ -429,7 +519,40 @@ p, li { white-space: pre-wrap; }
               </item>
               <item>
                <widget class="QWidget" name="sendButtonArea" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>32</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
                 <layout class="QVBoxLayout" name="verticalLayout_7">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="sizeConstraint">
+                  <enum>QLayout::SetMinimumSize</enum>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <item>
                   <spacer name="verticalSpacer_3">
                    <property name="orientation">
@@ -445,8 +568,29 @@ p, li { white-space: pre-wrap; }
                  </item>
                  <item>
                   <widget class="QPushButton" name="sendButton">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>32</width>
+                     <height>32</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">border-image: url(:/Graphics/Graphics/icons8_paper_plane_64px_3.png) 0 round;</string>
+                   </property>
                    <property name="text">
-                    <string>send</string>
+                    <string/>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>16</width>
+                     <height>16</height>
+                    </size>
                    </property>
                   </widget>
                  </item>
@@ -472,13 +616,11 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>957</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
  </widget>
- <resources>
-  <include location="Resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

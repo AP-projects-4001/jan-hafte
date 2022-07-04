@@ -5,6 +5,9 @@
         <file>Graphics/Artboard 1@96x.png</file>
         <file>Graphics/Message Bubble.svg</file>
         <file>Graphics/Message Bubble Other.svg</file>
+        <file>Graphics/icons8_paper_plane_64px_3.png</file>
+        <file>Graphics/icons8_happy_64px.png</file>
+        <file>Graphics/icons8_attach_64px.png</file>
     </qresource>
     <qresource prefix="/Fonts">
         <file>Fonts/HelveticaNowDisplay-Black.otf</file>
