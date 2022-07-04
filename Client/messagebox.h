@@ -12,7 +12,7 @@ class MessageBox : public QWidget
 {
     Q_OBJECT
 public:
-    explicit MessageBox(QWidget *parent = nullptr);
+    explicit MessageBox(QWidget *parent = nullptr, bool isSender = true);
 
     void setText(const QString text);
 

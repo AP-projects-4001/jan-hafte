@@ -31,7 +31,9 @@ void MainWindow::on_sendButton_clicked()
     MessageBox *message = new MessageBox(ui->chatViewScrollAreaContent);
     message->setText(inpMessage);
     listOfMessages.append(message);
-
+    MessageBox *answer = new MessageBox (ui->chatViewScrollAreaContent, false);
+    answer->setText("This is A random answer");
+    listOfMessages.append(answer);
 }
 
 void MainWindow::gettingchat()

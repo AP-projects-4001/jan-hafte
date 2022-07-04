@@ -257,7 +257,7 @@ font: 12pt &quot;Helvetica Now Text&quot;;
 }</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="LoginPage">
        <widget class="QFrame" name="LoginFrame">

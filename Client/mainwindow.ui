@@ -133,8 +133,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>242</width>
-                <height>462</height>
+                <width>234</width>
+                <height>461</height>
                </rect>
               </property>
               <widget class="QFrame" name="frame">
@@ -176,7 +176,7 @@
                  <rect>
                   <x>70</x>
                   <y>10</y>
-                  <width>261</width>
+                  <width>151</width>
                   <height>20</height>
                  </rect>
                 </property>
@@ -189,7 +189,7 @@
                  <rect>
                   <x>70</x>
                   <y>30</y>
-                  <width>261</width>
+                  <width>161</width>
                   <height>20</height>
                  </rect>
                 </property>
@@ -197,19 +197,6 @@
                  <string>TextLabel</string>
                 </property>
                </widget>
-              </widget>
-              <widget class="QProgressBar" name="progressBar">
-               <property name="geometry">
-                <rect>
-                 <x>20</x>
-                 <y>320</y>
-                 <width>201</width>
-                 <height>23</height>
-                </rect>
-               </property>
-               <property name="value">
-                <number>24</number>
-               </property>
               </widget>
              </widget>
             </widget>
@@ -298,8 +285,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>672</width>
-                <height>414</height>
+                <width>680</width>
+                <height>416</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -441,13 +428,7 @@ p, li { white-space: pre-wrap; }
                </widget>
               </item>
               <item>
-               <widget class="QFrame" name="sendButtonArea">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
+               <widget class="QWidget" name="sendButtonArea" native="true">
                 <layout class="QVBoxLayout" name="verticalLayout_7">
                  <item>
                   <spacer name="verticalSpacer_3">
@@ -491,7 +472,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>957</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

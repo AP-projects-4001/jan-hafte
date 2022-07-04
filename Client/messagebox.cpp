@@ -1,6 +1,6 @@
 #include "messagebox.h"
 
-MessageBox::MessageBox(QWidget *parent)
+MessageBox::MessageBox(QWidget *parent, bool isSender)
     : QWidget{parent}
 {
     messageFrame = new QFrame(this);
@@ -12,8 +12,13 @@ MessageBox::MessageBox(QWidget *parent)
     horizontalLayout ->setContentsMargins(0,0,0,0);
     horizontalSpacer = new QSpacerItem(40,20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    horizontalLayout->addSpacerItem(horizontalSpacer);
-    horizontalLayout->addWidget(messageFrame);
+    if (isSender) {
+        horizontalLayout->addSpacerItem(horizontalSpacer);
+        horizontalLayout->addWidget(messageFrame);
+    } else {
+        horizontalLayout->addWidget(messageFrame);
+        horizontalLayout->addSpacerItem(horizontalSpacer);
+    }
 
     this->setLayout(horizontalLayout);
 
@@ -26,7 +31,12 @@ MessageBox::MessageBox(QWidget *parent)
 
     messageFrame->setLayout(verticalLayout);
 
-    QString style = "QFrame#frame{ border: 15px solid; border-image: url(:/Graphics/Graphics/Message Bubble.svg) 15 round; padding-right:30px;}";
+    QString style;
+    if(isSender) {
+        style = "QFrame#frame{ border: 15px solid; border-image: url(:/Graphics/Graphics/Message Bubble.svg) 15 round; padding-right:20px;}";
+    } else {
+        style = "QFrame#frame{ border: 15px solid; border-image: url(:/Graphics/Graphics/Message Bubble Other.svg) 15 round; padding-left:20px;}";
+    }
     messageFrame->setStyleSheet(style);
 
     messageText->setWordWrap(true);
