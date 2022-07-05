@@ -8,10 +8,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    LoginWindow* l = new LoginWindow();
-    l->show();
-
-    int res = l->exec();
+    LoginWindow l;
+    int res = l.exec();
 
     MainWindow m;
     m.show();

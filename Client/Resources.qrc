@@ -8,6 +8,13 @@
         <file>Graphics/icons8_paper_plane_64px_3.png</file>
         <file>Graphics/icons8_happy_64px.png</file>
         <file>Graphics/icons8_attach_64px.png</file>
+        <file>Graphics/channel_on.png</file>
+        <file>Graphics/contact_on.png</file>
+        <file>Graphics/group_on.png</file>
+        <file>Graphics/channel_off.png</file>
+        <file>Graphics/contact_off.png</file>
+        <file>Graphics/group_off.png</file>
+        <file>Graphics/icons8_camera_64px.png</file>
     </qresource>
     <qresource prefix="/Fonts">
         <file>Fonts/HelveticaNowDisplay-Black.otf</file>

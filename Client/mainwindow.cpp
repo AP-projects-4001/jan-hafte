@@ -11,13 +11,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(thread,SIGNAL(recievemassage(QJsonObject)),this,SLOT(getdata()));
 
 
-
     // just testing;
     for (int i = 0; i < 10; i++)
         ChatLable *chatLable = new ChatLable(ui->chatListAreaContentSlot);
 
     ui->topInfoBarArea->hide();
-
+    ui->chatLineEdit->clear();
+    //ui->chatViewTypeArea->hide();
 
 }
 
@@ -91,4 +91,12 @@ void MainWindow::createchannel()
     e.writedata(d.toJson());
 }
 
+
+
+void MainWindow::on_createNewChatButton_clicked()
+{
+    CreateChatDialog *createChatDialog = new CreateChatDialog(this);
+    createChatDialog->setWindowFlags(Qt::Popup | Qt::CustomizeWindowHint);
+    createChatDialog->exec();
+}
 

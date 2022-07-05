@@ -99,7 +99,13 @@
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">background:white;</string>
+             <string notr="true">QWidget{ 
+background:white;
+}
+QWidget:pressed {
+background: red;
+
+}</string>
             </property>
            </widget>
           </item>
@@ -255,7 +261,13 @@
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">background:white;</string>
+          <string notr="true">QWidget{ 
+background:white;
+}
+QWidget:pressed {
+background: red;
+
+}</string>
          </property>
         </widget>
        </item>
@@ -446,6 +458,9 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="overwriteMode">
                  <bool>true</bool>
+                </property>
+                <property name="placeholderText">
+                 <string>Type Your Message Here....</string>
                 </property>
                </widget>
               </item>

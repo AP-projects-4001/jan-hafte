@@ -8,7 +8,7 @@ ChatLable::ChatLable(QWidget *parent)
     lastMessageField = new QLabel(this);
 
     setMinimumHeight(64);
-    setStyleSheet(QString("background: red"));
+    setStyleSheet(QString("background: red; pressed{background:black;}"));
     profilePicSlot->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     profilePicSlot->setFixedSize(64,64);
     nameField->move(70, 15);

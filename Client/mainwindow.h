@@ -2,11 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "messagebox.h"
 #include <QList>
+#include <QMessageBox>
+#include "messagebox.h"
 #include "myclient.h"
 #include "mythread.h"
 #include "chatlable.h"
+#include "createchatdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -27,6 +29,8 @@ public:
 
 private slots:
     void on_sendButton_clicked();
+
+    void on_createNewChatButton_clicked();
 
 private:
     Ui::MainWindow *ui;
