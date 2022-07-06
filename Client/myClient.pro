@@ -17,7 +17,9 @@ SOURCES += \
     messagebox.cpp \
     myclient.cpp \
     loginwindow.cpp \
-    mythread.cpp
+    mythread.cpp \
+    settingsdialog.cpp \
+    utilities.cpp
 
 HEADERS += \
     chatlable.h \
@@ -26,13 +28,16 @@ HEADERS += \
     messagebox.h \
     myclient.h \
     loginwindow.h \
-    mythread.h
+    mythread.h \
+    settingsdialog.h \
+    utilities.h
 
 FORMS += \
     createchatdialog.ui \
     mainwindow.ui \
     myclient.ui \
-    loginwindow.ui
+    loginwindow.ui \
+    settingsdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

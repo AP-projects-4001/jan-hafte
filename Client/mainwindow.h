@@ -9,6 +9,9 @@
 #include "mythread.h"
 #include "chatlable.h"
 #include "createchatdialog.h"
+#include "utilities.h"
+#include "settingsdialog.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -31,6 +34,12 @@ private slots:
     void on_sendButton_clicked();
 
     void on_createNewChatButton_clicked();
+
+    void on_settingsButton_clicked();
+
+    void on_showChatViewButton_clicked();
+
+    void on_showGraphViewButton_clicked();
 
 private:
     Ui::MainWindow *ui;

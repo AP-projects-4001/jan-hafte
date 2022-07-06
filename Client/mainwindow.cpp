@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // just testing;
     for (int i = 0; i < 10; i++)
-        ChatLable *chatLable = new ChatLable(ui->chatListAreaContentSlot);
+        ChatLable *chatLable = new ChatLable(ui->chatListAreaContentSlot, false, true);
 
     ui->topInfoBarArea->hide();
     ui->chatLineEdit->clear();
@@ -98,5 +98,32 @@ void MainWindow::on_createNewChatButton_clicked()
     CreateChatDialog *createChatDialog = new CreateChatDialog(this);
     createChatDialog->setWindowFlags(Qt::Popup | Qt::CustomizeWindowHint);
     createChatDialog->exec();
+}
+
+
+void MainWindow::on_settingsButton_clicked()
+{
+    SettingsDialog *settingsDialog = new SettingsDialog(this);
+    settingsDialog->setWindowFlags(Qt::Popup | Qt::CustomizeWindowHint);
+    settingsDialog->setAttribute(Qt::WA_DeleteOnClose);
+    settingsDialog->show();
+}
+
+
+void MainWindow::on_showChatViewButton_clicked()
+{
+    ui->showChatViewButton->setChecked(true);
+    ui->showGraphViewButton->setChecked(false);
+    ui->activeSectionPages->setCurrentIndex(0);
+    ui->listViewPages->setCurrentIndex(0);
+}
+
+
+void MainWindow::on_showGraphViewButton_clicked()
+{
+    ui->showChatViewButton->setChecked(false);
+    ui->showGraphViewButton->setChecked(true);
+    ui->activeSectionPages->setCurrentIndex(1);
+    ui->listViewPages->setCurrentIndex(1);
 }
 
