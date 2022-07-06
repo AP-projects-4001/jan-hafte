@@ -41,6 +41,8 @@ private slots:
 
     void on_showGraphViewButton_clicked();
 
+    void on_searchBar_textChanged(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
     QString chat_type;

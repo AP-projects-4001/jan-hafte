@@ -127,3 +127,9 @@ void MainWindow::on_showGraphViewButton_clicked()
     ui->listViewPages->setCurrentIndex(1);
 }
 
+
+void MainWindow::on_searchBar_textChanged(const QString &arg1)
+{
+
+}
+

@@ -29,12 +29,16 @@ private slots:
 
     void on_SignUpButton_clicked();
 
+
+signals:
+    void loginDone();
+
 private:
     Ui::LoginWindow *ui;
     QMessageBox *message;
 
     int evaluatePasswordStrength(const QString& pass);
-    int checkSignUpInputForError (const QString& userN, const QString& pass, const QString& passR);
+    int checkSignUpInputForError (const QString& userN, const QString& pass, const QString& passR, const QString& email, const QString& phone);
     void clearLoginPage();
     void clearSignUpPage();
     myClient e;

@@ -65,8 +65,10 @@ void LoginWindow::on_SignUpButton_clicked()
     QString inpUsername = ui->lineEdit_UsernameNew->text();
     QString inpPassword = ui->lineEdit_PasswordNew->text();
     QString inpPasswordReenter = ui->lineEdit_PasswordReenter->text();
+    QString inpEmail = ui->lineEdit_EmailNew->text();
+    QString inpPhone = ui->lineEdit_PhoneNew->text();
 
-    int eval = checkSignUpInputForError(inpUsername, inpPassword, inpPasswordReenter);
+    int eval = checkSignUpInputForError(inpUsername, inpPassword, inpPasswordReenter, inpEmail, inpPhone);
     if (eval != 0) {
         clearSignUpPage();
         return;
@@ -92,23 +94,24 @@ void LoginWindow::on_SignUpButton_clicked()
             //show on chat screen
 
         }
-        message->setText("Successfully Signed In");  // delete this
+        message->setText("Successfully Signed In");
         message->show();
+        emit(loginDone());
     }
     else if (status == "not valid"){
-        message->setText("Sign Up Failed");  // delete this
+        message->setText("Sign Up Failed");
         message->show();
     }
     else{
-        message->setText("Error");  // delete this
+        message->setText("Error");
         message->show();
     }
 
 }
 
-int LoginWindow::checkSignUpInputForError(const QString &userN, const QString &pass, const QString &passR)
+int LoginWindow::checkSignUpInputForError(const QString &userN, const QString &pass, const QString &passR, const QString& email, const QString& phone)
 {
-    if(userN.isEmpty() || pass.isEmpty()) {
+    if(userN.isEmpty() || pass.isEmpty() || email.isEmpty() || phone.isEmpty()) {
         message->setText("Please Fill Every Field");
         message->show();
         return - 1;
@@ -181,4 +184,6 @@ void LoginWindow::clearSignUpPage()
     ui->lineEdit_UsernameNew->clear();
     ui->lineEdit_PasswordNew->clear();
     ui->lineEdit_PasswordReenter->clear();
+    ui->lineEdit_EmailNew->clear();
+    ui->lineEdit_PhoneNew->clear();
 }

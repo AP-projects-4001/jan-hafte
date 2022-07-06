@@ -12,6 +12,7 @@ CONFIG += c++17
 SOURCES += \
     chatlable.cpp \
     createchatdialog.cpp \
+    loginhandleutility.cpp \
     main.cpp \
     mainwindow.cpp \
     messagebox.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 HEADERS += \
     chatlable.h \
     createchatdialog.h \
+    loginhandleutility.h \
     mainwindow.h \
     messagebox.h \
     myclient.h \
