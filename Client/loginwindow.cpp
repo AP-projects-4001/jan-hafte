@@ -12,24 +12,26 @@ LoginWindow::LoginWindow(QWidget *parent) :
     message = new QMessageBox(this);
     Utilities::setUpPopUpMessage(message);
 
-    MyThread *thread = new MyThread();
-    connect(thread, SIGNAL(recievemassage(QJsonObject)), this, SLOT(getdata(QJsonObject)));
-    e.connectingToServer();
+    //MyThread *thread = new MyThread();
+    e = new myClient();
+    e->connectingToServer();
+    connect(e, SIGNAL(recievemessage(QJsonObject)), this, SLOT(getdata(QJsonObject)));
+
 }
 
 void LoginWindow::getdata(QJsonObject data)
 {
-    if (data["header"]=="login"){
+    if (data["header"]=="login") {
         QString status = data["status"].toString();
 
-        if (status == "valid"){
-            QJsonArray content = data["content"].toArray();
+        if (status == "valid") {
+//            QJsonArray content = data["content"].toArray();
 
-            for (auto i = content.begin(); i != content.end(); i++){
+//            for (auto i = content.begin(); i != content.end(); i++){
 
-                //show on chat screen
+//                //show on chat screen
 
-            }
+//            }
             message->setText("Successfully Logged In");  // delete this
             message->show();
         }
@@ -43,7 +45,7 @@ void LoginWindow::getdata(QJsonObject data)
         }
     }
 
-    else if (data["header"]=="register"){
+    else if (data["header"] == "register"){
         QString status = data["status"].toString();
 
         if (status == "valid"){
@@ -92,7 +94,7 @@ void LoginWindow::on_LoginButton_clicked()
     login["password"]=inpPassword;
 
     QJsonDocument d(login);
-    e.writedata(d.toJson());
+    e->writedata(d.toJson());
 
 }
 
@@ -132,9 +134,12 @@ void LoginWindow::on_SignUpButton_clicked()
     regist["header"]="register";
     regist["username"]=inpUsername;
     regist["password"]=inpPassword;
+    regist["phone"]=inpPhone;
+    regist["email"]=inpEmail;
 
     QJsonDocument d(regist);
-    e.writedata(d.toJson());
+    e->writedata(d.toJson());
+    
 }
 
 int LoginWindow::checkSignUpInputForError(const QString &userN, const QString &pass, const QString &passR, const QString& email, const QString& phone)

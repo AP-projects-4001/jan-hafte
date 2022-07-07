@@ -47,8 +47,7 @@ void myClient::readingData()
     QByteArray data = clientSocket->readAll();
     QJsonDocument d = QJsonDocument::fromJson(data);
     QJsonObject all = d.object();
-    msg = all;
-
+    emit recievemessage(all);
 }
 
 void myClient::writingData()

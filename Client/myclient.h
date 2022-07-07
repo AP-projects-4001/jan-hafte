@@ -23,6 +23,9 @@ public:
     QJsonObject getMsg();
     ~myClient();
 
+signals:
+    void recievemessage(QJsonObject);
+
 public slots:
     void connectingToServer();
     void readingData();

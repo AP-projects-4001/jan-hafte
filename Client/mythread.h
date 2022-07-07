@@ -26,7 +26,6 @@ public slots:
 
 private:
     QTcpSocket *socket;
-    qintptr socketDescriptor;
 };
 
 #endif // MYTHREAD_H

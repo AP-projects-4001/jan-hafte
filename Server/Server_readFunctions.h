@@ -160,7 +160,7 @@ inline QByteArray register_user(QJsonObject readData)
     newUser["password"] = readData["password"].toString();
     newUser["phone"] = readData["phone"].toString();
     newUser["email"] = readData["email"].toString();
-    newUser["birthday"] = readData["birthday"].toString();
+    //newUser["birthday"] = readData["birthday"].toString();
     newUser["all_chats"] = all_chat;
     newUser["private_chat"] = private_chat;
     newUser["group_chat"] = group_chat;

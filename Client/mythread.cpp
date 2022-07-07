@@ -14,14 +14,7 @@ void MyThread::run()
     qDebug() << " Thread started";
 
     socket = new QTcpSocket();
-
-    // set the ID
-    if (!socket->setSocketDescriptor(this->socketDescriptor))
-    {
-        // something's wrong, we just emit a signal
-        emit error(socket->error());
-        return;
-    }
+    socket->connectToHost("127.0.0.1", 1234);
 
     // connect socket and signal
     // note - Qt::DirectConnection is used because it's multithreaded
@@ -31,7 +24,7 @@ void MyThread::run()
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
 
     // We'll have multiple clients, we want to know which is which
-    qDebug() << socketDescriptor << " Client connected";
+    //qDebug() << socketDescriptor << " Client connected";
 
     // make this thread a loop,
     // thread will stay alive so that signal/slot to function properly
@@ -51,7 +44,7 @@ void MyThread::readyRead()
 
 void MyThread::disconnected()
 {
-    qDebug() << socketDescriptor << " Disconnected";
+    //qDebug() << socketDescriptor << " Disconnected";
 
     socket->deleteLater();
     exit(0);

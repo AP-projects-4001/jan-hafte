@@ -48,7 +48,6 @@ void MyThread::run()
 
 void MyThread::readyRead()
 {
-
     QFile msgFile("./messages.json");
     QFile usrFile("./users.json");
     QFile chtFile("./chats.json");

@@ -17,7 +17,6 @@ class LoginWindow : public QDialog
 
 public:
     explicit LoginWindow(QWidget *parent = nullptr);
-    void getdata(QJsonObject data);
     ~LoginWindow();
 
 private slots:
@@ -30,6 +29,7 @@ private slots:
 
     void on_SignUpButton_clicked();
 
+    void getdata(QJsonObject data);
 
 signals:
     void loginDone();
@@ -42,7 +42,7 @@ private:
     int checkSignUpInputForError (const QString& userN, const QString& pass, const QString& passR, const QString& email, const QString& phone);
     void clearLoginPage();
     void clearSignUpPage();
-    myClient e;
+    myClient *e;
 };
 
 #endif // LOGINWINDOW_H
