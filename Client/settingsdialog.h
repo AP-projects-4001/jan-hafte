@@ -2,6 +2,10 @@
 #define SETTINGSDIALOG_H
 
 #include <QDialog>
+#include <QFileDialog>
+
+#include "changepropertydialog.h"
+#include "utilities.h"
 
 namespace Ui {
 class SettingsDialog;
@@ -14,6 +18,22 @@ class SettingsDialog : public QDialog
 public:
     explicit SettingsDialog(QWidget *parent = nullptr);
     ~SettingsDialog();
+
+private slots:
+    void on_editUsernameButton_clicked();
+
+    void on_editEmailButton_clicked();
+
+    void on_editPhoneButton_clicked();
+
+    void on_addProfileBlacklistButton_clicked();
+
+    void on_addPhoneBlacklistButton_clicked();
+
+public slots:
+    void changeUsername(QString newUsername);
+    void changePhone(QString newUsername);
+    void changeEmail(QString newUsername);
 
 private:
     Ui::SettingsDialog *ui;

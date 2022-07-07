@@ -73,7 +73,7 @@ border: 2px solid #9d9d9d; background: white;
          <string>Create New Chat</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -238,7 +238,7 @@ border-image: url(:/Graphics/Graphics/contact_on.png);
      </property>
      <property name="styleSheet">
       <string notr="true">QStackedWidget{
-background: rgb(245, 245, 245);
+/*background: rgb(245, 245, 245);*/
 border-radius: 15px;
 }</string>
      </property>
@@ -320,8 +320,8 @@ border-radius: 15px;
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>387</width>
-            <height>144</height>
+            <width>63</width>
+            <height>26</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -466,8 +466,8 @@ color: #956cec;
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>387</width>
-            <height>144</height>
+            <width>63</width>
+            <height>26</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_6">

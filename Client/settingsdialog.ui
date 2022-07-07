@@ -34,6 +34,30 @@ font: 500 15pt &quot;Helvetica Now Display&quot;;
 }
 QDialog {
 border: 2px solid #9d9d9d; background: white;
+}
+
+QAbstractButton{
+border-radius: 16px; 
+font: 800 13pt &quot;Helvetica Now Display&quot;; 
+background: #956cec; 
+color:white; 
+}
+QAbstractButton:hover {
+background: #7152b3;
+}
+QAbstractButton:pressed {
+background: white; 
+border: 2px solid #956cec; 
+color: #956cec;
+}
+
+QLineEdit {
+border-radius: 20px;
+border-style: solid;
+border-width: 2px;
+border-color: #9d9d9d;
+padding-left: 10px;
+font: 12pt &quot;Helvetica Now Text&quot;;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -112,6 +136,9 @@ border: 2px solid #9d9d9d; background: white;
          <width>32</width>
          <height>32</height>
         </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
@@ -194,6 +221,9 @@ border-image: url(:/Graphics/Graphics/edit_button.png);
          <height>32</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
 border-image: url(:/Graphics/Graphics/edit_button.png);
@@ -258,6 +288,9 @@ border-image: url(:/Graphics/Graphics/edit_button.png);
          <width>32</width>
          <height>32</height>
         </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
@@ -324,10 +357,12 @@ border-image: url(:/Graphics/Graphics/edit_button.png);
          <height>32</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
 border-image: url(:/Graphics/Graphics/edit_button.png);
-
 }</string>
        </property>
       </widget>
@@ -379,21 +414,11 @@ border-image: url(:/Graphics/Graphics/edit_button.png);
          <height>32</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="styleSheet">
-        <string notr="true">QAbstractButton{
-border-radius: 16px; 
-font: 800 13pt &quot;Helvetica Now Display&quot;; 
-background: #956cec; 
-color:white; 
-}
-QAbstractButton:hover {
-background: #7152b3;
-}
-QAbstractButton:pressed {
-background: white; 
-border: 2px solid #956cec; 
-color: #956cec;
-}</string>
+        <string notr="true"/>
        </property>
        <property name="text">
         <string>Profile pic blacklist</string>
@@ -402,6 +427,64 @@ color: #956cec;
      </item>
      <item>
       <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMinimumSize</enum>
+     </property>
+     <item>
+      <spacer name="horizontalSpacer_12">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="addPhoneBlacklistButton">
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Phone blacklist</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_13">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>

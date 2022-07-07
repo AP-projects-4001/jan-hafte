@@ -10,11 +10,10 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     LoginWindow l;
-    LoginHandleUtility lhu;
-    QObject::connect(&l, SIGNAL(loginDone()) , &lhu, SLOT(OnLoginSuccessful()));
+    LoginHandleUtility lhu(nullptr, &l);
     l.exec();
 
-    if (!lhu.getLoginStat()) return 0;
+    //if (!lhu.getLoginStat()) { delete lhu; return 0; }
 
     MainWindow m;
     m.show();
