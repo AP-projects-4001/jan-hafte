@@ -39,8 +39,8 @@ QJsonObject chatFinder(QString chat_id) {
     QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
     QJsonObject obj = doc.object();
     QJsonArray chats = obj["chats"].toArray();
-    QJsonArray channel = chats[0].toObject()["channel"].toArray();
-    QJsonArray group = chats[1].toObject()["group"].toArray();
+    QJsonArray channel = chats[0].toObject()["channel_chat"].toArray();
+    QJsonArray group = chats[1].toObject()["group_chat"].toArray();
     QJsonArray private_chat = chats[2].toObject()["private_chat"].toArray();
 
     for (int i = 0; i < channel.size(); i++) {
@@ -119,14 +119,48 @@ QJsonObject get_user_chats(QString username) {
     }
 }
 
+// obj can be messages, chats, users / work only for users and messages
+// id type because id for users are username and chats are id
+// workin fine
+void updateGlobalFile(QString filePath, QString obj, QString obj_id, QString id_type,  QString key, QString value) {
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << "Error opening file";
+    }
+    QByteArray data = file.readAll();
+    file.close();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+    QJsonObject jsonObj = jsonDoc.object();
+    QJsonArray jsonArr = jsonObj[obj].toArray();
+    for (int i = 0; i < jsonArr.size(); i++) {
+        QJsonObject obj = jsonArr[i].toObject();
+        if (obj[id_type].toString() == obj_id) {
+            obj[key] = value;
+            jsonArr[i] = obj;
+            break;
+        }
+    }
+    // save new user object
+    QJsonObject finalObject;
+    finalObject[obj] = jsonArr;
+    QJsonDocument newDoc(finalObject);
+    // write into file
+    QFile file2(filePath);
+    file2.open(QIODevice::WriteOnly);
+    file2.resize(0);
+    file2.write(newDoc.toJson());
+    file2.close();
+
+}
+// workin fine
 int foundPlacer(QString chatType)
 {
     int placer = -1;
-    if (chatType == "channel")
+    if (chatType == "channel_chat")
     {
         placer = 0;
     }
-    else if (chatType == "group")
+    else if (chatType == "group_chat")
     {
         placer = 1;
     }
@@ -136,7 +170,7 @@ int foundPlacer(QString chatType)
     }
     return placer;
 }
-
+// workin fine
 int checkValidUsername(QString username, QByteArray jsonDb)
 {
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonDb);
@@ -152,7 +186,7 @@ int checkValidUsername(QString username, QByteArray jsonDb)
     }
     return 1;
 }
-
+// workin fine
 int checkValidEmail(QString email, QByteArray jsonDb)
 {
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonDb);
@@ -168,7 +202,7 @@ int checkValidEmail(QString email, QByteArray jsonDb)
     }
     return 1;
 }
-
+// workin fine
 int checkValidPhoneNumber(QString phoneNumber, QByteArray jsonDb)
 {
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonDb);
@@ -177,14 +211,14 @@ int checkValidPhoneNumber(QString phoneNumber, QByteArray jsonDb)
     for (int i = 0; i < jsonArr.size(); i++)
     {
         QJsonObject user = jsonArr[i].toObject();
-        if (user["phone_number"].toString() == phoneNumber)
+        if (!QString::compare(user["phone_number"].toString(), phoneNumber))
         {
             return 0;
         }
     }
     return 1;
 }
-
+// workin fine
 void update_chats(QString username, QString chatType, QString value)
 {
     QFile file(USERS_PATH);
@@ -272,7 +306,7 @@ void update_messages_in_chatDB(QString chatType, QString chat_id, QString msg_id
     }
     return;
 }
-
+// workin fine
 inline QByteArray register_user(QJsonObject readData)
 {
     QFile file(USERS_PATH);
@@ -282,7 +316,7 @@ inline QByteArray register_user(QJsonObject readData)
     }
     QJsonObject response;
     QByteArray data = file.readAll();
-    if (checkValidUsername(readData["username"].toString(), data) == 0 && checkValidEmail(readData["email"].toString(), data) == 0 && checkValidPhoneNumber(readData["phone_number"].toString(), data) == 0)
+    if (checkValidUsername(readData["username"].toString(), data) == 0 || checkValidEmail(readData["email"].toString(), data) == 0 || checkValidPhoneNumber(readData["phone"].toString(), data) == 0)
     {
         response["status"] = "not valid";
         return QJsonDocument(response).toJson();
@@ -312,55 +346,7 @@ inline QByteArray register_user(QJsonObject readData)
     response["header"] = "register";
     return QJsonDocument(response).toJson();
 }
-
-inline QByteArray login_user(QJsonObject readData)
-{
-    int flag = 0;
-    QJsonObject response;
-    QFile file(USERS_PATH);
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        qDebug() << "Error opening file";
-    }
-    QByteArray data = file.readAll();
-    if (checkValidUsername(readData["username"].toString(), data) == 1)
-    {
-        response["status"] = "not valid";
-        return QJsonDocument(response).toJson();
-    }
-    QJsonDocument mydoc = QJsonDocument::fromJson(data);
-    QJsonObject myobj = mydoc.object();
-    QJsonArray content_array;
-    QJsonArray myarr = myobj["users"].toArray();
-    vector<QString> all_chats_vector;
-    for (int i = 0; i < myarr.size(); i++)
-    {
-        QJsonObject user = myarr[i].toObject();
-        if (user["username"].toString() == readData["username"].toString() && user["password"].toString() == readData["password"].toString())
-        {
-            foreach(QJsonValue x, user["all_chats"].toArray())
-            {
-                all_chats_vector.push_back(x.toString());
-            }
-            // all_chat_vector contains all chat id that user has
-
-            flag = 1;
-        }
-    }
-    if (flag == 1)
-    {
-        response["status"] = "valid";
-        response["header"] = "login";
-        response["content"] = get_user_chats(readData["username"].toString()); // TYPE HERE
-    }
-    else
-    {
-        response["status"] = "not valid";
-        response["header"] = "login";
-    }
-    return QJsonDocument(response).toJson();
-}
-
+// workin fine
 inline QByteArray create_chat(QJsonObject readData, QString chatType)
 {
     // when I write this function, I understand it but now I cant
@@ -395,11 +381,13 @@ inline QByteArray create_chat(QJsonObject readData, QString chatType)
     newChat["creator"] = readData["creator"].toString();
     newChat["participants"] = readData["participants"].toArray();
     newChat["messages"] = QJsonArray();
-    if (chatType == "channel" || chatType == "group") {
+    if (chatType == "channel_chat" || chatType == "group_chat") {
         newChat["name"] = readData["name"].toString();
+        newChat["profile"] = readData["profile"].toString();
     }
-    if (chatType == "private") {
-        newChat["reciever"] = userFinder(readData["participants"][0].toString());
+    if (chatType == "private_chat") {
+        QString myUserId = readData["participants"].toArray()[0].toString();
+        newChat["reciever"] = myUserId;
     }
     tmp_array.append(newChat);
     tmp[chatType] = tmp_array;
@@ -412,6 +400,12 @@ inline QByteArray create_chat(QJsonObject readData, QString chatType)
     chatFile.close();
     update_chats(readData["creator"].toString(), chatType, newChat["id"].toString());
     update_chats(readData["creator"].toString(), "all_chats", newChat["id"].toString());
+    for (int i=0; i<readData["participants"].toArray().size(); i++) {
+        if (readData["participants"].toArray()[i].toString() != readData["creator"].toString()) {
+            update_chats(readData["participants"].toArray()[i].toString(), "all_chats", newChat["id"].toString());
+            update_chats(readData["participants"].toArray()[i].toString(), chatType, newChat["id"].toString());
+        }
+    }
     QJsonObject finalTemp;
     finalTemp["status"] = "done";
     return QJsonDocument(finalTemp).toJson();
@@ -494,10 +488,62 @@ inline QByteArray get_messages(QJsonObject readData)
     QJsonDocument newDoc(messages);
     return newDoc.toJson();
 }
+// workin fine
+inline QByteArray login_user(QJsonObject readData)
+{
+    int flag = 0;
+    QJsonObject response;
+    QFile file(USERS_PATH);
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Error opening file";
+    }
+    QByteArray data = file.readAll();
+    if (checkValidUsername(readData["username"].toString(), data) == 1)
+    {
+        response["status"] = "not valid";
+        return QJsonDocument(response).toJson();
+    }
+    QJsonDocument mydoc = QJsonDocument::fromJson(data);
+    QJsonObject myobj = mydoc.object();
+    QJsonArray content_array;
+    QJsonArray myarr = myobj["users"].toArray();
+    vector<QString> all_chats_vector;
+    /*QJsonObject readData2;
+    QJsonArray test;                           |||||   FOR TESTING CREATE CHAT |||||
+    test.append("mmd");
+    readData2["chat_type"] = "private_chat";
+    readData2["creator"] = "atid";
+    readData2["participants"] = test;
+    create_chat(readData2, "private_chat");*/
+    for (int i = 0; i < myarr.size(); i++)
+    {
+        QJsonObject user = myarr[i].toObject();
+        if (user["username"].toString() == readData["username"].toString() && user["password"].toString() == readData["password"].toString())
+        {
+            foreach(QJsonValue x, user["all_chats"].toArray())
+            {
+                all_chats_vector.push_back(x.toString());
+            }
+            // all_chat_vector contains all chat id that user has
+
+            flag = 1;
+        }
+    }
+    if (flag == 1)
+    {
+        response["status"] = "valid";
+        response["header"] = "login";
+        response["content"] = get_user_chats(readData["username"].toString()); // TYPE HERE
+    }
+    else
+    {
+        response["status"] = "not valid";
+        response["header"] = "login";
+    }
+    return QJsonDocument(response).toJson();
+}
 
 
 
-
-
-// TODO: add name for group & channnel \
-         add profile photo
+// TODO: change username / email / phoneNumber

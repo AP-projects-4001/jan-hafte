@@ -62,8 +62,8 @@ void MyThread::readyRead()
     if (chtFile.size() < 7)
     {
         QJsonObject obj, channel, group, private_chat;
-        channel["channel"] = QJsonArray();
-        group["group"] = QJsonArray();
+        channel["channel_chat"] = QJsonArray();
+        group["group_chat"] = QJsonArray();
         private_chat["private_chat"] = QJsonArray();
         QJsonArray chatArray;
         chatArray.append(channel);
@@ -100,7 +100,7 @@ void MyThread::readyRead()
         socket->write(response);
     }
     else if (header == "create_chat") // {header:create_chat, \
-                                         chatType: <group/channel/private_chat>, \
+                                         chatType: <group_chat/channel_chat/private_chat>, \
                                          creator: <creator_username>, \
                                          participants: QJsonArray(QStrings)}
     {
