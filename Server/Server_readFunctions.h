@@ -319,6 +319,7 @@ inline QByteArray register_user(QJsonObject readData)
     if (checkValidUsername(readData["username"].toString(), data) == 0 || checkValidEmail(readData["email"].toString(), data) == 0 || checkValidPhoneNumber(readData["phone"].toString(), data) == 0)
     {
         response["status"] = "not valid";
+        response["header"] = "register";
         return QJsonDocument(response).toJson();
     }
     QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
@@ -502,6 +503,7 @@ inline QByteArray login_user(QJsonObject readData)
     if (checkValidUsername(readData["username"].toString(), data) == 1)
     {
         response["status"] = "not valid";
+        response["header"] = "login";
         return QJsonDocument(response).toJson();
     }
     QJsonDocument mydoc = QJsonDocument::fromJson(data);
