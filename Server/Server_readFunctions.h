@@ -489,6 +489,29 @@ inline QByteArray get_messages(QJsonObject readData)
     return newDoc.toJson();
 }
 // workin fine
+inline QByteArray change_data(QJsonObject readData) {
+    QJsonObject response;
+    if (readData["key"] == "username") {
+        updateGlobalFile(USERS_PATH, "users", readData["old_username"].toString(), "username", "username", readData["value"].toString());
+        response["status"] = "OK";
+        response["username"] = readData["value"].toString();
+    }
+    else if (readData["key"] == "email") {
+        updateGlobalFile(USERS_PATH, "users", readData["old_username"].toString(), "username", "email", readData["value"].toString());
+        response["status"] = "OK";
+        response["email"] = readData["value"].toString();
+    }
+    else if (readData["key"] == "phone") {
+        updateGlobalFile(USERS_PATH, "users", readData["old_username"].toString(), "username", "phone", readData["value"].toString());
+        response["status"] = "OK";
+        response["phone"] = readData["value"].toString();
+    }
+    else {
+        response["status"] = "NOK";
+    }
+    return QJsonDocument(response).toJson();
+}
+// workin fine
 inline QByteArray login_user(QJsonObject readData)
 {
     int flag = 0;
@@ -516,6 +539,12 @@ inline QByteArray login_user(QJsonObject readData)
     readData2["creator"] = "atid";
     readData2["participants"] = test;
     create_chat(readData2, "private_chat");*/
+
+    /*QJsonObject readData2;
+    readData["old_username"] = "atid";
+    readData["key"] = "username";
+    readData["value"] = "atid2";
+    change_data(readData);*/
     for (int i = 0; i < myarr.size(); i++)
     {
         QJsonObject user = myarr[i].toObject();
@@ -543,7 +572,5 @@ inline QByteArray login_user(QJsonObject readData)
     }
     return QJsonDocument(response).toJson();
 }
-
-
 
 // TODO: change username / email / phoneNumber
