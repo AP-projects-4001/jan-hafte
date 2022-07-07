@@ -131,6 +131,14 @@ void MyThread::readyRead()
         QByteArray response = get_messages(readData);
         socket->write(response);
     }
+    else if (header == "get_user_chat") { // {header:get_user_chat, \
+                                          username: <username>}, \
+    }
+        QJsonObject response = get_user_chats(readData["username"].toString());
+        QJsonDocument doc(response);
+        QByteArray response_bytes = doc.toJson();
+        socket->write(response_bytes);
+    }
 }
 
 // will write on server side window
