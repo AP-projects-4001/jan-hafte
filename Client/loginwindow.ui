@@ -711,6 +711,9 @@ padding-left: 5px;</string>
              <property name="styleSheet">
               <string notr="true"/>
              </property>
+             <property name="inputMask">
+              <string/>
+             </property>
              <property name="text">
               <string/>
              </property>

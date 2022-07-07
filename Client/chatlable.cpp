@@ -1,7 +1,7 @@
 #include "chatlable.h"
 
-ChatLable::ChatLable(QWidget *parent, bool lastMessage, bool isCheckable)
-    : QFrame{parent} , showsLastMessage(lastMessage) , isCheckable(isCheckable)
+ChatLable::ChatLable(QWidget *parent, bool lastMessage, bool isCheckable, chatData data)
+    : QFrame{parent} , showsLastMessage(lastMessage) , isCheckable(isCheckable), data(data)
 {
     connect(this, SIGNAL(click()), this, SLOT(OnLableClick()));
     connect(this, SIGNAL(release()), this, SLOT(OnLableRelease()));
@@ -32,12 +32,12 @@ ChatLable::ChatLable(QWidget *parent, bool lastMessage, bool isCheckable)
 
 void ChatLable::mousePressEvent(QMouseEvent *me)
 {
-        if (me->button() == Qt::LeftButton) {
-            emit click();
-            me->accept();
-            return;
-        }
-        QFrame::mousePressEvent(me);
+    if (me->button() == Qt::LeftButton) {
+        emit click();
+        me->accept();
+        return;
+    }
+    QFrame::mousePressEvent(me);
 }
 
 void ChatLable::mouseReleaseEvent(QMouseEvent *me)

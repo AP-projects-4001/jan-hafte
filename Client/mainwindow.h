@@ -51,8 +51,13 @@ private:
     QString user_unique_id;
     myClient *e;
     QJsonObject all;
+
+
     QList <MessageBox*> listOfMessages;
     QList <ChatLable> listOfChats;
+
+
+
 };
 
 #endif // MAINWINDOW_H

@@ -26,6 +26,7 @@ SOURCES += \
 
 HEADERS += \
     changepropertydialog.h \
+    chatData.h \
     chatlable.h \
     createchatdialog.h \
     graphview.h \

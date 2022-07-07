@@ -6,12 +6,13 @@
 #include <QLayout>
 #include <QMouseEvent>
 #include <QStyle>
+#include "chatData.h"
 
 class ChatLable : public QFrame
 {
     Q_OBJECT
 public:
-    explicit ChatLable(QWidget *parent = nullptr, bool lastMessage = true, bool isCheckable = false);
+    explicit ChatLable(QWidget *parent = nullptr, bool lastMessage = true, bool isCheckable = false, chatData data = chatData());
     void mousePressEvent(QMouseEvent *me);
     void mouseReleaseEvent(QMouseEvent *me);
     void setChecked(bool val);
@@ -30,10 +31,11 @@ private:
     QLabel *nameField;
     QLabel *lastMessageField;
     QLabel *profilePicSlot;
-
     bool showsLastMessage = true;
     bool isCheckable = false;
     bool isChecked = false;
+
+    chatData data;
 };
 
 #endif // CHATLABLE_H

@@ -147,8 +147,24 @@ int LoginWindow::checkSignUpInputForError(const QString &userN, const QString &p
         return - 1;
     }
 
+    QString pattern = "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b";
+    QRegularExpression re(pattern, QRegularExpression::CaseInsensitiveOption);
+    QRegularExpressionMatch match = re.match(email);
+
+    if(!match.hasMatch()) {
+        message->setText("Invalid Email Address");
+        message->show();
+        return -1;
+    }
+
+    if(phone.contains(QRegularExpression("\\D"))) {
+        message->setText("Phone number invalid. Only use numbers");
+        message->show();
+        return -1;
+    }
+
     if(userN.contains(QRegularExpression("\\W"))) {
-        message->setText("Username Invalid.\nOnly letters, numbers and underscore");
+        message->setText("Username Invalid.Only letters, numbers and underscore");
         message->show();
         return -1;
     }
@@ -158,6 +174,7 @@ int LoginWindow::checkSignUpInputForError(const QString &userN, const QString &p
         message->show();
         return -1;
     }
+
 
     switch (evaluatePasswordStrength(pass)) {
     case -1:
