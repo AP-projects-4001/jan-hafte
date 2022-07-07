@@ -10,12 +10,7 @@ LoginWindow::LoginWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->LoginButton->setFocus();
     message = new QMessageBox(this);
-    message->setWindowFlags (Qt::Popup | Qt::CustomizeWindowHint);
-    message->setStyleSheet("QAbstractButton{border-radius: 15px; font: 800 14pt \"Helvetica Now Display\"; background: #956cec; color:white; min-width:75px; min-height:30px; transition: border-width 2s;}"
-                           "QAbstractButton:hover {background: #7152b3;}"
-                           "QAbstractButton:pressed {background: white; border: 2px solid #956cec; color: #956cec;}"
-                           "QLabel {font: 500 13pt \"Helvetica Now Display\"; margin-top:1ex; padding-right:25px; min-height:25px;}"
-                           "QDialog {border: 2px solid #9d9d9d; background: white;}");
+    Utilities::setUpPopUpMessage(message);
 
     MyThread *thread = new MyThread();
     connect(thread, SIGNAL(recievemassage(QJsonObject)), this, SLOT(getdata(QJsonObject)));
@@ -123,8 +118,10 @@ void LoginWindow::on_SignUpButton_clicked()
     QString inpUsername = ui->lineEdit_UsernameNew->text();
     QString inpPassword = ui->lineEdit_PasswordNew->text();
     QString inpPasswordReenter = ui->lineEdit_PasswordReenter->text();
+    QString inpEmail = ui->lineEdit_EmailNew->text();
+    QString inpPhone = ui->lineEdit_PhoneNew->text();
 
-    int eval = checkSignUpInputForError(inpUsername, inpPassword, inpPasswordReenter);
+    int eval = checkSignUpInputForError(inpUsername, inpPassword, inpPasswordReenter, inpEmail, inpPhone);
     if (eval != 0) {
         clearSignUpPage();
         return;
@@ -138,12 +135,11 @@ void LoginWindow::on_SignUpButton_clicked()
 
     QJsonDocument d(regist);
     e.writedata(d.toJson());
-
 }
 
-int LoginWindow::checkSignUpInputForError(const QString &userN, const QString &pass, const QString &passR)
+int LoginWindow::checkSignUpInputForError(const QString &userN, const QString &pass, const QString &passR, const QString& email, const QString& phone)
 {
-    if(userN.isEmpty() || pass.isEmpty()) {
+    if(userN.isEmpty() || pass.isEmpty() || email.isEmpty() || phone.isEmpty()) {
         message->setText("Please Fill Every Field");
         message->show();
         return - 1;
@@ -216,4 +212,6 @@ void LoginWindow::clearSignUpPage()
     ui->lineEdit_UsernameNew->clear();
     ui->lineEdit_PasswordNew->clear();
     ui->lineEdit_PasswordReenter->clear();
+    ui->lineEdit_EmailNew->clear();
+    ui->lineEdit_PhoneNew->clear();
 }

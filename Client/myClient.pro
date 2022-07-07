@@ -12,27 +12,34 @@ CONFIG += c++17
 SOURCES += \
     chatlable.cpp \
     createchatdialog.cpp \
+    loginhandleutility.cpp \
     main.cpp \
     mainwindow.cpp \
     messagebox.cpp \
     myclient.cpp \
     loginwindow.cpp \
-    mythread.cpp
+    mythread.cpp \
+    settingsdialog.cpp \
+    utilities.cpp
 
 HEADERS += \
     chatlable.h \
     createchatdialog.h \
+    loginhandleutility.h \
     mainwindow.h \
     messagebox.h \
     myclient.h \
     loginwindow.h \
-    mythread.h
+    mythread.h \
+    settingsdialog.h \
+    utilities.h
 
 FORMS += \
     createchatdialog.ui \
     mainwindow.ui \
     myclient.ui \
-    loginwindow.ui
+    loginwindow.ui \
+    settingsdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

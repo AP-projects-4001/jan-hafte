@@ -62,7 +62,7 @@ void CreateChatDialog::on_channelProfilePicButton_clicked()
     QFileDialog *dialog = new QFileDialog(this);
     dialog->setWindowFlags(Qt::Popup);
     dialog->setFileMode(QFileDialog::ExistingFile);
-    dialog->setNameFilter(tr("Images (*.png *.xpm *.jpg)"));
+    dialog->setNameFilter(tr("Images (*.png *.jpeg *.jpg *.gif)"));
 
 
     if(dialog->exec()) {

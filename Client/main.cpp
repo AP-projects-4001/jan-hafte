@@ -3,13 +3,18 @@
 
 #include <QApplication>
 #include <QDebug>
+#include "loginhandleutility.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
     LoginWindow l;
-    int res = l.exec();
+    LoginHandleUtility lhu;
+    QObject::connect(&l, SIGNAL(loginDone()) , &lhu, SLOT(OnLoginSuccessful()));
+    l.exec();
+
+    if (!lhu.getLoginStat()) return 0;
 
     MainWindow m;
     m.show();

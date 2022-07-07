@@ -15,6 +15,14 @@
         <file>Graphics/contact_off.png</file>
         <file>Graphics/group_off.png</file>
         <file>Graphics/icons8_camera_64px.png</file>
+        <file>Graphics/graph_off.png</file>
+        <file>Graphics/graph_on.png</file>
+        <file>Graphics/icons8_test_account_64px.png</file>
+        <file>Graphics/messaging_off.png</file>
+        <file>Graphics/messaging_on.png</file>
+        <file>Graphics/kseniya-lapteva-Z0IkLSHprtU-unsplash.jpg</file>
+        <file>Graphics/edit_button.png</file>
+        <file>Graphics/keanu.jpg</file>
     </qresource>
     <qresource prefix="/Fonts">
         <file>Fonts/HelveticaNowDisplay-Black.otf</file>
