@@ -33,7 +33,7 @@ ChatLable::ChatLable(QWidget *parent, bool lastMessage, bool isCheckable)
 void ChatLable::mousePressEvent(QMouseEvent *me)
 {
         if (me->button() == Qt::LeftButton) {
-            emit(click());
+            emit click();
             me->accept();
             return;
         }
@@ -42,7 +42,7 @@ void ChatLable::mousePressEvent(QMouseEvent *me)
 
 void ChatLable::mouseReleaseEvent(QMouseEvent *me)
 {
-    emit(release());
+    emit release();
 }
 
 void ChatLable::OnLableClick()

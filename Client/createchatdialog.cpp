@@ -64,10 +64,10 @@ void CreateChatDialog::on_channelProfilePicButton_clicked()
     dialog->setFileMode(QFileDialog::ExistingFile);
     dialog->setNameFilter(tr("Images (*.png *.jpeg *.jpg *.gif)"));
 
-
     if(dialog->exec()) {
         QString path = dialog->selectedFiles()[0];
-        ui->channelProfilePicButton->setStyleSheet(QString("border-image: url(%1)").arg(path));
+        QImage loadedImage(path);
+        ui->channelProfilePicButton->setIcon(QIcon(Utilities::maskImage(loadedImage)));
     }
 }
 

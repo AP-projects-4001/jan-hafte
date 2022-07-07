@@ -24,5 +24,5 @@ void ChangePropertyDialog::setSubmitButton(QPushButton *button)
 
 void ChangePropertyDialog::submitButtonClicked()
 {
-    emit(submit(propertyLineEdit->text()));
+    emit submit(propertyLineEdit->text());
 }

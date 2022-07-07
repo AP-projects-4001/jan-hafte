@@ -6,6 +6,9 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui(new Ui::SettingsDialog)
 {
     ui->setupUi(this);
+
+    QImage pic = ui->profilePic->pixmap().toImage();
+    ui->profilePic->setPixmap(Utilities::maskImage(pic, 128));
 }
 
 SettingsDialog::~SettingsDialog()

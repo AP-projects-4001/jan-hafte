@@ -13,6 +13,7 @@ SOURCES += \
     changepropertydialog.cpp \
     chatlable.cpp \
     createchatdialog.cpp \
+    graphview.cpp \
     loginhandleutility.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     changepropertydialog.h \
     chatlable.h \
     createchatdialog.h \
+    graphview.h \
     loginhandleutility.h \
     mainwindow.h \
     messagebox.h \

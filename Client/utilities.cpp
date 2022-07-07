@@ -32,3 +32,30 @@ void Utilities::setUpTextEditDialog(ChangePropertyDialog *main, QLabel *label, Q
     button->setGeometry(25,100,250,40);
     main->setSubmitButton(button);
 }
+
+QPixmap Utilities::maskImage(QImage &image, int size)
+{
+    image.convertToFormat(QImage::Format_ARGB32);
+
+    int imgsize =  std::min(image.width(), image.height());
+    QRect rec((image.width() - imgsize) / 2,(image.height() - imgsize) / 2,imgsize,imgsize);
+
+    image = image.copy(rec);
+    QImage out_img = QImage(imgsize, imgsize, QImage::Format_ARGB32);
+    out_img.fill(Qt::transparent);
+
+    QBrush brush(image);
+    QPainter painter(&out_img);
+    painter.setBrush(brush);
+    painter.setPen(Qt::NoPen);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.drawEllipse(0, 0, imgsize, imgsize);
+    painter.end();
+
+    qreal pr = QWindow().devicePixelRatio();
+    QPixmap pm = QPixmap::fromImage(out_img);
+    size *= pr;
+    pm = pm.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+    return pm;
+}

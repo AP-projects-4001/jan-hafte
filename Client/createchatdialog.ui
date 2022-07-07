@@ -243,7 +243,7 @@ border-radius: 15px;
 }</string>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="channelPage">
       <property name="sizePolicy">
@@ -285,7 +285,24 @@ border-radius: 15px;
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
            <property name="styleSheet">
-            <string notr="true">border-image: url(:/Graphics/Graphics/icons8_camera_64px.png)</string>
+            <string notr="true">QPushButton {
+background:white;
+border:none;
+}
+</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources.qrc">
+             <normaloff>:/Graphics/Graphics/icons8_camera_64px.png</normaloff>:/Graphics/Graphics/icons8_camera_64px.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -320,8 +337,8 @@ border-radius: 15px;
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>63</width>
-            <height>26</height>
+            <width>387</width>
+            <height>144</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -431,7 +448,28 @@ color: #956cec;
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
            <property name="styleSheet">
-            <string notr="true">border-image: url(:/Graphics/Graphics/icons8_camera_64px.png)</string>
+            <string notr="true">QPushButton {
+background:white;
+}
+QPushButton:hover {
+background:white;
+}
+QPushButton:pressed {
+background:white;
+}</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources.qrc">
+             <normaloff>:/Graphics/Graphics/icons8_camera_64px.png</normaloff>:/Graphics/Graphics/icons8_camera_64px.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -466,8 +504,8 @@ color: #956cec;
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>63</width>
-            <height>26</height>
+            <width>387</width>
+            <height>144</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -597,6 +635,8 @@ color: #956cec;
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="Resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

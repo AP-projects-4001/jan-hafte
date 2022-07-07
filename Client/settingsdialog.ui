@@ -62,7 +62,7 @@ font: 12pt &quot;Helvetica Now Text&quot;;
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>16</number>
+    <number>12</number>
    </property>
    <property name="topMargin">
     <number>25</number>
@@ -114,6 +114,12 @@ font: 12pt &quot;Helvetica Now Text&quot;;
          <width>128</width>
          <height>128</height>
         </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+border-radius: 64px;
+	border: 3px solid #956cec;
+}</string>
        </property>
        <property name="pixmap">
         <pixmap resource="Resources.qrc">:/Graphics/Graphics/keanu.jpg</pixmap>
@@ -513,6 +519,12 @@ border-image: url(:/Graphics/Graphics/edit_button.png);
    </item>
    <item>
     <widget class="QLabel" name="label">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>25</height>
+      </size>
+     </property>
      <property name="styleSheet">
       <string notr="true">font: 400 10pt;</string>
      </property>

@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QFileDialog>
+#include "utilities.h"
 
 namespace Ui {
 class CreateChatDialog;
