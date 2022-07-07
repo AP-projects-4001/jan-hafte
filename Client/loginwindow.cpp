@@ -12,7 +12,60 @@ LoginWindow::LoginWindow(QWidget *parent) :
     message = new QMessageBox(this);
     Utilities::setUpPopUpMessage(message);
 
+    MyThread *thread = new MyThread();
+    connect(thread, SIGNAL(recievemassage(QJsonObject)), this, SLOT(getdata(QJsonObject)));
     e.connectingToServer();
+}
+
+void LoginWindow::getdata(QJsonObject data)
+{
+    if (data["header"]=="login"){
+        QString status = data["status"].toString();
+
+        if (status == "valid"){
+            QJsonArray content = data["content"].toArray();
+
+            for (auto i = content.begin(); i != content.end(); i++){
+
+                //show on chat screen
+
+            }
+            message->setText("Successfully Logged In");  // delete this
+            message->show();
+        }
+        else if (status == "not valid"){
+            message->setText("Log In Failed");  // delete this
+            message->show();
+        }
+        else{
+            message->setText("Error");  // delete this
+            message->show();
+        }
+    }
+
+    else if (data["header"]=="register"){
+        QString status = data["status"].toString();
+
+        if (status == "valid"){
+            QJsonArray content = data["content"].toArray();
+
+            for (auto i = content.begin(); i != content.end(); i++){
+
+                //show on chat screen
+
+            }
+            message->setText("Successfully Signed In");  // delete this
+            message->show();
+        }
+        else if (status == "not valid"){
+            message->setText("Sign Up Failed");  // delete this
+            message->show();
+        }
+        else{
+            message->setText("Error");  // delete this
+            message->show();
+        }
+    }
 }
 
 LoginWindow::~LoginWindow()
@@ -82,31 +135,6 @@ void LoginWindow::on_SignUpButton_clicked()
 
     QJsonDocument d(regist);
     e.writedata(d.toJson());
-    e.getSocket()->waitForReadyRead(-1);
-    QJsonObject data = e.getMsg();
-    QString status = data["status"].toString();
-
-    if (status == "valid"){
-        QJsonArray content = data["content"].toArray();
-
-        for (auto i = content.begin(); i != content.end(); i++){
-
-            //show on chat screen
-
-        }
-        message->setText("Successfully Signed In");
-        message->show();
-        emit(loginDone());
-    }
-    else if (status == "not valid"){
-        message->setText("Sign Up Failed");
-        message->show();
-    }
-    else{
-        message->setText("Error");
-        message->show();
-    }
-
 }
 
 int LoginWindow::checkSignUpInputForError(const QString &userN, const QString &pass, const QString &passR, const QString& email, const QString& phone)
