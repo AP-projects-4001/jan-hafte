@@ -139,6 +139,13 @@ void MyThread::readyRead()
         QByteArray response_bytes = doc.toJson();
         socket->write(response_bytes);
     }
+    else if (header == "change_data") { // {header:"change_data" \
+                                            old_username: <oldUsername> \
+                                            key: username/email/phone \
+                                            value: <new_value> }
+        QByteArray response = change_data(readData);
+        socket->write(response);
+    }
 }
 
 // will write on server side window
