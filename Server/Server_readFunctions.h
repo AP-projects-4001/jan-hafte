@@ -15,6 +15,93 @@ QString USERS_PATH = "./users.json";
 QString CHAT_PATH = "./chats.json";
 QString MESSAGES_PATH = "./messages.json";
 
+QJsonObject userFinder(QString user_id) {
+    QFile file(USERS_PATH);
+    file.open(QIODevice::ReadOnly);
+    QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+    file.close();
+    QJsonObject obj = doc.object();
+    QJsonArray users = obj["users"].toArray();
+    for (int i = 0; i < users.size(); i++) {
+        QJsonObject user = users[i].toObject();
+        if (user["id"].toString() == user_id) {
+            return user;
+        }
+    }
+    return QJsonObject();
+}
+
+QJsonObject chatFinder(QString chat_id) {
+    QJsonObject chat;
+    QFile file(CHAT_PATH);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return chat;
+    QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+    QJsonObject obj = doc.object();
+    QJsonArray chats = obj["chats"].toArray();
+    QJsonArray channel = chats[0].toObject()["channel"].toArray();
+    QJsonArray group = chats[1].toObject()["group"].toArray();
+    QJsonArray private_chat = chats[2].toObject()["private_chat"].toArray();
+
+    for (int i = 0; i < channel.size(); i++) {
+        QJsonObject chat = channel[i].toObject();
+        if (chat["id"].toString() == chat_id) {
+            return chat;
+        }
+    }
+    for (int i = 0; i < group.size(); i++) {
+        QJsonObject chat = group[i].toObject();
+        if (chat["id"].toString() == chat_id) {
+            return chat;
+        }
+    }
+    for (int i = 0; i < private_chat.size(); i++) {
+        QJsonObject chat = private_chat[i].toObject();
+        if (chat["id"].toString() == chat_id) {
+            return chat;
+        }
+    }
+    /*
+    return "";*/
+    return chat;
+}
+
+QJsonObject get_user_chats(QString username) {
+    // get username
+    QFile file(USERS_PATH);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << "Error opening file";
+    }
+    QByteArray data = file.readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+    QJsonObject jsonObj = jsonDoc.object();
+    QJsonArray jsonArr = jsonObj["users"].toArray();
+    QJsonObject chatForClient;
+    QJsonArray chatArrayForClient;
+    for (int i = 0; i < jsonArr.size(); i++) {
+        QJsonObject user = jsonArr[i].toObject();
+        if (user["username"] == username) {
+            QJsonArray chats;
+            QJsonArray all_chats = user["all_chats"].toArray();
+            for (int i = 0; i < all_chats.size(); i++) {
+                QJsonObject chat = all_chats[i].toObject();
+                QJsonObject founded_chat = chatFinder(chat["id"].toString());
+                QJsonArray participants = founded_chat["participants"].toArray();
+                chatForClient["id"] = chat["id"].toString();
+                chatForClient["last_message"] = chat["last_message"].toString();
+                chatForClient["last_message_time"] = chat["last_message_time"].toString();
+                chatForClient["creator"] = founded_chat["creator"].toString();
+                chatForClient["name"] = userFinder(participants[0].toString())["username"].toString();
+                chatArrayForClient.append(chatForClient);
+            }
+            QJsonObject finalObject;
+            finalObject["chats"] = chatArrayForClient;
+            QJsonDocument newDoc(finalObject);
+            return newDoc.object();
+        }
+    }
+}
+
 int foundPlacer(QString chatType)
 {
     int placer = -1;
@@ -165,6 +252,7 @@ inline QByteArray register_user(QJsonObject readData)
     newUser["private_chat"] = private_chat;
     newUser["group_chat"] = group_chat;
     newUser["channel_chat"] = channel_chat;
+    newUser["profile"] = "";
     jsonArr.append(newUser);
     jsonObj["users"] = jsonArr;
     QJsonDocument newDoc(jsonObj);
@@ -172,6 +260,7 @@ inline QByteArray register_user(QJsonObject readData)
     file.write(newDoc.toJson());
     file.close();
     response["status"] = "valid";
+    response["header"] = "register";
     return QJsonDocument(response).toJson();
 }
 
@@ -200,7 +289,7 @@ inline QByteArray login_user(QJsonObject readData)
         QJsonObject user = myarr[i].toObject();
         if (user["username"].toString() == readData["username"].toString() && user["password"].toString() == readData["password"].toString())
         {
-            foreach (QJsonValue x, user["all_chats"].toArray())
+            foreach(QJsonValue x, user["all_chats"].toArray())
             {
                 all_chats_vector.push_back(x.toString());
             }
@@ -212,11 +301,13 @@ inline QByteArray login_user(QJsonObject readData)
     if (flag == 1)
     {
         response["status"] = "valid";
-        response["content"] = content_array; // TYPE HERE
+        response["header"] = "login";
+        response["content"] = get_user_chats(readData["username"].toString()); // TYPE HERE
     }
     else
     {
         response["status"] = "not valid";
+        response["header"] = "login";
     }
     return QJsonDocument(response).toJson();
 }
@@ -346,6 +437,10 @@ inline QByteArray get_messages(QJsonObject readData)
     QJsonDocument newDoc(messages);
     return newDoc.toJson();
 }
+
+
+
+
 
 // TODO: add name for group & channnel \
          add profile photo
