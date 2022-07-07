@@ -45,10 +45,10 @@ void MainWindow::on_sendButton_clicked()
     listOfMessages.append(answer);
 }
 
-void MainWindow::gettingchat()
+void MainWindow::gettingchat(QString chat_unique_id)
 {
     QJsonObject o;
-    o["header"]="gettingchat";
+    o["header"]="get_messages";
     o["chat_type"] = chat_type;
     o["username"]=user_unique_id;
     o["chat_id"]=chat_unique_id;
@@ -58,7 +58,7 @@ void MainWindow::gettingchat()
     //show them on chat
 }
 
-void MainWindow::createpv()
+void MainWindow::createpv(QJsonArray participants_username)
 {
     QJsonObject o;
     o["header"]="create_chat";
@@ -69,7 +69,7 @@ void MainWindow::createpv()
     e.writedata(d.toJson());
 }
 
-void MainWindow::creategroup()
+void MainWindow::creategroup(QJsonArray participants_username)
 {
     QJsonObject o;
     o["header"]="create_chat";
@@ -80,13 +80,37 @@ void MainWindow::creategroup()
     e.writedata(d.toJson());
 }
 
-void MainWindow::createchannel()
+void MainWindow::createchannel(QJsonArray participants_username)
 {
     QJsonObject o;
     o["header"]="create_chat";
     o["chatType"] = "channel";
     o["creator"]=user_unique_id;
     o["participants"] = participants_username;
+    QJsonDocument d(o);
+    e.writedata(d.toJson());
+}
+
+void MainWindow::searchuser(QString chat_unique_id,QString time)
+{
+    QJsonObject o;
+    o["header"]="search_user";
+    o["chat_id"] = chat_unique_id;
+    o["sender"] = user_unique_id;
+    o["time"] = time;
+    QJsonDocument d(o);
+    e.writedata(d.toJson());
+}
+
+void MainWindow::save_message(QString chat_unique_id, QString message, QString time)
+{
+    QJsonObject o;
+    o["header"]="save_message";
+    o["chat_id"] = chat_unique_id;
+    o["sender"] = user_unique_id;
+    o["message_text"] = message;
+    o["time"] = time;
+    o["chat_type"]=chat_type;
     QJsonDocument d(o);
     e.writedata(d.toJson());
 }

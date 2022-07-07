@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QMessageBox>
 #include "myclient.h"
-#include <QThread>
+#include "mythread.h"
 
 namespace Ui {
 class LoginWindow;
@@ -16,6 +16,7 @@ class LoginWindow : public QDialog
 
 public:
     explicit LoginWindow(QWidget *parent = nullptr);
+    void getdata(QJsonObject data);
     ~LoginWindow();
 
 private slots:
