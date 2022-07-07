@@ -7,9 +7,9 @@ class LoginHandleUtility : public QObject
 {
     Q_OBJECT
 public:
-    LoginHandleUtility(QObject * parent = nullptr);
+    LoginHandleUtility(QObject * parent = nullptr, QObject *loginWindow = nullptr);
     bool getLoginStat() const;
-public slots:
+private slots:
     void OnLoginSuccessful();
 private:
     bool LoginSuccessful = false;

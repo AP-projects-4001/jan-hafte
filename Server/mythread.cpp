@@ -9,7 +9,7 @@
 #include <QDebug>
 #include <QFile>
 
-MyThread::MyThread(qintptr ID, QObject *parent) : QThread(parent)
+MyThread::MyThread(qintptr ID, QObject* parent) : QThread(parent)
 {
     this->socketDescriptor = ID;
 }
@@ -92,9 +92,9 @@ void MyThread::readyRead()
     QJsonObject readData = doc.object();
     QString header = readData["header"].toString();
     if (header == "register") // {header:register, \
-		                          username: <username>, \
+                                  username: <username>, \
                                   password: <password>} \
-		                          phone: <phone> \
+                                  phone: <phone> \
                                   birthday: <birthday> \
                                   email: <email> \
                                   }
@@ -127,8 +127,8 @@ void MyThread::readyRead()
     else if (header == "save_message")
     { // {header: save_message, \
                                              chat_id: <chat_id>, \
-											 sender: <sender_username>, \
-											 message_text: <message>  \
+                                             sender: <sender_username>, \
+                                             message_text: <message>  \
                                              time: <time> \
                                              chat_type: <chat_type>}
         QByteArray response = save_message(readData);
@@ -137,7 +137,7 @@ void MyThread::readyRead()
     else if (header == "get_messages")
     { // {header: get_message, \\
                                             chat_id: <chat_id>, \
-											chat_type: <chat_type>}
+                                            chat_type: <chat_type>}
         QByteArray response = get_messages(readData);
         socket->write(response);
     }

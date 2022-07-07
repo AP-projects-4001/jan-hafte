@@ -1,8 +1,8 @@
 #include "loginhandleutility.h"
 
-LoginHandleUtility::LoginHandleUtility(QObject *parent): QObject(parent)
+LoginHandleUtility::LoginHandleUtility(QObject *parent, QObject *loginWindow): QObject(parent)
 {
-
+    connect(loginWindow, SIGNAL(), this, SLOT(OnLoginSuccessful()));
 }
 
 bool LoginHandleUtility::getLoginStat() const
