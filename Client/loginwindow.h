@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include "myclient.h"
 #include "mythread.h"
+#include "utilities.h"
 
 namespace Ui {
 class LoginWindow;
