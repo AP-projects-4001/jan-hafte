@@ -7,8 +7,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    MyThread *thread = new MyThread();
-    connect(thread,SIGNAL(recievemassage(QJsonObject)),this,SLOT(getdata()));
+    e = new myClient();
+    e->connectingToServer();
+    connect(e,SIGNAL(recievemassage(QJsonObject)),this,SLOT(getdata(QJsonObject data)));
 
 
     // just testing;
@@ -21,9 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
-void MainWindow::getdata()
+void MainWindow::getdata(QJsonObject data)
 {
-
+    //if (data["header"]=="")
 
 }
 
@@ -53,7 +54,7 @@ void MainWindow::gettingchat(QString chat_unique_id)
     o["username"]=user_unique_id;
     o["chat_id"]=chat_unique_id;
     QJsonDocument d(o);
-    e.writedata(d.toJson());
+    e->writedata(d.toJson());
 
     //show them on chat
 }
@@ -66,7 +67,7 @@ void MainWindow::createpv(QJsonArray participants_username)
     o["creator"]=user_unique_id;
     o["participants"] = participants_username;
     QJsonDocument d(o);
-    e.writedata(d.toJson());
+    e->writedata(d.toJson());
 }
 
 void MainWindow::creategroup(QJsonArray participants_username)
@@ -77,7 +78,7 @@ void MainWindow::creategroup(QJsonArray participants_username)
     o["creator"]=user_unique_id;
     o["participants"] = participants_username;
     QJsonDocument d(o);
-    e.writedata(d.toJson());
+    e->writedata(d.toJson());
 }
 
 void MainWindow::createchannel(QJsonArray participants_username)
@@ -88,7 +89,7 @@ void MainWindow::createchannel(QJsonArray participants_username)
     o["creator"]=user_unique_id;
     o["participants"] = participants_username;
     QJsonDocument d(o);
-    e.writedata(d.toJson());
+    e->writedata(d.toJson());
 }
 
 void MainWindow::searchuser(QString chat_unique_id,QString time)
@@ -99,7 +100,7 @@ void MainWindow::searchuser(QString chat_unique_id,QString time)
     o["sender"] = user_unique_id;
     o["time"] = time;
     QJsonDocument d(o);
-    e.writedata(d.toJson());
+    e->writedata(d.toJson());
 }
 
 void MainWindow::save_message(QString chat_unique_id, QString message, QString time)
@@ -112,7 +113,7 @@ void MainWindow::save_message(QString chat_unique_id, QString message, QString t
     o["time"] = time;
     o["chat_type"]=chat_type;
     QJsonDocument d(o);
-    e.writedata(d.toJson());
+    e->writedata(d.toJson());
 }
 
 

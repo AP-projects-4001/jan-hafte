@@ -22,7 +22,6 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
-    void getdata();
     void gettingchat(QString chat_unique_id);
     void createpv(QJsonArray participants_username);
     void creategroup(QJsonArray participants_username);
@@ -44,11 +43,13 @@ private slots:
 
     void on_searchBar_textChanged(const QString &arg1);
 
+    void getdata(QJsonObject data);
+
 private:
     Ui::MainWindow *ui;
     QString chat_type;
     QString user_unique_id;
-    myClient e;
+    myClient *e;
     QJsonObject all;
     QList <MessageBox*> listOfMessages;
     QList <ChatLable> listOfChats;

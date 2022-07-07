@@ -3,9 +3,9 @@
 #include <QFile>
 #include <QDebug>
 
-MyThread::MyThread()
+MyThread::MyThread(QString user_unique_id)
 {
-    //this->socketDescriptor = ID;
+    this->user_unique_id = user_unique_id;
 }
 
 void MyThread::run()
@@ -16,6 +16,16 @@ void MyThread::run()
     socket = new QTcpSocket();
     socket->connectToHost("127.0.0.1", 1234);
 
+    if(socket->waitForConnected(-1)){
+        while(true){
+            QJsonObject d;
+            d["header"]="get_user_message";
+            d["username"]=user_unique_id;
+            QJsonDocument all(d);
+            socket->write(all.toJson());
+            sleep(1000);
+        }
+    }
     // connect socket and signal
     // note - Qt::DirectConnection is used because it's multithreaded
     //        This makes the slot to be invoked immediately, when the signal is emitted.
