@@ -10,6 +10,7 @@
 #include "createchatdialog.h"
 #include "utilities.h"
 #include "settingsdialog.h"
+#include "graphview.h"
 
 
 namespace Ui {

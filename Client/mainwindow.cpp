@@ -16,6 +16,11 @@ MainWindow::MainWindow(QWidget *parent) :
     for (int i = 0; i < 10; i++)
         ChatLable *chatLable = new ChatLable(ui->chatListAreaContentSlot, false, true);
 
+
+    GraphView *graphView = new GraphView(ui->graphViewArea);
+    ui->graphViewArea->layout()->addWidget(graphView);
+
+
     ui->topInfoBarArea->hide();
     ui->chatLineEdit->clear();
     //ui->chatViewTypeArea->hide();

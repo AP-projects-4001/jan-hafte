@@ -12,6 +12,9 @@ public:
 
 signals:
 
+private:
+    QGraphicsScene *scene;
+
 };
 
 #endif // GRAPHVIEW_H
