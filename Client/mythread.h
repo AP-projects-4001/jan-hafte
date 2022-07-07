@@ -12,7 +12,7 @@ class MyThread : public QThread
 {
     Q_OBJECT
 public:
-    explicit MyThread();
+    explicit MyThread(QString user_unique_id);
 
     void run();
 
@@ -26,6 +26,7 @@ public slots:
 
 private:
     QTcpSocket *socket;
+    QString user_unique_id;
 };
 
 #endif // MYTHREAD_H
