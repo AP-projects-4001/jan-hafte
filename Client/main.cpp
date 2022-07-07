@@ -9,11 +9,11 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    LoginWindow l;
-    LoginHandleUtility lhu(nullptr, &l);
-    l.exec();
+    LoginWindow *l = new LoginWindow;
+    LoginHandleUtility lhu(nullptr, l);
+    l->exec();
 
-    //if (!lhu.getLoginStat()) { delete lhu; return 0; }
+    //if (!lhu.getLoginStat()) { return 0; }
 
     MainWindow m;
     m.show();

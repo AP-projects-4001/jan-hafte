@@ -24,16 +24,16 @@ void LoginWindow::getdata(QJsonObject data)
     if (data["header"]=="login") {
         QString status = data["status"].toString();
 
+        qDebug() << status;
+
         if (status == "valid") {
 //            QJsonArray content = data["content"].toArray();
-
 //            for (auto i = content.begin(); i != content.end(); i++){
-
 //                //show on chat screen
-
 //            }
-            message->setText("Successfully Logged In");  // delete this
-            message->show();
+            //message->setText("Successfully Logged In");  // delete this
+            emit loginDone();
+            close();
         }
         else if (status == "not valid"){
             message->setText("Log In Failed");  // delete this
@@ -52,12 +52,12 @@ void LoginWindow::getdata(QJsonObject data)
             QJsonArray content = data["content"].toArray();
 
             for (auto i = content.begin(); i != content.end(); i++){
-
                 //show on chat screen
-
             }
             message->setText("Successfully Signed In");  // delete this
-            message->show();
+            message->exec();
+            emit loginDone();
+            close();
         }
         else if (status == "not valid"){
             message->setText("Sign Up Failed");  // delete this
@@ -98,7 +98,6 @@ void LoginWindow::on_LoginButton_clicked()
 
 }
 
-
 void LoginWindow::on_SignUpInsteadButton_clicked()
 {
     clearLoginPage();
@@ -106,14 +105,12 @@ void LoginWindow::on_SignUpInsteadButton_clicked()
     ui->SignUpButton->setFocus();
 }
 
-
 void LoginWindow::on_LoginInsteadButton_clicked()
 {
     clearSignUpPage();
     ui->Pages->setCurrentIndex(0);
     ui->LoginButton->setFocus();
 }
-
 
 void LoginWindow::on_SignUpButton_clicked()
 {
