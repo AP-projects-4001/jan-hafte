@@ -66,6 +66,23 @@ QJsonObject chatFinder(QString chat_id) {
     return chat;
 }
 
+QJsonObject messageFinder(QString msg_id) {
+    QJsonObject message;
+    QFile file(MESSAGES_PATH);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return message;
+    QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+    QJsonObject obj = doc.object();
+    QJsonArray messages = obj["messages"].toArray();
+    for (int i = 0; i < messages.size(); i++) {
+        QJsonObject msg = messages[i].toObject();
+        if (msg["id"].toString() == msg_id) {
+            return msg;
+        }
+    }
+    return message;
+}
+
 QJsonObject get_user_chats(QString username) {
     // get username
     QFile file(USERS_PATH);
@@ -129,6 +146,38 @@ int checkValidUsername(QString username, QByteArray jsonDb)
     {
         QJsonObject user = jsonArr[i].toObject();
         if (user["username"].toString() == username)
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int checkValidEmail(QString email, QByteArray jsonDb)
+{
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonDb);
+    QJsonObject jsonObj = jsonDoc.object();
+    QJsonArray jsonArr = jsonObj["users"].toArray();
+    for (int i = 0; i < jsonArr.size(); i++)
+    {
+        QJsonObject user = jsonArr[i].toObject();
+        if (user["email"].toString() == email)
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int checkValidPhoneNumber(QString phoneNumber, QByteArray jsonDb)
+{
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonDb);
+    QJsonObject jsonObj = jsonDoc.object();
+    QJsonArray jsonArr = jsonObj["users"].toArray();
+    for (int i = 0; i < jsonArr.size(); i++)
+    {
+        QJsonObject user = jsonArr[i].toObject();
+        if (user["phone_number"].toString() == phoneNumber)
         {
             return 0;
         }
@@ -233,7 +282,7 @@ inline QByteArray register_user(QJsonObject readData)
     }
     QJsonObject response;
     QByteArray data = file.readAll();
-    if (checkValidUsername(readData["username"].toString(), data) == 0)
+    if (checkValidUsername(readData["username"].toString(), data) == 0 && checkValidEmail(readData["email"].toString(), data) == 0 && checkValidPhoneNumber(readData["phone_number"].toString(), data) == 0)
     {
         response["status"] = "not valid";
         return QJsonDocument(response).toJson();
@@ -247,7 +296,7 @@ inline QByteArray register_user(QJsonObject readData)
     newUser["password"] = readData["password"].toString();
     newUser["phone"] = readData["phone"].toString();
     newUser["email"] = readData["email"].toString();
-    //newUser["birthday"] = readData["birthday"].toString();
+    newUser["birthday"] = readData["birthday"].toString();
     newUser["all_chats"] = all_chat;
     newUser["private_chat"] = private_chat;
     newUser["group_chat"] = group_chat;
@@ -346,6 +395,12 @@ inline QByteArray create_chat(QJsonObject readData, QString chatType)
     newChat["creator"] = readData["creator"].toString();
     newChat["participants"] = readData["participants"].toArray();
     newChat["messages"] = QJsonArray();
+    if (chatType == "channel" || chatType == "group") {
+        newChat["name"] = readData["name"].toString();
+    }
+    if (chatType == "private") {
+        newChat["reciever"] = userFinder(readData["participants"][0].toString());
+    }
     tmp_array.append(newChat);
     tmp[chatType] = tmp_array;
     chatDatabase[placer] = tmp;
@@ -357,7 +412,9 @@ inline QByteArray create_chat(QJsonObject readData, QString chatType)
     chatFile.close();
     update_chats(readData["creator"].toString(), chatType, newChat["id"].toString());
     update_chats(readData["creator"].toString(), "all_chats", newChat["id"].toString());
-    return "DONE!";
+    QJsonObject finalTemp;
+    finalTemp["status"] = "done";
+    return QJsonDocument(finalTemp).toJson();
     // save new chat to user file // CODE HERE //
 }
 
