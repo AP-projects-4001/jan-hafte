@@ -131,7 +131,7 @@ void MyThread::readyRead()
         QByteArray response = get_messages(readData);
         socket->write(response);
     }
-    else if (header == "get_continuous_data") { // {header:get_user_chat, \
+    else if (header == "get_continuous_data") { // {header:get_continuous_data, \
                                           username: <username>}, \
                                           active_chat: <chat_id> \
     }

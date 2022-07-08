@@ -138,6 +138,7 @@ QJsonObject get_user_chats(QString username, QString active_chat_id="None") {
     QJsonObject jsonObj = jsonDoc.object();
     QJsonArray jsonArr = jsonObj["users"].toArray();
     QJsonArray chatArrayForClient;
+    file.close();
     for (int i = 0; i < jsonArr.size(); i++) {
         QJsonObject user = jsonArr[i].toObject();
         if (user["username"] == username) {
@@ -164,9 +165,11 @@ QJsonObject get_user_chats(QString username, QString active_chat_id="None") {
                     chatForClient["reciever"] = founded_chat["reciever"].toString();
                     if (founded_chat["creator"].toString() == username) {
                         chatForClient["phone"] = userFinder(founded_chat["reciever"].toString())["phone"];
+                        chatForClient["profile"] = userFinder(founded_chat["reciever"].toString())["profile"];
                     }
                     else {
                         chatForClient["phone"] = userFinder(founded_chat["creator"].toString())["phone"];
+                        chatForClient["profile"] = userFinder(founded_chat["creator"].toString())["profile"];
                     }
 
                 }
@@ -785,7 +788,7 @@ inline QByteArray login_user(QJsonObject readData)
     user = get_this_user(readData2);
     qDebug() << user;*/
 
-    //get_user_chats("atid");
+    get_user_chats("Emad", "a5460c6b-5a41-4c15-a00f-f0efd1d36513");
     for (int i = 0; i < myarr.size(); i++)
     {
         QJsonObject user = myarr[i].toObject();
