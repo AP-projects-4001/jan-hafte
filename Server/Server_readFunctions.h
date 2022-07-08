@@ -24,11 +24,27 @@ QJsonObject userFinder(QString user_id) {
     QJsonArray users = obj["users"].toArray();
     for (int i = 0; i < users.size(); i++) {
         QJsonObject user = users[i].toObject();
-        if (user["id"].toString() == user_id) {
+        if (user["username"].toString() == user_id) {
             return user;
         }
     }
     return QJsonObject();
+}
+
+int findUserPlacer(QString id) {
+    QFile file(USERS_PATH);
+    file.open(QIODevice::ReadOnly);
+    QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+    file.close();
+    QJsonObject obj = doc.object();
+    QJsonArray users = obj["users"].toArray();
+    for (int i = 0; i < users.size(); i++) {
+        QJsonObject user = users[i].toObject();
+        if (user["username"].toString() == id) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 QJsonObject chatFinder(QString chat_id) {
@@ -122,7 +138,7 @@ QJsonObject get_user_chats(QString username) {
 // obj can be messages, chats, users / work only for users and messages
 // id type because id for users are username and chats are id
 // workin fine
-void updateGlobalFile(QString filePath, QString obj, QString obj_id, QString id_type,  QString key, QString value) {
+void updateGlobalFile(QString filePath, QString obj, QString obj_id, QString id_type, QString key, QString value) {
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
         qDebug() << "Error opening file";
@@ -219,6 +235,15 @@ int checkValidPhoneNumber(QString phoneNumber, QByteArray jsonDb)
     return 1;
 }
 // workin fine
+int existInArray(QString value, QJsonArray mydb) {
+    for (int i = 0; i < mydb.size(); i++) {
+        if (mydb[i].toString() == value) {
+            return 1;
+        }
+    }
+    return 0;
+}
+// workin fine
 void update_chats(QString username, QString chatType, QString value)
 {
     QFile file(USERS_PATH);
@@ -273,7 +298,68 @@ void update_chats(QString username, QString chatType, QString value)
         }
     }
 }
-
+// workin fine
+void update_last_message(QString chat_id, QString chatType, QString last_message, QString last_message_time)
+{
+    int placer = foundPlacer(chatType);
+    QFile file2(CHAT_PATH);
+    file2.open(QIODevice::ReadWrite);
+    QByteArray jsonDb = file2.readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonDb);
+    QJsonObject jsonObj = jsonDoc.object();
+    QJsonArray jsonArr = jsonObj["chats"].toArray();
+    QJsonObject theChat = jsonArr[placer].toObject();
+    QJsonArray chatArr = theChat[chatType].toArray();
+    QJsonArray mypart;
+    file2.close();
+    for (int i = 0; i < chatArr.size(); i++)
+    {
+        QJsonObject chat = chatArr[i].toObject();
+        if (chat["id"].toString() == chat_id)
+        {
+            mypart = chat["participants"].toArray();
+            mypart.append(chat["creator"]);
+        }
+    }
+    QFile file(USERS_PATH);
+    file.open(QIODevice::ReadWrite);
+    QByteArray jsonDb2 = file.readAll();
+    QJsonDocument jsonDoc2 = QJsonDocument::fromJson(jsonDb2);
+    QJsonObject jsonObj2 = jsonDoc2.object();
+    QJsonArray jsonArr2 = jsonObj2["users"].toArray();
+    qDebug() << mypart;
+    for (int i=0; i < mypart.size(); i++) {
+        qDebug() << mypart[i].toString();
+        QJsonObject theUser = userFinder(mypart[i].toString());
+        qDebug() << theUser;
+        QJsonArray chat = theUser["all_chats"].toArray();
+        qDebug() << chat;
+        int userPlace = findUserPlacer(theUser["username"].toString());
+        qDebug() << userPlace;
+        for (int j = 0; j < chat.size(); j++) {
+            QJsonObject chatObj = chat[j].toObject();
+            if (chatObj["id"].toString() == chat_id) {
+                chatObj["last_message"] = last_message;
+                chatObj["last_message_time"] = last_message_time;
+                qDebug() << chatObj;
+                chat[j] = chatObj;
+                qDebug() << chat;
+                theUser["all_chats"] = chat;
+                qDebug() << theUser;
+                jsonArr2[userPlace] = theUser;
+                qDebug() << jsonArr2;
+            }
+        }
+    }
+    qDebug() << jsonArr2;
+    QJsonObject finalTEMP;
+    finalTEMP["users"] = jsonArr2;
+    QJsonDocument mynewDoc(finalTEMP);
+    file.resize(0);
+    file.write(mynewDoc.toJson());
+    file.close();
+}
+// workin fine
 void update_messages_in_chatDB(QString chatType, QString chat_id, QString msg_id)
 {
     QFile file(CHAT_PATH);
@@ -401,7 +487,7 @@ inline QByteArray create_chat(QJsonObject readData, QString chatType)
     chatFile.close();
     update_chats(readData["creator"].toString(), chatType, newChat["id"].toString());
     update_chats(readData["creator"].toString(), "all_chats", newChat["id"].toString());
-    for (int i=0; i<readData["participants"].toArray().size(); i++) {
+    for (int i = 0; i < readData["participants"].toArray().size(); i++) {
         if (readData["participants"].toArray()[i].toString() != readData["creator"].toString()) {
             update_chats(readData["participants"].toArray()[i].toString(), "all_chats", newChat["id"].toString());
             update_chats(readData["participants"].toArray()[i].toString(), chatType, newChat["id"].toString());
@@ -437,7 +523,7 @@ inline QByteArray search_user(QJsonObject readData)
         }
     }
 }
-
+// workin fine
 inline QByteArray save_message(QJsonObject readData)
 {
     QFile file(MESSAGES_PATH);
@@ -461,6 +547,7 @@ inline QByteArray save_message(QJsonObject readData)
     QJsonDocument newDoc(jsonObj);
     file.resize(0);
     update_messages_in_chatDB(readData["chat_type"].toString(), readData["chat_id"].toString(), newMessage["id"].toString());
+    update_last_message(readData["chat_id"].toString(), readData["chat_type"].toString(), readData["message_text"].toString(), readData["time"].toString());
     file.write(newDoc.toJson());
     file.close();
     return "DONE!";
@@ -542,11 +629,17 @@ inline QByteArray login_user(QJsonObject readData)
     readData2["participants"] = test;
     create_chat(readData2, "private_chat");*/
 
-    /*QJsonObject readData2;
-    readData["old_username"] = "atid";
+    //QJsonObject readData2;
+    /*readData["old_username"] = "atid";
     readData["key"] = "username";
     readData["value"] = "atid2";
     change_data(readData);*/
+    /*readData2["chat_id"] = "ce32f088-e046-4caf-9e00-2f45378929c1";
+    readData2["chat_type"] = "private_chat";
+    readData2["message_text"] = "Salam jigar :)";
+    readData2["time"] = "12931231214";
+    readData2["sender"] = "atid";
+    save_message(readData2);*/
     for (int i = 0; i < myarr.size(); i++)
     {
         QJsonObject user = myarr[i].toObject();
@@ -575,4 +668,4 @@ inline QByteArray login_user(QJsonObject readData)
     return QJsonDocument(response).toJson();
 }
 
-// TODO: change username / email / phoneNumber
+// TODO: after chaning username, participants should be update (add id field for users)
