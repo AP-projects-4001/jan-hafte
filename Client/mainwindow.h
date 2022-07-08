@@ -22,12 +22,14 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr, QString username = "");
+    void getThisUserInfo(QString user_unique_id);
     void gettingchat(QString chat_unique_id, QString chat_type);
     void createpv(QJsonArray participants_username);
     void creategroup(QJsonArray participants_username);
     void createchannel(QJsonArray participants_username);
-    void searchuser(QString chat_unique_id, QString time);
+    void searchChat(QString chat_unique_id);
+    void searchUser(QString user_unique_id);
     void changeusername(QString newdata);
     void changeemail(QString newdata);
     void changephone(QString newdata);
@@ -51,11 +53,21 @@ private slots:
 
     void onChatLableClick(ChatLable *label);
 
+    void on_contactInfoInput_textChanged(const QString &arg1);
+
+    void on_MessageContactButton_clicked();
+
+    void connectedToServer(QString temp_id);
+
 private:
     Ui::MainWindow *ui;
-    QString user_unique_id;
+    //QString user_unique_id;
     myClient *e;
     QJsonObject all;
+
+
+    CreateChatDialog *createChatDialog;
+    SettingsDialog *settingsDialog;
 
     QList <MessageBox*> listOfMessages;
     QList <ChatLable> listOfChats;
@@ -64,6 +76,7 @@ private:
     chatData selectedChat;
     ChatLable *selectedChatLabel = nullptr;
 
+    ChatLable *foundUserLable = nullptr;
 
     QString searchPattern;
 };

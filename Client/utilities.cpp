@@ -59,3 +59,47 @@ QPixmap Utilities::maskImage(QImage &image, int size)
 
     return pm;
 }
+
+QImage Utilities::createPixBasedOnName(QString name)
+{
+    QImage image = QImage (128, 128, QImage::Format_ARGB32);
+    int rnd = name.length() % 4;
+    switch(rnd) {
+    case 0:
+        image.fill(Qt::red);
+        break;
+    case 1:
+        image.fill(Qt::blue);
+        break;
+    case 2:
+        image.fill(Qt::green);
+        break;
+    case 3:
+        image.fill(Qt::yellow);
+        break;
+    }
+
+    QPainter painter(&image);
+    QFont font;
+    font.setPixelSize(48);
+    painter.setFont(font);
+    painter.drawText(60, 80, name[0]);
+
+    return image;
+}
+
+QString Utilities::imageToString(const QImage &image)
+{
+    QByteArray array;
+    QBuffer buffer(&array);
+    image.save(&buffer, "JPEG");
+    QString iconBase64 = QString::fromLatin1(array.toBase64().data());
+    return iconBase64;
+}
+
+QImage Utilities::stringToImage(const QString &str)
+{
+    QByteArray array = QByteArray::fromBase64(str.toLatin1());
+    QImage img = QImage::fromData(array,"JPEG");
+    return img;
+}

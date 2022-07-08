@@ -58,6 +58,7 @@ void myClient::writingData()
 void myClient::connectedToServer()
 {
     qDebug()<<"connected Successfully!\n";
+    emit connected();
     //clientSocket->write("Hello\n");
 }
 

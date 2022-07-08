@@ -1,5 +1,6 @@
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
+#include <QBuffer>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -7,8 +8,15 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QImage pic = ui->profilePic->pixmap().toImage();
-    ui->profilePic->setPixmap(Utilities::maskImage(pic, 128));
+    //ui->profilePic->setPixmap(QPixmap::fromImage());
+}
+
+void SettingsDialog::setUpData(QString name, QString email, QString phone, QImage profile)
+{
+    ui->usernameLabel->setText(name);
+    ui->emailAddressLabel->setText(email);
+    ui->phoneLabel->setText(phone);
+    ui->profilePic->setPixmap(Utilities::maskImage(profile, 128));
 }
 
 SettingsDialog::~SettingsDialog()

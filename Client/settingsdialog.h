@@ -11,12 +11,15 @@ namespace Ui {
 class SettingsDialog;
 }
 
+class MainWindow;
+
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
 
 public:
     explicit SettingsDialog(QWidget *parent = nullptr);
+    void setUpData(QString name, QString email, QString phone, QImage profile);
     ~SettingsDialog();
 
 private slots:

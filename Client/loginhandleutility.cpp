@@ -2,7 +2,7 @@
 
 LoginHandleUtility::LoginHandleUtility(QObject *parent, QObject *loginWindow): QObject(parent)
 {
-    connect(loginWindow, SIGNAL(loginDone()), this, SLOT(OnLoginSuccessful()));
+    connect(loginWindow, SIGNAL(loginDone(QString)), this, SLOT(OnLoginSuccessful(QString)));
 }
 
 bool LoginHandleUtility::getLoginStat() const
@@ -10,7 +10,13 @@ bool LoginHandleUtility::getLoginStat() const
     return LoginSuccessful;
 }
 
-void LoginHandleUtility::OnLoginSuccessful()
+QString LoginHandleUtility::getUsername() const
+{
+    return username;
+}
+
+void LoginHandleUtility::OnLoginSuccessful(QString username)
 {
     LoginSuccessful = true;
+    this->username = username;
 }

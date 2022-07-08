@@ -32,7 +32,7 @@ private slots:
     void getdata(QJsonObject data);
 
 signals:
-    void loginDone();
+    void loginDone(QString username);
 
 private:
     Ui::LoginWindow *ui;

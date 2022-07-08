@@ -25,6 +25,7 @@ public:
 
 signals:
     void recievemessage(QJsonObject);
+    void connected();
 
 public slots:
     void connectingToServer();

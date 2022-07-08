@@ -9,6 +9,8 @@ namespace Ui {
 class CreateChatDialog;
 }
 
+class MainWindow;
+
 class CreateChatDialog : public QDialog
 {
     Q_OBJECT
@@ -32,10 +34,15 @@ private slots:
 
     void on_channelProfilePicButton_clicked();
 
+    void on_contactInfoInput_textChanged(const QString &arg1);
+
 private:
     Ui::CreateChatDialog *ui;
     enum chatType {Channel, Group, Contact};
     chatType selectedType;
+
+
+    friend MainWindow;
 };
 
 #endif // CREATECHATDIALOG_H

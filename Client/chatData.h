@@ -12,6 +12,8 @@ public:
     QString name;
     QString username;
     Type type;
+    QString phoneNumber;
+    QString emailAddress;
     QImage profile;
     QString lastMessage;
     QDateTime lastMessageTime;
@@ -25,6 +27,8 @@ inline chatData &chatData::operator=(const chatData &rhs)
     name = rhs.name;
     username = rhs.username;
     type = rhs.type;
+    phoneNumber = rhs.phoneNumber;
+    emailAddress = rhs.emailAddress;
     profile = rhs.profile;
     lastMessage = rhs.lastMessage;
     lastMessageTime = rhs.lastMessageTime;

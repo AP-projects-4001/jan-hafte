@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 
     //if (!lhu.getLoginStat()) { return 0; }
 
-    MainWindow m;
+    MainWindow m(nullptr, lhu.getUsername());
     m.show();
 
     return a.exec();

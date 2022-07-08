@@ -9,10 +9,12 @@ class LoginHandleUtility : public QObject
 public:
     LoginHandleUtility(QObject * parent = nullptr, QObject *loginWindow = nullptr);
     bool getLoginStat() const;
+    QString getUsername() const;
 private slots:
-    void OnLoginSuccessful();
+    void OnLoginSuccessful(QString username);
 private:
     bool LoginSuccessful = false;
+    QString username;
 };
 
 #endif // LOGINHANDLEUTILITY_H

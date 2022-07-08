@@ -24,15 +24,8 @@ void LoginWindow::getdata(QJsonObject data)
     if (data["header"]=="login") {
         QString status = data["status"].toString();
 
-        //qDebug() << status;
-
         if (status == "valid") {
-//            QJsonArray content = data["content"].toArray();
-//            for (auto i = content.begin(); i != content.end(); i++){
-//                //show on chat screen
-//            }
-            //message->setText("Successfully Logged In");  // delete this
-            emit loginDone();
+            emit loginDone(data["username"].toString());
             close();
         }
         else if (status == "not valid"){
@@ -49,14 +42,9 @@ void LoginWindow::getdata(QJsonObject data)
         QString status = data["status"].toString();
 
         if (status == "valid"){
-            QJsonArray content = data["content"].toArray();
-
-            for (auto i = content.begin(); i != content.end(); i++){
-                //show on chat screen
-            }
             message->setText("Successfully Signed In");  // delete this
             message->exec();
-            emit loginDone();
+            emit loginDone(data["username"].toString());
             close();
         }
         else if (status == "not valid"){
@@ -119,11 +107,13 @@ void LoginWindow::on_LoginInsteadButton_clicked()
 
 void LoginWindow::on_SignUpButton_clicked()
 {
+
     QString inpUsername = ui->lineEdit_UsernameNew->text();
     QString inpPassword = ui->lineEdit_PasswordNew->text();
     QString inpPasswordReenter = ui->lineEdit_PasswordReenter->text();
     QString inpEmail = ui->lineEdit_EmailNew->text();
     QString inpPhone = ui->lineEdit_PhoneNew->text();
+
 
     int eval = checkSignUpInputForError(inpUsername, inpPassword, inpPasswordReenter, inpEmail, inpPhone);
     if (eval != 0) {
@@ -133,15 +123,17 @@ void LoginWindow::on_SignUpButton_clicked()
 
     QJsonObject regist;
 
+
     regist["header"]="register";
     regist["username"]=inpUsername;
     regist["password"]=inpPassword;
     regist["phone"]=inpPhone;
     regist["email"]=inpEmail;
+    regist["profile"]= Utilities::imageToString(Utilities::createPixBasedOnName(inpUsername));
+
 
     QJsonDocument d(regist);
     e->writedata(d.toJson());
-    
 }
 
 int LoginWindow::checkSignUpInputForError(const QString &userN, const QString &pass, const QString &passR, const QString& email, const QString& phone)

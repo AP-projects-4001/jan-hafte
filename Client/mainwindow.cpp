@@ -1,17 +1,29 @@
 #include "mainwindow.h"
+#include "ui_createchatdialog.h"
 #include "ui_mainwindow.h"
 
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent, QString username) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    MyThread *thread = new MyThread(user_unique_id);
+    MyThread *thread = new MyThread(thisUser.username);
     e = new myClient();
     e->connectingToServer();
-    connect(e, SIGNAL(recievemessage(QJsonObject)), this, SLOT(getdata(QJsonObject data)));
-    connect(thread, SIGNAL(recievemessage(QJsonObject)), this, SLOT(getdata(QJsonObject data)));
+    connect(e, SIGNAL(recievemessage(QJsonObject)), this, SLOT(getdata(QJsonObject)));
+    connect(thread, SIGNAL(recievemessage(QJsonObject)), this, SLOT(getdata(QJsonObject)));
+    //connect(e, SIGNAL(connected(QString)) , this, SLOT(connectedToServer(QString)));
+
+
+    createChatDialog = new CreateChatDialog(this);
+    createChatDialog->setWindowFlags(Qt::Popup | Qt::CustomizeWindowHint);
+    connect(createChatDialog->ui->contactInfoInput, SIGNAL(textChanged(QString)), this, SLOT(on_contactInfoInput_textChanged(const QString&)));
+    connect(createChatDialog->ui->MessageContactButton, SIGNAL(clicked()), this, SLOT(on_MessageContactButton_clicked()));
+
+
+    settingsDialog = new SettingsDialog(this);
+    settingsDialog->setWindowFlags(Qt::Popup | Qt::CustomizeWindowHint);
 
 
     for(int i = 0; i < 5; i++) {
@@ -27,14 +39,35 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->topInfoBarArea->hide();
     ui->chatLineEdit->clear();
     //ui->chatViewTypeArea->hide();
+
+    getThisUserInfo(username);
 }
+
 
 void MainWindow::getdata(QJsonObject data)
 {
+    qDebug() << "ASdDoneDone";
     if (data["header"]=="get_user_message"){
 
     }
 
+    else if (data["header"] == "get_this_user") {
+        QString status = data["status"].toString();
+        if (status == "valid") {
+            qDebug() << "DoneDone";
+            thisUser.username = data["username"].toString();
+            thisUser.phoneNumber = data["phone"].toString();
+            thisUser.emailAddress = data["email"].toString();
+            thisUser.profile = Utilities::stringToImage(data["profile"].toString());
+            thisUser.name = data["name"].toString();
+        }
+        else if (status == "not valid"){
+
+        }
+        else{
+
+        }
+    }
     else if (data["header"]=="get_messages"){
 
     }
@@ -47,17 +80,37 @@ void MainWindow::getdata(QJsonObject data)
 
         }
         else if (status == "not valid"){
-//            message->setText("Log In Failed");  // delete this
-//            std::messages->show();
+
         }
         else{
-//            message->setText("Error");  // delete this
-//            message->show();
+
         }
     }
 
-    else if(data["header"]=="search_user"){
+    else if(data["header"]=="search_chat"){
 
+    }
+
+    else if (data["header"]=="search_user") {
+
+        if (data["status"].toString() == "valid") {
+
+            qDebug() << "HSdfaAaaa";
+
+            chatData recievedUser;
+            recievedUser.username = data["username"].toString();
+            recievedUser.phoneNumber = data["phone"].toString();
+            recievedUser.name = data["name"].toString();
+            recievedUser.profile = QImage::fromData(data["profile"].toString().toUtf8());
+
+            foundUserLable = new ChatLable(createChatDialog->ui->contactPage, false, false, recievedUser);
+            createChatDialog->ui->contactPageUserSlot->addWidget(foundUserLable);
+
+        } else if (data["status"].toString() == "not valid"){
+            qDebug() << "PaAaaa";
+        } else {
+            qDebug() << "Naaaaaa";
+        }
     }
 
     else if(data["header"]=="change_data"){
@@ -67,7 +120,6 @@ void MainWindow::getdata(QJsonObject data)
     else if(data["header"]=="save_message"){
 
     }
-
 }
 
 void MainWindow::onChatLableClick(ChatLable *label)
@@ -79,6 +131,25 @@ void MainWindow::onChatLableClick(ChatLable *label)
     selectedChatLabel = label;
     selectedChat = label->getData();
     label->setChecked(true);
+}
+
+void MainWindow::on_contactInfoInput_textChanged(const QString &arg1)
+{
+    if(foundUserLable != nullptr) {
+        delete foundUserLable;
+        foundUserLable = nullptr;
+    }
+    searchUser(arg1);
+}
+
+void MainWindow::on_MessageContactButton_clicked()
+{
+    createpv(thisUser);
+}
+
+void MainWindow::connectedToServer(QString temp_id)
+{
+
 }
 
 MainWindow::~MainWindow()
@@ -100,12 +171,23 @@ void MainWindow::on_sendButton_clicked()
 
 }
 
+void MainWindow::getThisUserInfo(QString user_unique_id)
+{
+    qDebug() << "Im sending";
+    QJsonObject o;
+    o["header"]= "get_this_user";
+    o["username"] = user_unique_id;
+    QJsonDocument d(o);
+    e->writedata(d.toJson());
+    qDebug() << "Im sendingggg";
+}
+
 void MainWindow::gettingchat(QString chat_unique_id, QString chat_type)
 {
     QJsonObject o;
     o["header"]="get_messages";
     o["chat_type"] = chat_type;
-    o["username"]=user_unique_id;
+    o["username"]= thisUser.username;
     o["chat_id"]=chat_unique_id;
     QJsonDocument d(o);
     e->writedata(d.toJson());
@@ -116,7 +198,7 @@ void MainWindow::createpv(QJsonArray participants_username)
     QJsonObject o;
     o["header"]="create_chat";
     o["chatType"] = "private_chat";
-    o["creator"]=user_unique_id;
+    o["creator"]=thisUser.username;
     o["participants"] = participants_username;
     QJsonDocument d(o);
     e->writedata(d.toJson());
@@ -127,7 +209,7 @@ void MainWindow::creategroup(QJsonArray participants_username)
     QJsonObject o;
     o["header"]="create_chat";
     o["chatType"] = "group";
-    o["creator"]=user_unique_id;
+    o["creator"]=thisUser.username;
     o["participants"] = participants_username;
     QJsonDocument d(o);
     e->writedata(d.toJson());
@@ -138,19 +220,28 @@ void MainWindow::createchannel(QJsonArray participants_username)
     QJsonObject o;
     o["header"]="create_chat";
     o["chatType"] = "channel";
-    o["creator"]=user_unique_id;
+    o["creator"]=thisUser.username;
     o["participants"] = participants_username;
     QJsonDocument d(o);
     e->writedata(d.toJson());
 }
 
-void MainWindow::searchuser(QString chat_unique_id,QString time)
+void MainWindow::searchChat(QString chat_unique_id)
+{
+    QJsonObject o;
+    o["header"]="search_chat";
+    o["chat_id"] = chat_unique_id;
+    o["sender"] = thisUser.username;
+    QJsonDocument d(o);
+    e->writedata(d.toJson());
+}
+
+void MainWindow::searchUser(QString user_unique_id)
 {
     QJsonObject o;
     o["header"]="search_user";
-    o["chat_id"] = chat_unique_id;
-    o["sender"] = user_unique_id;
-    o["time"] = time;
+    o["searched_field"] = user_unique_id;
+    o["sender"] = thisUser.username;
     QJsonDocument d(o);
     e->writedata(d.toJson());
 }
@@ -159,7 +250,7 @@ void MainWindow::changeusername(QString newdata)
 {
     QJsonObject o;
     o["header"]="change_data";
-    o["username"]=user_unique_id;
+    o["username"]=thisUser.username;
     o["key"]="username";
     o["value"]=newdata;
     QJsonDocument d(o);
@@ -170,7 +261,7 @@ void MainWindow::changeemail(QString newdata)
 {
     QJsonObject o;
     o["header"]="change_data";
-    o["username"]=user_unique_id;
+    o["username"]=thisUser.username;
     o["key"]="email";
     o["value"]=newdata;
     QJsonDocument d(o);
@@ -181,7 +272,7 @@ void MainWindow::changephone(QString newdata)
 {
     QJsonObject o;
     o["header"]="change_data";
-    o["username"]=user_unique_id;
+    o["username"]=thisUser.username;
     o["key"]="phone";
     o["value"]=newdata;
     QJsonDocument d(o);
@@ -193,7 +284,7 @@ void MainWindow::save_message(QString chat_unique_id, QString chat_type, QString
     QJsonObject o;
     o["header"]="save_message";
     o["chat_id"] = chat_unique_id;
-    o["sender"] = user_unique_id;
+    o["sender"] = thisUser.username;
     o["message_text"] = message;
     o["time"] = time;
     o["chat_type"]=chat_type;
@@ -202,20 +293,16 @@ void MainWindow::save_message(QString chat_unique_id, QString chat_type, QString
 }
 
 
-
 void MainWindow::on_createNewChatButton_clicked()
 {
-    CreateChatDialog *createChatDialog = new CreateChatDialog(this);
-    createChatDialog->setWindowFlags(Qt::Popup | Qt::CustomizeWindowHint);
     createChatDialog->exec();
 }
 
 
 void MainWindow::on_settingsButton_clicked()
 {
-    SettingsDialog *settingsDialog = new SettingsDialog(this);
-    settingsDialog->setWindowFlags(Qt::Popup | Qt::CustomizeWindowHint);
-    settingsDialog->setAttribute(Qt::WA_DeleteOnClose);
+    getThisUserInfo("Yasin");
+    settingsDialog->setUpData(thisUser.name, thisUser.emailAddress, thisUser.phoneNumber, thisUser.profile);
     settingsDialog->show();
 }
 

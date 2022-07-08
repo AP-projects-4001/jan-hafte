@@ -71,3 +71,9 @@ void CreateChatDialog::on_channelProfilePicButton_clicked()
     }
 }
 
+
+void CreateChatDialog::on_contactInfoInput_textChanged(const QString &arg1)
+{
+
+}
+
