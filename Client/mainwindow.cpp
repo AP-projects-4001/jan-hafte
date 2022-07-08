@@ -7,9 +7,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    MyThread *thread = new MyThread(user_unique_id);
     e = new myClient();
     e->connectingToServer();
-    connect(e,SIGNAL(recievemassage(QJsonObject)),this,SLOT(getdata(QJsonObject data)));
+    connect(e, SIGNAL(recievemassage(QJsonObject)), this, SLOT(getdata(QJsonObject data)));
+    connect(thread, SIGNAL(recievemassage(QJsonObject)), this, SLOT(getdata(QJsonObject data)));
 
 
     // just testing;

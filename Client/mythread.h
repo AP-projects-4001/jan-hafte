@@ -18,7 +18,7 @@ public:
 
 signals:
     void error(QTcpSocket::SocketError socketerror);
-    void recievemassage(QJsonObject);
+    void recievemessage(QJsonObject);
 
 public slots:
     void readyRead();

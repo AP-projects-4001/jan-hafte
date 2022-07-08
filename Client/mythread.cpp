@@ -23,6 +23,15 @@ void MyThread::run()
             d["username"]=user_unique_id;
             QJsonDocument all(d);
             socket->write(all.toJson());
+            socket->waitForReadyRead(-1);
+            QByteArray res = socket->readAll();
+            QJsonDocument doc = QJsonDocument::fromJson(res);
+            QJsonObject obj = doc.object();
+            emit recievemessage(obj);
+
+            //UI
+
+
             sleep(1000);
         }
     }
@@ -48,7 +57,7 @@ void MyThread::readyRead()
     QByteArray data = socket->readAll();
     QJsonDocument d = QJsonDocument::fromJson(data);
     QJsonObject all = d.object();
-    emit recievemassage(all);
+    emit recievemessage(all);
 
 }
 

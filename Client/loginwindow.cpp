@@ -68,6 +68,11 @@ void LoginWindow::getdata(QJsonObject data)
             message->show();
         }
     }
+
+    else{
+        message->setText("Server Error");  // delete this
+        message->show();
+    }
 }
 
 LoginWindow::~LoginWindow()
