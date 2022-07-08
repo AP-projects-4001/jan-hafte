@@ -3,9 +3,8 @@
 ChatLable::ChatLable(QWidget *parent, bool lastMessage, bool isCheckable, chatData data)
     : QFrame{parent} , showsLastMessage(lastMessage) , isCheckable(isCheckable), data(data)
 {
-    connect(this, SIGNAL(click()), this, SLOT(OnLableClick()));
+    connect(this, SIGNAL(click(ChatLable*)), this, SLOT(OnLableClick()));
     connect(this, SIGNAL(release()), this, SLOT(OnLableRelease()));
-
 
     profilePicSlot = new QLabel(this);
     nameField = new QLabel(this);
@@ -23,7 +22,6 @@ ChatLable::ChatLable(QWidget *parent, bool lastMessage, bool isCheckable, chatDa
                   "QFrame:hover[clicked=\"false\"]{background: #e9e9e9;}"
                   "");
 
-
     nameField->setText("Profile Name");
     lastMessageField->setText("Hi! This is just a test...");
 
@@ -33,10 +31,11 @@ ChatLable::ChatLable(QWidget *parent, bool lastMessage, bool isCheckable, chatDa
 void ChatLable::mousePressEvent(QMouseEvent *me)
 {
     if (me->button() == Qt::LeftButton) {
-        emit click();
+        emit click(this);
         me->accept();
         return;
     }
+
     QFrame::mousePressEvent(me);
 }
 
@@ -45,11 +44,29 @@ void ChatLable::mouseReleaseEvent(QMouseEvent *me)
     emit release();
 }
 
+void ChatLable::setChecked(bool val)
+{
+    isChecked = val;
+    this->setProperty("clicked", val);
+    style()->unpolish(this);
+    style()->polish(this);
+}
+
+void ChatLable::setCheckable(bool val)
+{
+    isCheckable = val;
+}
+
+chatData ChatLable::getData()
+{
+    return data;
+}
+
+
 void ChatLable::OnLableClick()
 {
     if(!isCheckable) {
         this->setProperty("clicked", true);
-
     } else {
         isChecked = !isChecked;
         this->setProperty("clicked", isChecked);
@@ -69,4 +86,3 @@ void ChatLable::OnLableRelease()
     style()->unpolish(this);
     style()->polish(this);
 }
-

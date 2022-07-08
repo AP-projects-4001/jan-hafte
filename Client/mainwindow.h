@@ -47,18 +47,23 @@ private slots:
 
     void getdata(QJsonObject data);
 
+    void onChatLableClick(ChatLable *label);
+
 private:
     Ui::MainWindow *ui;
     QString user_unique_id;
     myClient *e;
     QJsonObject all;
 
-
     QList <MessageBox*> listOfMessages;
     QList <ChatLable> listOfChats;
 
+    chatData thisUser;
+    chatData selectedChat;
+    ChatLable *selectedChatLabel = nullptr;
 
 
+    QString searchPattern;
 };
 
 #endif // MAINWINDOW_H

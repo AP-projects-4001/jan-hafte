@@ -18,8 +18,12 @@ public:
     void setChecked(bool val);
     void setCheckable (bool val);
 
+
+
+    chatData getData();
+
 signals:
-    void click();
+    void click(ChatLable* label);
     void release();
 
 private slots:

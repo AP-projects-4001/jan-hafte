@@ -209,7 +209,7 @@ border-image: url(:/Graphics/Graphics/edit_button.png);
         </size>
        </property>
        <property name="text">
-        <string>Username</string>
+        <string>Name</string>
        </property>
       </widget>
      </item>

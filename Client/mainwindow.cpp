@@ -14,9 +14,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(thread, SIGNAL(recievemessage(QJsonObject)), this, SLOT(getdata(QJsonObject data)));
 
 
-    // just testing;
-    for (int i = 0; i < 10; i++)
-        ChatLable *chatLable = new ChatLable(ui->chatListAreaContentSlot, false, true);
+    for(int i = 0; i < 5; i++) {
+        ChatLable *label = new ChatLable(ui->chatListAreaContentSlot, true, true);
+        connect(label, SIGNAL(click(ChatLable*)), this, SLOT(onChatLableClick(ChatLable*)));
+    }
 
 
     GraphView *graphView = new GraphView(ui->graphViewArea);
@@ -69,6 +70,17 @@ void MainWindow::getdata(QJsonObject data)
 
 }
 
+void MainWindow::onChatLableClick(ChatLable *label)
+{
+    if(selectedChatLabel != nullptr) {
+        selectedChatLabel->setChecked(false);
+    }
+
+    selectedChatLabel = label;
+    selectedChat = label->getData();
+    label->setChecked(true);
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -85,6 +97,7 @@ void MainWindow::on_sendButton_clicked()
     MessageBox *answer = new MessageBox (ui->chatViewScrollAreaContent, false);
     answer->setText("This is A random answer");
     listOfMessages.append(answer);
+
 }
 
 void MainWindow::gettingchat(QString chat_unique_id, QString chat_type)
