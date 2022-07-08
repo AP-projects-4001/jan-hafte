@@ -123,6 +123,7 @@ QJsonObject get_user_chats(QString username) {
                 chatForClient["id"] = chat["id"].toString();
                 chatForClient["last_message"] = chat["last_message"].toString();
                 chatForClient["last_message_time"] = chat["last_message_time"].toString();
+                chatForClient["profile"] = chat["profile"].toString();
                 chatForClient["creator"] = founded_chat["creator"].toString();
                 chatForClient["name"] = userFinder(participants[0].toString())["name"].toString();
                 chatArrayForClient.append(chatForClient);
@@ -476,6 +477,18 @@ inline QByteArray create_chat(QJsonObject readData, QString chatType)
     if (chatType == "private_chat") {
         QString myUserId = readData["participants"].toArray()[0].toString();
         newChat["reciever"] = myUserId;
+        for (int k = 0; k < tmp_array.size(); k++) {
+            QJsonObject checkChat;
+            checkChat = tmp_array[k].toObject();
+            if ((checkChat["reciever"] == newChat["reciever"] || checkChat["reciever"] == newChat["creator"]) && (checkChat["creator"] == newChat["reciever"] || checkChat["creator"] == newChat["creator"])) {
+                QJsonObject finalTemp;
+                finalTemp["status"] = "not valid";
+                chatFile.close();
+                userFile.close();
+                return QJsonDocument(finalTemp).toJson();
+            }
+        }
+
     }
     tmp_array.append(newChat);
     tmp[chatType] = tmp_array;
@@ -742,6 +755,6 @@ inline QByteArray login_user(QJsonObject readData)
 
 
 
-// TODO:
+// TODO: check pv for not exist && send profile for contin*
 
 
