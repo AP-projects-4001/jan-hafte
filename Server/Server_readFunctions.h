@@ -634,6 +634,35 @@ inline QByteArray change_data(QJsonObject readData) {
     }
     return QJsonDocument(response).toJson();
 }
+
+inline QByteArray get_this_user(QJsonObject readData) {
+    QJsonObject response;
+    QFile file(USERS_PATH);
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Error opening file";
+    }
+    QByteArray data = file.readAll();
+    file.close();
+    QJsonDocument mydoc = QJsonDocument::fromJson(data);
+    QJsonObject myobj = mydoc.object();
+    QJsonArray myarr = myobj["users"].toArray();
+    for (int i = 0; i < myarr.size(); i++)
+    {
+        QJsonObject user = myarr[i].toObject();
+        if (user["username"].toString() == readData["username"].toString())
+        {
+            response["status"] = "valid";
+            response["header"] = "get_this_user";
+            response["username"] = user["username"].toString();
+            response["name"] = user["name"].toString();
+            response["email"] = user["email"].toString();
+            response["phone"] = user["phone"].toString();
+            response["profile"] = user["profile"].toString();
+        }
+    }
+    return QJsonDocument(response).toJson();
+}
 // workin fine
 inline QByteArray login_user(QJsonObject readData)
 {
@@ -679,6 +708,10 @@ inline QByteArray login_user(QJsonObject readData)
     /*readData2["chat_id"] = "ce32f088-e046-4caf-9e00-2f45378929c1";
     readData2["chat_type"] = "private_chat";
     get_messages(readData2);*/
+    /*readData2["username"] = "atid";
+    QByteArray user;
+    user = get_this_user(readData2);
+    qDebug() << user;*/
     for (int i = 0; i < myarr.size(); i++)
     {
         QJsonObject user = myarr[i].toObject();
@@ -707,34 +740,7 @@ inline QByteArray login_user(QJsonObject readData)
     return QJsonDocument(response).toJson();
 }
 
-inline QByteArray get_this_user(QJsonObject readData) {
-    QJsonObject response;
-    QFile file(USERS_PATH);
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        qDebug() << "Error opening file";
-    }
-    QByteArray data = file.readAll();
-    file.close();
-    QJsonDocument mydoc = QJsonDocument::fromJson(data);
-    QJsonObject myobj = mydoc.object();
-    QJsonArray myarr = myobj["users"].toArray();
-    for (int i = 0; i < myarr.size(); i++)
-    {
-        QJsonObject user = myarr[i].toObject();
-        if (user["username"].toString() == readData["username"].toString())
-        {
-            response["status"] = "valid";
-            response["header"] = "get_this_user";
-            response["username"] = user["username"].toString();
-            response["name"] = user["name"].toString();
-            response["email"] = user["email"].toString();
-            response["phone"] = user["phone"].toString();
-            response["profile"] = user["profile"].toString();
-        }
-    }
-    return QJsonDocument(response).toJson();
-}
+
 
 // TODO:
 
