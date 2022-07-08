@@ -7,6 +7,7 @@
 #include <QMouseEvent>
 #include <QStyle>
 #include "chatData.h"
+#include "utilities.h"
 
 class ChatLable : public QFrame
 {

@@ -74,8 +74,6 @@ void MainWindow::getdata(QJsonObject data)
 
     else if (data["header"]=="create_chat"){
         QString status = data["status"].toString();
-
-
         if (status == "valid") {
 
         }
@@ -101,7 +99,7 @@ void MainWindow::getdata(QJsonObject data)
             recievedUser.username = data["username"].toString();
             recievedUser.phoneNumber = data["phone"].toString();
             recievedUser.name = data["name"].toString();
-            recievedUser.profile = QImage::fromData(data["profile"].toString().toUtf8());
+            recievedUser.profile = Utilities::stringToImage(data["profile"].toString());
 
             foundUserLable = new ChatLable(createChatDialog->ui->contactPage, false, false, recievedUser);
             createChatDialog->ui->contactPageUserSlot->addWidget(foundUserLable);
@@ -144,7 +142,10 @@ void MainWindow::on_contactInfoInput_textChanged(const QString &arg1)
 
 void MainWindow::on_MessageContactButton_clicked()
 {
-    createpv(thisUser);
+    QString inputUsername = createChatDialog->ui->contactInfoInput->text();
+    QJsonArray participants;
+    participants.append(QJsonValue(inputUsername));
+    createpv(participants);
 }
 
 void MainWindow::connectedToServer(QString temp_id)
@@ -173,13 +174,11 @@ void MainWindow::on_sendButton_clicked()
 
 void MainWindow::getThisUserInfo(QString user_unique_id)
 {
-    qDebug() << "Im sending";
     QJsonObject o;
     o["header"]= "get_this_user";
     o["username"] = user_unique_id;
     QJsonDocument d(o);
     e->writedata(d.toJson());
-    qDebug() << "Im sendingggg";
 }
 
 void MainWindow::gettingchat(QString chat_unique_id, QString chat_type)

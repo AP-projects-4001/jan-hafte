@@ -22,8 +22,9 @@ ChatLable::ChatLable(QWidget *parent, bool lastMessage, bool isCheckable, chatDa
                   "QFrame:hover[clicked=\"false\"]{background: #e9e9e9;}"
                   "");
 
-    nameField->setText("Profile Name");
-    lastMessageField->setText("Hi! This is just a test...");
+    nameField->setText(data.name);
+    profilePicSlot->setPixmap(Utilities::maskImage(data.profile, 64));
+    if(lastMessage) lastMessageField->setText(data.lastMessage);
 
     parent->layout()->addWidget(this);
 }

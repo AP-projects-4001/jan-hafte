@@ -33,7 +33,7 @@ void Utilities::setUpTextEditDialog(ChangePropertyDialog *main, QLabel *label, Q
     main->setSubmitButton(button);
 }
 
-QPixmap Utilities::maskImage(QImage &image, int size)
+QPixmap Utilities::maskImage(QImage image, int size)
 {
     image.convertToFormat(QImage::Format_ARGB32);
 
