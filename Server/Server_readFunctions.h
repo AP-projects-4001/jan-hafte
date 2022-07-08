@@ -414,15 +414,15 @@ inline QByteArray register_user(QJsonObject readData)
     QJsonArray all_chat, private_chat, group_chat, channel_chat;
     QJsonObject newUser;
     newUser["username"] = readData["username"].toString();
+    newUser["name"] = readData["username"].toString();
     newUser["password"] = readData["password"].toString();
     newUser["phone"] = readData["phone"].toString();
     newUser["email"] = readData["email"].toString();
-    newUser["birthday"] = readData["birthday"].toString();
     newUser["all_chats"] = all_chat;
     newUser["private_chat"] = private_chat;
     newUser["group_chat"] = group_chat;
     newUser["channel_chat"] = channel_chat;
-    newUser["profile"] = "";
+    newUser["profile"] = readData["profile"].toString();
     jsonArr.append(newUser);
     jsonObj["users"] = jsonArr;
     QJsonDocument newDoc(jsonObj);
@@ -494,7 +494,8 @@ inline QByteArray create_chat(QJsonObject readData, QString chatType)
         }
     }
     QJsonObject finalTemp;
-    finalTemp["status"] = "done";
+    finalTemp["header"] = "create_chat";
+    finalTemp["status"] = "valid";
     return QJsonDocument(finalTemp).toJson();
     // save new chat to user file // CODE HERE //
 }
@@ -518,6 +519,9 @@ inline QByteArray search_user(QJsonObject readData)
             QJsonObject found_user;
             found_user["username"] = user["username"].toString();
             found_user["phone"] = user["phone"].toString();
+            found_user["profile"] = user["profile"].toString();
+            found_user["name"] = user["name"].toString();
+            found_user["header"] = "search_user";
             QJsonDocument newDoc(found_user);
             return newDoc.toJson();
         }
@@ -550,7 +554,10 @@ inline QByteArray save_message(QJsonObject readData)
     update_last_message(readData["chat_id"].toString(), readData["chat_type"].toString(), readData["message_text"].toString(), readData["time"].toString());
     file.write(newDoc.toJson());
     file.close();
-    return "DONE!";
+    QJsonObject server_response;
+    server_response["header"] = "save_message";
+    server_response["status"] = "valid";
+    return QJsonDocument(server_response).toJson();
 }
 
 inline QByteArray get_messages(QJsonObject readData)
@@ -561,6 +568,7 @@ inline QByteArray get_messages(QJsonObject readData)
         qDebug() << "Error opening file";
     }
     QByteArray data = file.readAll();
+    file.close();
     QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
     QJsonObject jsonObj = jsonDoc.object();
     QJsonArray jsonArr = jsonObj["messages"].toArray();
@@ -573,29 +581,51 @@ inline QByteArray get_messages(QJsonObject readData)
             messages.append(message);
         }
     }
-    QJsonDocument newDoc(messages);
-    return newDoc.toJson();
+    QJsonObject server_response;
+    server_response["header"] = "get_messages";
+    server_response["status"] = "valid";
+    server_response["messages"] = messages;
+    return QJsonDocument(server_response).toJson();
 }
 // workin fine
 inline QByteArray change_data(QJsonObject readData) {
+    QFile file(USERS_PATH);
+    if (!file.open(QIODevice::ReadWrite))
+    {
+        qDebug() << "Error opening file";
+    }
+    QByteArray data = file.readAll();
+    file.close();
     QJsonObject response;
-    if (readData["key"] == "username") {
-        updateGlobalFile(USERS_PATH, "users", readData["old_username"].toString(), "username", "username", readData["value"].toString());
+    if (readData["key"] == "name") {
+        updateGlobalFile(USERS_PATH, "users", readData["old_username"].toString(), "username", "name", readData["value"].toString());
         response["status"] = "OK";
-        response["username"] = readData["value"].toString();
+        response["name"] = readData["value"].toString();
     }
     else if (readData["key"] == "email") {
-        updateGlobalFile(USERS_PATH, "users", readData["old_username"].toString(), "username", "email", readData["value"].toString());
-        response["status"] = "OK";
-        response["email"] = readData["value"].toString();
+        if (checkValidEmail(readData["value"].toString(), data)) {
+            updateGlobalFile(USERS_PATH, "users", readData["old_username"].toString(), "username", "email", readData["value"].toString());
+                response["status"] = "valid";
+                response["email"] = readData["value"].toString();
+        }
+        else {
+            response["status"] = "not valid";
+            response["error"] = "Invalid email";
+        }
     }
     else if (readData["key"] == "phone") {
-        updateGlobalFile(USERS_PATH, "users", readData["old_username"].toString(), "username", "phone", readData["value"].toString());
-        response["status"] = "OK";
-        response["phone"] = readData["value"].toString();
+        if (checkValidPhoneNumber(readData["value"].toString(), data)) {
+            updateGlobalFile(USERS_PATH, "users", readData["old_username"].toString(), "username", "phone", readData["value"].toString());
+            response["status"] = "OK";
+            response["phone"] = readData["value"].toString();
+        }
+        else {
+            response["status"] = "not valid";
+            response["error"] = "Invalid phone number";
+        }
     }
     else {
-        response["status"] = "NOK";
+        response["status"] = "not valid";
     }
     return QJsonDocument(response).toJson();
 }
@@ -668,4 +698,7 @@ inline QByteArray login_user(QJsonObject readData)
     return QJsonDocument(response).toJson();
 }
 
-// TODO: after chaning username, participants should be update (add id field for users)
+// TODO: after chaning username, participants should be update (add id field for users) \
+    change all state to valid not valid \
+    add header to response \
+
