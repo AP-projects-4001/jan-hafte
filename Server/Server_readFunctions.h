@@ -99,7 +99,7 @@ QJsonObject messageFinder(QString msg_id) {
     return message;
 }
 
-QJsonObject get_user_chats(QString username) {
+QJsonObject get_user_chats(QString username, QString active_chat_id="None") {
     // get username
     QFile file(USERS_PATH);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -116,20 +116,31 @@ QJsonObject get_user_chats(QString username) {
         if (user["username"] == username) {
             QJsonArray chats;
             QJsonArray all_chats = user["all_chats"].toArray();
-            for (int i = 0; i < all_chats.size(); i++) {
-                QJsonObject chat = all_chats[i].toObject();
+            for (int j = 0; j < all_chats.size(); j++) {
+                QJsonObject chat = all_chats[j].toObject();
                 QJsonObject founded_chat = chatFinder(chat["id"].toString());
                 QJsonArray participants = founded_chat["participants"].toArray();
                 chatForClient["id"] = chat["id"].toString();
                 chatForClient["last_message"] = chat["last_message"].toString();
                 chatForClient["last_message_time"] = chat["last_message_time"].toString();
-                chatForClient["profile"] = chat["profile"].toString();
                 chatForClient["creator"] = founded_chat["creator"].toString();
                 chatForClient["name"] = userFinder(participants[0].toString())["name"].toString();
                 chatArrayForClient.append(chatForClient);
             }
+            // find active caht messages
             QJsonObject finalObject;
+            if (!(active_chat_id == "None")) {
+                QJsonArray messages;
+                QJsonObject active_chat = chatFinder(active_chat_id);
+                int theSize = active_chat["messages"].toArray().size();
+                for (int j = 0; j < theSize; j++) {
+                    QJsonObject message = messageFinder(active_chat["messages"].toArray()[j].toString());
+                    messages.append(message);
+                }
+                finalObject["messages"] = messages;
+            }
             finalObject["chats"] = chatArrayForClient;
+            finalObject["header"] = "get_continuous_data";
             QJsonDocument newDoc(finalObject);
             return newDoc.object();
         }
@@ -755,6 +766,6 @@ inline QByteArray login_user(QJsonObject readData)
 
 
 
-// TODO: check pv for not exist && send profile for contin*
+// TODO:  send profile for contin*
 
 

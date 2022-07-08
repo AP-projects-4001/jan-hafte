@@ -133,8 +133,9 @@ void MyThread::readyRead()
     }
     else if (header == "get_continuous_data") { // {header:get_user_chat, \
                                           username: <username>}, \
+                                          active_chat: <chat_id> \
     }
-        QJsonObject response = get_user_chats(readData["username"].toString());
+        QJsonObject response = get_user_chats(readData["username"].toString(), readData["active_chat"].toString());
         QJsonDocument doc(response);
         QByteArray response_bytes = doc.toJson();
         socket->write(response_bytes);
