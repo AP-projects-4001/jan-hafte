@@ -28,7 +28,9 @@ public:
     void creategroup(QJsonArray participants_username);
     void createchannel(QJsonArray participants_username);
     void searchuser(QString chat_unique_id, QString time);
-    void changeusername();
+    void changeusername(QString newdata);
+    void changeemail(QString newdata);
+    void changephone(QString newdata);
     void save_message(QString chat_unique_id, QString chat_type, QString message, QString time);
     ~MainWindow();
 
