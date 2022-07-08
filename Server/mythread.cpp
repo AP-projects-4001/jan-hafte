@@ -146,6 +146,10 @@ void MyThread::readyRead()
         QByteArray response = change_data(readData);
         socket->write(response);
     }
+    else if (header == "get_this_user") {
+        QByteArray response = get_this_user(readData);
+        socket->write(response);
+    }
 }
 
 // will write on server side window

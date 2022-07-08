@@ -707,6 +707,35 @@ inline QByteArray login_user(QJsonObject readData)
     return QJsonDocument(response).toJson();
 }
 
+inline QByteArray get_this_user(QJsonObject readData) {
+    QJsonObject response;
+    QFile file(USERS_PATH);
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Error opening file";
+    }
+    QByteArray data = file.readAll();
+    file.close();
+    QJsonDocument mydoc = QJsonDocument::fromJson(data);
+    QJsonObject myobj = mydoc.object();
+    QJsonArray myarr = myobj["users"].toArray();
+    for (int i = 0; i < myarr.size(); i++)
+    {
+        QJsonObject user = myarr[i].toObject();
+        if (user["username"].toString() == readData["username"].toString())
+        {
+            response["status"] = "valid";
+            response["header"] = "get_this_user";
+            response["username"] = user["username"].toString();
+            response["name"] = user["name"].toString();
+            response["email"] = user["email"].toString();
+            response["phone"] = user["phone"].toString();
+            response["profile"] = user["profile"].toString();
+        }
+    }
+    return QJsonDocument(response).toJson();
+}
+
 // TODO:
 
 
