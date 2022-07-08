@@ -20,7 +20,6 @@ public:
     ~LoginWindow();
 
 private slots:
-
     void on_LoginButton_clicked();
 
     void on_SignUpInsteadButton_clicked();
@@ -30,7 +29,6 @@ private slots:
     void on_SignUpButton_clicked();
 
     void getdata(QJsonObject data);
-
 signals:
     void loginDone(QString username);
 

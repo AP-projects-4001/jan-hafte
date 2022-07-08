@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent, QString username) :
 {
     ui->setupUi(this);
     MyThread *thread = new MyThread(thisUser.username);
+    //thread->start();
     e = new myClient();
     e->connectingToServer();
     connect(e, SIGNAL(recievemessage(QJsonObject)), this, SLOT(getdata(QJsonObject)));
@@ -25,30 +26,49 @@ MainWindow::MainWindow(QWidget *parent, QString username) :
     settingsDialog = new SettingsDialog(this);
     settingsDialog->setWindowFlags(Qt::Popup | Qt::CustomizeWindowHint);
 
-
+    /*
     for(int i = 0; i < 5; i++) {
         ChatLable *label = new ChatLable(ui->chatListAreaContentSlot, true, true);
         connect(label, SIGNAL(click(ChatLable*)), this, SLOT(onChatLableClick(ChatLable*)));
-    }
-
+    }*/
 
     GraphView *graphView = new GraphView(ui->graphViewArea);
     ui->graphViewArea->layout()->addWidget(graphView);
 
 
-    ui->topInfoBarArea->hide();
     ui->chatLineEdit->clear();
-    //ui->chatViewTypeArea->hide();
+    ui->topInfoBarArea->hide();
+    ui->chatViewTypeArea->hide();
 
     getThisUserInfo(username);
 }
 
-
 void MainWindow::getdata(QJsonObject data)
 {
     qDebug() << "ASdDoneDone";
-    if (data["header"]=="get_user_message"){
 
+    if (data["header"]=="get_continuous_data"){
+        qDebug() << "Ooomad";
+
+        qDeleteAll(listOfChats.begin(), listOfChats.end());
+        listOfChats.clear();
+        QJsonArray chats =  data["chats"].toArray();
+        chatData tempData;
+        for (int i = 0; i < chats.size(); i++) {
+            tempData.id = chats[i].toObject()["name"].toString();
+            tempData.name = chats[i].toObject()["name"].toString();
+            tempData.creator = chats[i].toObject()["creator"].toString();
+            tempData.lastMessage = chats[i].toObject()["last_message"].toString();
+            tempData.lastMessageTime = QDateTime::fromString(chats[i].toObject()["last_message_time"].toString());
+            ChatLable *chat = new ChatLable (ui->chatViewScrollAreaContent, true, true, tempData);
+            connect(chat, SIGNAL(click(ChatLable*)), this, SLOT(onChatLableClick(ChatLable*)));
+            listOfChats.append(chat);
+        }
+
+        QJsonArray messages = data["messages"].toArray();
+        for (int i =0; i < messages.size(); i++) {
+
+        }
     }
 
     else if (data["header"] == "get_this_user") {
@@ -124,6 +144,9 @@ void MainWindow::onChatLableClick(ChatLable *label)
 {
     if(selectedChatLabel != nullptr) {
         selectedChatLabel->setChecked(false);
+    } else {
+        ui->topInfoBarArea->show();
+        ui->chatViewTypeArea->show();
     }
 
     selectedChatLabel = label;
@@ -157,6 +180,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
 
 void MainWindow::on_sendButton_clicked()
 {
@@ -300,7 +324,7 @@ void MainWindow::on_createNewChatButton_clicked()
 
 void MainWindow::on_settingsButton_clicked()
 {
-    getThisUserInfo("Yasin");
+    //getThisUserInfo("Yasin");
     settingsDialog->setUpData(thisUser.name, thisUser.emailAddress, thisUser.phoneNumber, thisUser.profile);
     settingsDialog->show();
 }

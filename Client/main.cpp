@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     LoginHandleUtility lhu(nullptr, l);
     l->exec();
 
-    //if (!lhu.getLoginStat()) { return 0; }
+    if (!lhu.getLoginStat()) { return 0; }
 
     MainWindow m(nullptr, lhu.getUsername());
     m.show();

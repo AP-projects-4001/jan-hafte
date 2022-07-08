@@ -10,6 +10,8 @@ class chatData {
 public:
     enum Type {channel, group, contact};
     QString name;
+    QString creator;
+    QString id;
     QString username;
     Type type;
     QString phoneNumber;
@@ -25,6 +27,8 @@ public:
 inline chatData &chatData::operator=(const chatData &rhs)
 {
     name = rhs.name;
+    creator = rhs.creator;
+    id = rhs.id;
     username = rhs.username;
     type = rhs.type;
     phoneNumber = rhs.phoneNumber;

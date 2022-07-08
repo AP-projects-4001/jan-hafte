@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QDateTime>
 #include "messagebox.h"
 #include "myclient.h"
 #include "mythread.h"
@@ -70,12 +71,11 @@ private:
     SettingsDialog *settingsDialog;
 
     QList <MessageBox*> listOfMessages;
-    QList <ChatLable> listOfChats;
+    QList <ChatLable*> listOfChats;
 
     chatData thisUser;
     chatData selectedChat;
     ChatLable *selectedChatLabel = nullptr;
-
     ChatLable *foundUserLable = nullptr;
 
     QString searchPattern;

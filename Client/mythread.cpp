@@ -18,8 +18,9 @@ void MyThread::run()
 
     if(socket->waitForConnected(-1)){
         while(true){
+
             QJsonObject d;
-            d["header"]="get_user_chat";
+            d["header"]="get_continuous_data";
             d["username"]=user_unique_id;
             QJsonDocument all(d);
             socket->write(all.toJson());
