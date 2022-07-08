@@ -431,6 +431,7 @@ inline QByteArray register_user(QJsonObject readData)
     file.close();
     response["status"] = "valid";
     response["header"] = "register";
+    response["username"] = readData["username"].toString();
     return QJsonDocument(response).toJson();
 }
 // workin fine
@@ -515,7 +516,7 @@ inline QByteArray search_user(QJsonObject readData)
     for (int i = 0; i < jsonArr.size(); i++)
     {
         QJsonObject user = jsonArr[i].toObject();
-        if (user["username"] == readData["searched_field"] || user["phone"] == readData["searched_field"] || user["email"] == readData["searched_field"])
+        if (user["username"] == readData["searched_field"] || user["phone"] == readData["searched_field"])
         {
             found_user["username"] = user["username"].toString();
             found_user["phone"] = user["phone"].toString();
@@ -696,7 +697,7 @@ inline QByteArray login_user(QJsonObject readData)
     {
         response["status"] = "valid";
         response["header"] = "login";
-        response["content"] = get_user_chats(readData["username"].toString()); // TYPE HERE
+        response["username"] = readData["username"].toString(); // TYPE HERE
     }
     else
     {
