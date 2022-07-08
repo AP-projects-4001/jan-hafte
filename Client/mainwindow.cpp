@@ -10,8 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     MyThread *thread = new MyThread(user_unique_id);
     e = new myClient();
     e->connectingToServer();
-    connect(e, SIGNAL(recievemassage(QJsonObject)), this, SLOT(getdata(QJsonObject data)));
-    connect(thread, SIGNAL(recievemassage(QJsonObject)), this, SLOT(getdata(QJsonObject data)));
+    connect(e, SIGNAL(recievemessage(QJsonObject)), this, SLOT(getdata(QJsonObject data)));
+    connect(thread, SIGNAL(recievemessage(QJsonObject)), this, SLOT(getdata(QJsonObject data)));
 
 
     // just testing;
@@ -26,12 +26,46 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->topInfoBarArea->hide();
     ui->chatLineEdit->clear();
     //ui->chatViewTypeArea->hide();
-
 }
 
 void MainWindow::getdata(QJsonObject data)
 {
-    //if (data["header"]=="")
+    if (data["header"]=="get_user_message"){
+
+    }
+
+    else if (data["header"]=="get_messages"){
+
+    }
+
+    else if (data["header"]=="create_chat"){
+        QString status = data["status"].toString();
+
+
+        if (status == "valid") {
+
+        }
+        else if (status == "not valid"){
+//            message->setText("Log In Failed");  // delete this
+//            std::messages->show();
+        }
+        else{
+//            message->setText("Error");  // delete this
+//            message->show();
+        }
+    }
+
+    else if(data["header"]=="search_user"){
+
+    }
+
+    else if(data["header"]=="change_data"){
+
+    }
+
+    else if(data["header"]=="save_message"){
+
+    }
 
 }
 
@@ -53,7 +87,7 @@ void MainWindow::on_sendButton_clicked()
     listOfMessages.append(answer);
 }
 
-void MainWindow::gettingchat(QString chat_unique_id)
+void MainWindow::gettingchat(QString chat_unique_id, QString chat_type)
 {
     QJsonObject o;
     o["header"]="get_messages";
@@ -62,8 +96,6 @@ void MainWindow::gettingchat(QString chat_unique_id)
     o["chat_id"]=chat_unique_id;
     QJsonDocument d(o);
     e->writedata(d.toJson());
-
-    //show them on chat
 }
 
 void MainWindow::createpv(QJsonArray participants_username)
@@ -110,7 +142,40 @@ void MainWindow::searchuser(QString chat_unique_id,QString time)
     e->writedata(d.toJson());
 }
 
-void MainWindow::save_message(QString chat_unique_id, QString message, QString time)
+void MainWindow::changeusername(QString newdata)
+{
+    QJsonObject o;
+    o["header"]="change_data";
+    o["username"]=user_unique_id;
+    o["key"]="username";
+    o["value"]=newdata;
+    QJsonDocument d(o);
+    e->writedata(d.toJson());
+}
+
+void MainWindow::changeemail(QString newdata)
+{
+    QJsonObject o;
+    o["header"]="change_data";
+    o["username"]=user_unique_id;
+    o["key"]="email";
+    o["value"]=newdata;
+    QJsonDocument d(o);
+    e->writedata(d.toJson());
+}
+
+void MainWindow::changephone(QString newdata)
+{
+    QJsonObject o;
+    o["header"]="change_data";
+    o["username"]=user_unique_id;
+    o["key"]="phone";
+    o["value"]=newdata;
+    QJsonDocument d(o);
+    e->writedata(d.toJson());
+}
+
+void MainWindow::save_message(QString chat_unique_id, QString chat_type, QString message, QString time)
 {
     QJsonObject o;
     o["header"]="save_message";

@@ -19,7 +19,7 @@ void MyThread::run()
     if(socket->waitForConnected(-1)){
         while(true){
             QJsonObject d;
-            d["header"]="get_user_message";
+            d["header"]="get_user_chat";
             d["username"]=user_unique_id;
             QJsonDocument all(d);
             socket->write(all.toJson());
@@ -28,10 +28,6 @@ void MyThread::run()
             QJsonDocument doc = QJsonDocument::fromJson(res);
             QJsonObject obj = doc.object();
             emit recievemessage(obj);
-
-            //UI
-
-
             sleep(1000);
         }
     }
@@ -39,8 +35,8 @@ void MyThread::run()
     // note - Qt::DirectConnection is used because it's multithreaded
     //        This makes the slot to be invoked immediately, when the signal is emitted.
 
-    connect(socket, SIGNAL(readyRead()), this, SLOT(readyRead()), Qt::DirectConnection);
-    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    //connect(socket, SIGNAL(readyRead()), this, SLOT(readyRead()), Qt::DirectConnection);
+    //connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
 
     // We'll have multiple clients, we want to know which is which
     //qDebug() << socketDescriptor << " Client connected";

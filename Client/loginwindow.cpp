@@ -24,7 +24,7 @@ void LoginWindow::getdata(QJsonObject data)
     if (data["header"]=="login") {
         QString status = data["status"].toString();
 
-        qDebug() << status;
+        //qDebug() << status;
 
         if (status == "valid") {
 //            QJsonArray content = data["content"].toArray();

@@ -23,12 +23,13 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
-    void gettingchat(QString chat_unique_id);
+    void gettingchat(QString chat_unique_id, QString chat_type);
     void createpv(QJsonArray participants_username);
     void creategroup(QJsonArray participants_username);
     void createchannel(QJsonArray participants_username);
     void searchuser(QString chat_unique_id, QString time);
-    void save_message(QString chat_unique_id, QString message, QString time);
+    void changeusername();
+    void save_message(QString chat_unique_id, QString chat_type, QString message, QString time);
     ~MainWindow();
 
 private slots:
@@ -48,7 +49,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QString chat_type;
     QString user_unique_id;
     myClient *e;
     QJsonObject all;
