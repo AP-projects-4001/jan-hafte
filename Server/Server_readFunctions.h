@@ -124,7 +124,7 @@ QJsonObject get_user_chats(QString username) {
                 chatForClient["last_message"] = chat["last_message"].toString();
                 chatForClient["last_message_time"] = chat["last_message_time"].toString();
                 chatForClient["creator"] = founded_chat["creator"].toString();
-                chatForClient["name"] = userFinder(participants[0].toString())["username"].toString();
+                chatForClient["name"] = userFinder(participants[0].toString())["name"].toString();
                 chatArrayForClient.append(chatForClient);
             }
             QJsonObject finalObject;
@@ -511,21 +511,25 @@ inline QByteArray search_user(QJsonObject readData)
     QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
     QJsonObject jsonObj = jsonDoc.object();
     QJsonArray jsonArr = jsonObj["users"].toArray();
+    QJsonObject found_user;
     for (int i = 0; i < jsonArr.size(); i++)
     {
         QJsonObject user = jsonArr[i].toObject();
-        if (user["username"] == readData["searched_field"] || user["phone"] == readData["searched_field"])
+        if (user["username"] == readData["searched_field"] || user["phone"] == readData["searched_field"] || user["email"] == readData["searched_field"])
         {
-            QJsonObject found_user;
             found_user["username"] = user["username"].toString();
             found_user["phone"] = user["phone"].toString();
             found_user["profile"] = user["profile"].toString();
             found_user["name"] = user["name"].toString();
             found_user["header"] = "search_user";
+            found_user["status"] = "valid";
             QJsonDocument newDoc(found_user);
             return newDoc.toJson();
         }
     }
+    found_user["status"] = "not valid";
+    QJsonDocument newDoc(found_user);
+    return newDoc.toJson();
 }
 // workin fine
 inline QByteArray save_message(QJsonObject readData)
@@ -702,7 +706,6 @@ inline QByteArray login_user(QJsonObject readData)
     return QJsonDocument(response).toJson();
 }
 
-// TODO: after chaning username, participants should be update (add id field for users) \
-    change all state to valid not valid \
+// TODO:
 
 
