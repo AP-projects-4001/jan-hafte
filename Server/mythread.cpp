@@ -147,7 +147,8 @@ void MyThread::readyRead()
         QByteArray response = change_data(readData);
         socket->write(response);
     }
-    else if (header == "get_this_user") {
+    else if (header == "get_this_user") { // { header: get_this_user, \
+                                                username: <username> }
         QByteArray response = get_this_user(readData);
         socket->write(response);
     }

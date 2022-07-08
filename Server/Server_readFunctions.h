@@ -47,6 +47,34 @@ int findUserPlacer(QString id) {
     return -1;
 }
 
+QString findChatPlacer(QString id) {
+    QFile file(CHAT_PATH);
+    file.open(QIODevice::ReadOnly);
+    int place = 0;
+    QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+    file.close();
+    QJsonObject obj = doc.object();
+    QJsonArray chats = obj["chats"].toArray();
+    for (int i = 0; i < chats.size(); i++) {
+        QJsonObject chat = chats[i].toObject();
+        if (chat["id"].toString() == id) {
+            place = i;
+        }
+    }
+    if (place == 0) {
+        return "channel_chat";
+    }
+    else if (place == 1) {
+        return "group_chat";
+    }
+    else if (place == 2) {
+        return "private_chat";
+    }
+    else {
+        return "none";
+    }
+}
+
 QJsonObject chatFinder(QString chat_id) {
     QJsonObject chat;
     QFile file(CHAT_PATH);
@@ -98,7 +126,7 @@ QJsonObject messageFinder(QString msg_id) {
     }
     return message;
 }
-
+// workin fine
 QJsonObject get_user_chats(QString username, QString active_chat_id="None") {
     // get username
     QFile file(USERS_PATH);
@@ -109,7 +137,6 @@ QJsonObject get_user_chats(QString username, QString active_chat_id="None") {
     QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
     QJsonObject jsonObj = jsonDoc.object();
     QJsonArray jsonArr = jsonObj["users"].toArray();
-    QJsonObject chatForClient;
     QJsonArray chatArrayForClient;
     for (int i = 0; i < jsonArr.size(); i++) {
         QJsonObject user = jsonArr[i].toObject();
@@ -117,19 +144,37 @@ QJsonObject get_user_chats(QString username, QString active_chat_id="None") {
             QJsonArray chats;
             QJsonArray all_chats = user["all_chats"].toArray();
             for (int j = 0; j < all_chats.size(); j++) {
+                QJsonObject chatForClient;
                 QJsonObject chat = all_chats[j].toObject();
                 QJsonObject founded_chat = chatFinder(chat["id"].toString());
-                QJsonArray participants = founded_chat["participants"].toArray();
-                chatForClient["id"] = chat["id"].toString();
-                chatForClient["last_message"] = chat["last_message"].toString();
-                chatForClient["last_message_time"] = chat["last_message_time"].toString();
-                chatForClient["creator"] = founded_chat["creator"].toString();
-                chatForClient["name"] = userFinder(participants[0].toString())["name"].toString();
+                qDebug() << founded_chat;
+                if (founded_chat["chat_type"] == "group_chat" || founded_chat["chat_type"] == "channel_chat") {
+                    chatForClient["id"] = chat["id"].toString();
+                    chatForClient["last_message"] = chat["last_message"].toString();
+                    chatForClient["last_message_time"] = chat["last_message_time"].toString();
+                    chatForClient["creator"] = founded_chat["creator"].toString();
+                    chatForClient["name"] = founded_chat["name"].toString();
+                    chatForClient["profile"] = founded_chat["profile"].toString();
+                }
+                else {
+                    chatForClient["id"] = chat["id"].toString();
+                    chatForClient["last_message"] = chat["last_message"].toString();
+                    chatForClient["last_message_time"] = chat["last_message_time"].toString();
+                    chatForClient["creator"] = founded_chat["creator"].toString();
+                    chatForClient["reciever"] = founded_chat["reciever"].toString();
+                    if (founded_chat["creator"].toString() == username) {
+                        chatForClient["phone"] = userFinder(founded_chat["reciever"].toString())["phone"];
+                    }
+                    else {
+                        chatForClient["phone"] = userFinder(founded_chat["creator"].toString())["phone"];
+                    }
+
+                }
                 chatArrayForClient.append(chatForClient);
             }
             // find active caht messages
             QJsonObject finalObject;
-            if (!(active_chat_id == "None")) {
+            if (active_chat_id != "None") {
                 QJsonArray messages;
                 QJsonObject active_chat = chatFinder(active_chat_id);
                 int theSize = active_chat["messages"].toArray().size();
@@ -141,6 +186,7 @@ QJsonObject get_user_chats(QString username, QString active_chat_id="None") {
             }
             finalObject["chats"] = chatArrayForClient;
             finalObject["header"] = "get_continuous_data";
+            qDebug() << finalObject;
             QJsonDocument newDoc(finalObject);
             return newDoc.object();
         }
@@ -479,6 +525,7 @@ inline QByteArray create_chat(QJsonObject readData, QString chatType)
     QJsonObject newChat;
     newChat["id"] = QUuid::createUuid().toString().remove("{").remove("}");
     newChat["creator"] = readData["creator"].toString();
+    newChat["chat_type"] = chatType;
     newChat["participants"] = readData["participants"].toArray();
     newChat["messages"] = QJsonArray();
     if (chatType == "channel_chat" || chatType == "group_chat") {
@@ -524,7 +571,7 @@ inline QByteArray create_chat(QJsonObject readData, QString chatType)
     return QJsonDocument(finalTemp).toJson();
     // save new chat to user file // CODE HERE //
 }
-
+// workin fine
 inline QByteArray search_user(QJsonObject readData)
 {
     QFile file(USERS_PATH);
@@ -658,7 +705,7 @@ inline QByteArray change_data(QJsonObject readData) {
     }
     return QJsonDocument(response).toJson();
 }
-
+// workin fine
 inline QByteArray get_this_user(QJsonObject readData) {
     QJsonObject response;
     QFile file(USERS_PATH);
@@ -709,25 +756,26 @@ inline QByteArray login_user(QJsonObject readData)
     QJsonArray content_array;
     QJsonArray myarr = myobj["users"].toArray();
     vector<QString> all_chats_vector;
-    /*QJsonObject readData2;
-    QJsonArray test;                           |||||   FOR TESTING CREATE CHAT |||||
-    test.append("mmd");
-    readData2["chat_type"] = "private_chat";
-    readData2["creator"] = "atid";
-    readData2["participants"] = test;
-    create_chat(readData2, "private_chat");*/
+    //QJsonObject readData2;
+    //QJsonArray test;                           // |||||   FOR TESTING CREATE CHAT |||||
+    //test.append("mmd");
+    //test.append("chima");
+    //readData2["chat_type"] = "group_chat";
+    //readData2["creator"] = "atid";
+    //readData2["participants"] = test;
+    //create_chat(readData2, "group_chat");
 
     //QJsonObject readData2;
     /*readData["old_username"] = "atid";
     readData["key"] = "username";
     readData["value"] = "atid2";
     change_data(readData);*/
-    /*readData2["chat_id"] = "ce32f088-e046-4caf-9e00-2f45378929c1";
+    /*readData2["chat_id"] = "f013082e-8ba8-48d7-82c5-e0862130ffcc";
     readData2["chat_type"] = "private_chat";
     readData2["message_text"] = "Salam azizam!";
     readData2["time"] = "12931231515";
-    readData2["sender"] = "mmd";*/
-    //save_message(readData2);
+    readData2["sender"] = "atid";
+    save_message(readData2);*/
 
     /*readData2["chat_id"] = "ce32f088-e046-4caf-9e00-2f45378929c1";
     readData2["chat_type"] = "private_chat";
@@ -736,6 +784,8 @@ inline QByteArray login_user(QJsonObject readData)
     QByteArray user;
     user = get_this_user(readData2);
     qDebug() << user;*/
+
+    //get_user_chats("atid");
     for (int i = 0; i < myarr.size(); i++)
     {
         QJsonObject user = myarr[i].toObject();
@@ -766,6 +816,6 @@ inline QByteArray login_user(QJsonObject readData)
 
 
 
-// TODO:  send profile for contin*
+// TODO:
 
 
