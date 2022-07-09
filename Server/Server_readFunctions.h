@@ -156,30 +156,23 @@ QJsonObject get_user_chats(QString username, QString active_chat_id="None") {
                     chatForClient["creator"] = founded_chat["creator"].toString();
                     chatForClient["name"] = founded_chat["name"].toString();
                     chatForClient["profile"] = founded_chat["profile"].toString();
-                    chatForClient["chat_type"] = founded_chat["chat_type"]; //////////////////////////////////////////////////////////////
                 }
                 else {
                     chatForClient["id"] = chat["id"].toString();
                     chatForClient["last_message"] = chat["last_message"].toString();
                     chatForClient["last_message_time"] = chat["last_message_time"].toString();
-                    chatForClient["chat_type"] = founded_chat["chat_type"]; //////////////////////////////////////////////////////////////
                     chatForClient["creator"] = founded_chat["creator"].toString();
                     chatForClient["reciever"] = founded_chat["reciever"].toString();
                     if (founded_chat["creator"].toString() == username) {
                         chatForClient["phone"] = userFinder(founded_chat["reciever"].toString())["phone"];
                         chatForClient["profile"] = userFinder(founded_chat["reciever"].toString())["profile"];
-                        //tof
-                        chatForClient["name"] = userFinder(founded_chat["reciever"].toString())["name"];
                     }
                     else {
                         chatForClient["phone"] = userFinder(founded_chat["creator"].toString())["phone"];
                         chatForClient["profile"] = userFinder(founded_chat["creator"].toString())["profile"];
-                        //tof
-                        chatForClient["name"] = userFinder(founded_chat["creator"].toString())["name"];
                     }
 
                 }
-
                 chatArrayForClient.append(chatForClient);
             }
             // find active caht messages
@@ -714,6 +707,11 @@ inline QByteArray change_data(QJsonObject readData) {
             response["status"] = "not valid";
             response["error"] = "Invalid phone number";
         }
+    }
+    else if (readData["key"] == "profile") {
+          updateGlobalFile(USERS_PATH, "users", readData["username"].toString(), "username", "profile", readData["value"].toString());
+          response["status"] = "valid";
+          response["profile"] = readData["value"].toString();
     }
     else {
         response["status"] = "not valid";
