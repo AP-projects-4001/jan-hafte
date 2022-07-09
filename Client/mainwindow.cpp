@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent, QString username) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    MyThread *thread = new MyThread(thisUser.username);
+    MyThread *thread = new MyThread(username);
     //thread->start();
     e = new myClient();
     e->connectingToServer();
@@ -136,7 +136,16 @@ void MainWindow::getdata(QJsonObject data)
     }
 
     else if(data["header"]=="save_message"){
+        QString status = data["status"].toString();
+        if (status == "valid") {
+            qDebug()<<"saved";
+        }
+        else if (status == "not valid"){
 
+        }
+        else{
+
+        }
     }
 }
 
