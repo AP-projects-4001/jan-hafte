@@ -173,6 +173,7 @@ QJsonObject get_user_chats(QString username, QString active_chat_id="None") {
                     }
 
                 }
+                chatForClient["chat_type"] = founded_chat["chat_type"];
                 chatArrayForClient.append(chatForClient);
             }
             // find active caht messages
