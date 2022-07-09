@@ -394,6 +394,14 @@ void MainWindow::changeprofile(QString newdata)
     e->writedata(d.toJson());
 }
 
+void MainWindow::getallusers()
+{
+    QJsonObject o;
+    o["header"]="get_all_users";
+    QJsonDocument d(o);
+    e->writedata(d.toJson());
+}
+
 void MainWindow::save_message(QString chat_unique_id, QString chat_type, QString message, QString time)
 {
     //qDebug() <<

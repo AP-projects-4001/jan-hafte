@@ -36,6 +36,8 @@ public:
     void changeusername(QString newdata);
     void changeemail(QString newdata);
     void changephone(QString newdata);
+    void changeprofile(QString newdata);
+    void getallusers();
     void save_message(QString chat_unique_id, QString chat_type, QString message, QString time);
     ~MainWindow();
 
