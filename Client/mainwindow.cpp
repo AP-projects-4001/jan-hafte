@@ -104,6 +104,7 @@ void MainWindow::getdata(QJsonObject data)
 
         }
     }
+
     else if (data["header"]=="get_messages"){
 
     }
@@ -146,9 +147,10 @@ void MainWindow::getdata(QJsonObject data)
     }
 
     else if(data["header"]=="change_data"){
+        qDebug() << ":))))";
         QString status = data["status"].toString();
         if(status == "valid") {
-            getThisUserInfo(thisUser.username);
+            //getThisUserInfo(thisUser.username);
         } else if (status == "not valid") {
 
         } else {
