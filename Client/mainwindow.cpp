@@ -383,6 +383,17 @@ void MainWindow::changephone(QString newdata)
     e->writedata(d.toJson());
 }
 
+void MainWindow::changeprofile(QString newdata)
+{
+    QJsonObject o;
+    o["header"]="change_data";
+    o["username"]=thisUser.username;
+    o["key"]="profile";
+    o["value"]=newdata;
+    QJsonDocument d(o);
+    e->writedata(d.toJson());
+}
+
 void MainWindow::save_message(QString chat_unique_id, QString chat_type, QString message, QString time)
 {
     //qDebug() <<
