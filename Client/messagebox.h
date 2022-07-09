@@ -7,12 +7,13 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QDateTime>
 
 class MessageBox : public QWidget
 {
     Q_OBJECT
 public:
-    explicit MessageBox(QWidget *parent = nullptr, bool isSender = true);
+    explicit MessageBox(QWidget *parent = nullptr, bool isSender = true, QString text = "", QDateTime time = QDateTime());
 
     void setText(const QString text);
 
@@ -25,6 +26,9 @@ private:
 
     QHBoxLayout *horizontalLayout;
     QVBoxLayout *verticalLayout;
+
+    QString message;
+    QDateTime time;
 };
 
 #endif // MESSAGEBOX_H

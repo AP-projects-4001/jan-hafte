@@ -1,7 +1,7 @@
 #include "messagebox.h"
 
-MessageBox::MessageBox(QWidget *parent, bool isSender)
-    : QWidget{parent}
+MessageBox::MessageBox(QWidget *parent, bool isSender, QString text, QDateTime time)
+    : QWidget{parent}, message(text), time(time)
 {
     messageFrame = new QFrame(this);
     messageFrame->setObjectName("frame");
@@ -22,7 +22,7 @@ MessageBox::MessageBox(QWidget *parent, bool isSender)
 
     this->setLayout(horizontalLayout);
 
-    messageText = new QLabel (messageFrame);
+    messageText = new QLabel(messageFrame);
 
     verticalLayout = new QVBoxLayout();
     verticalLayout ->setContentsMargins(0,0,0,0);
@@ -43,6 +43,7 @@ MessageBox::MessageBox(QWidget *parent, bool isSender)
     messageText->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
     parent->layout()->addWidget(this);
+    messageText->setText(text);
 }
 
 void MessageBox::setText(const QString text)

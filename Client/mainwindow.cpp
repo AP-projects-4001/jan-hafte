@@ -8,8 +8,14 @@ MainWindow::MainWindow(QWidget *parent, QString username) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+<<<<<<< Updated upstream
     MyThread *thread = new MyThread(username);
     //thread->start();
+=======
+    selectedChat = new chatData;
+    MyThread *thread = new MyThread(username, selectedChat);
+    thread->start();
+>>>>>>> Stashed changes
     e = new myClient();
     e->connectingToServer();
     connect(e, SIGNAL(recievemessage(QJsonObject)), this, SLOT(getdata(QJsonObject)));
@@ -45,29 +51,44 @@ MainWindow::MainWindow(QWidget *parent, QString username) :
 
 void MainWindow::getdata(QJsonObject data)
 {
-    qDebug() << "ASdDoneDone";
+    //qDebug() << "ASdDoneDone";
 
     if (data["header"]=="get_continuous_data"){
-        qDebug() << "Ooomad";
 
         qDeleteAll(listOfChats.begin(), listOfChats.end());
         listOfChats.clear();
         QJsonArray chats =  data["chats"].toArray();
         chatData tempData;
         for (int i = 0; i < chats.size(); i++) {
-            tempData.id = chats[i].toObject()["name"].toString();
-            tempData.name = chats[i].toObject()["name"].toString();
+
+            tempData.id = chats[i].toObject()["id"].toString();
             tempData.creator = chats[i].toObject()["creator"].toString();
+            tempData.reciever = chats[i].toObject()["reciever"].toString();
+            tempData.name = chats[i].toObject()["name"].toString();
+
+            tempData.profile = Utilities::stringToImage(chats[i].toObject()["profile"].toString());
+            tempData.phoneNumber = chats[i].toObject()["phone"].toString();
             tempData.lastMessage = chats[i].toObject()["last_message"].toString();
             tempData.lastMessageTime = QDateTime::fromString(chats[i].toObject()["last_message_time"].toString());
-            ChatLable *chat = new ChatLable (ui->chatViewScrollAreaContent, true, true, tempData);
+
+            qDebug() << tempData.profile;
+
+            ChatLable *chat = new ChatLable (ui->chatListAreaContentSlot, true, true, tempData);
             connect(chat, SIGNAL(click(ChatLable*)), this, SLOT(onChatLableClick(ChatLable*)));
+            if(tempData.id == selectedChat->id && anyChatIsActive) chat->setChecked(true);
             listOfChats.append(chat);
         }
 
+        qDeleteAll(listOfMessages.begin(), listOfMessages.end());
+        listOfMessages.clear();
         QJsonArray messages = data["messages"].toArray();
         for (int i =0; i < messages.size(); i++) {
-
+            QString text = messages[i].toObject()["message_text"].toString();
+            QString sender = messages[i].toObject()["sender"].toString();
+            bool isSender = (sender == thisUser.username);
+            QDateTime time = QDateTime::fromString(messages[i].toObject()["time"].toString());
+            MessageBox *message = new MessageBox(ui->chatViewScrollAreaContent, isSender, text);
+            listOfMessages.append(message);
         }
     }
 
@@ -112,9 +133,6 @@ void MainWindow::getdata(QJsonObject data)
     else if (data["header"]=="search_user") {
 
         if (data["status"].toString() == "valid") {
-
-            qDebug() << "HSdfaAaaa";
-
             chatData recievedUser;
             recievedUser.username = data["username"].toString();
             recievedUser.phoneNumber = data["phone"].toString();
@@ -151,16 +169,17 @@ void MainWindow::getdata(QJsonObject data)
 
 void MainWindow::onChatLableClick(ChatLable *label)
 {
-    if(selectedChatLabel != nullptr) {
-        selectedChatLabel->setChecked(false);
-    } else {
+    if(!anyChatIsActive) {
         ui->topInfoBarArea->show();
         ui->chatViewTypeArea->show();
+        anyChatIsActive = true;
+    } else {
+        if(selectedChatLabel != nullptr) {
+            selectedChatLabel->setChecked(false);
+        }
+        label->setChecked(true);
     }
-
-    selectedChatLabel = label;
-    selectedChat = label->getData();
-    label->setChecked(true);
+        *selectedChat = label->getData();
 }
 
 void MainWindow::on_contactInfoInput_textChanged(const QString &arg1)
@@ -181,6 +200,16 @@ void MainWindow::on_MessageContactButton_clicked()
 }
 
 void MainWindow::connectedToServer(QString temp_id)
+{
+
+}
+
+void MainWindow::updateChatList()
+{
+
+}
+
+void MainWindow::updateMessageList()
 {
 
 }
@@ -324,12 +353,10 @@ void MainWindow::save_message(QString chat_unique_id, QString chat_type, QString
     e->writedata(d.toJson());
 }
 
-
 void MainWindow::on_createNewChatButton_clicked()
 {
     createChatDialog->exec();
 }
-
 
 void MainWindow::on_settingsButton_clicked()
 {
@@ -337,7 +364,6 @@ void MainWindow::on_settingsButton_clicked()
     settingsDialog->setUpData(thisUser.name, thisUser.emailAddress, thisUser.phoneNumber, thisUser.profile);
     settingsDialog->show();
 }
-
 
 void MainWindow::on_showChatViewButton_clicked()
 {
@@ -347,7 +373,6 @@ void MainWindow::on_showChatViewButton_clicked()
     ui->listViewPages->setCurrentIndex(0);
 }
 
-
 void MainWindow::on_showGraphViewButton_clicked()
 {
     ui->showChatViewButton->setChecked(false);
@@ -355,7 +380,6 @@ void MainWindow::on_showGraphViewButton_clicked()
     ui->activeSectionPages->setCurrentIndex(1);
     ui->listViewPages->setCurrentIndex(1);
 }
-
 
 void MainWindow::on_searchBar_textChanged(const QString &arg1)
 {

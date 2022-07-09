@@ -10,9 +10,10 @@ ChatLable::ChatLable(QWidget *parent, bool lastMessage, bool isCheckable, chatDa
     nameField = new QLabel(this);
     lastMessageField = new QLabel(this);
 
-    setMinimumHeight(64);
+    setMinimumHeight(72);
     profilePicSlot->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     profilePicSlot->setFixedSize(64,64);
+    profilePicSlot->move(5,4);
     nameField->move(70, 15);
     lastMessageField->move(70,30);
     this->setProperty("clicked", false);
@@ -24,7 +25,9 @@ ChatLable::ChatLable(QWidget *parent, bool lastMessage, bool isCheckable, chatDa
 
     nameField->setText(data.name);
     profilePicSlot->setPixmap(Utilities::maskImage(data.profile, 64));
+
     if(lastMessage) lastMessageField->setText(data.lastMessage);
+    else lastMessageField->setText(data.phoneNumber);
 
     parent->layout()->addWidget(this);
 }

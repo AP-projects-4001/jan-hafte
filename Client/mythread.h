@@ -7,12 +7,13 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonValue>
+#include "chatData.h"
 
 class MyThread : public QThread
 {
     Q_OBJECT
 public:
-    explicit MyThread(QString user_unique_id);
+    explicit MyThread(QString user_unique_id, chatData* selectedChat);
 
     void run();
 
@@ -27,6 +28,7 @@ public slots:
 private:
     QTcpSocket *socket;
     QString user_unique_id;
+    chatData *activeChat;
 };
 
 #endif // MYTHREAD_H

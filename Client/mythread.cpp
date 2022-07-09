@@ -3,9 +3,10 @@
 #include <QFile>
 #include <QDebug>
 
-MyThread::MyThread(QString user_unique_id)
+MyThread::MyThread(QString user_unique_id, chatData* selectedChat)
 {
     this->user_unique_id = user_unique_id;
+    this->activeChat = selectedChat;
 }
 
 void MyThread::run()
@@ -18,10 +19,11 @@ void MyThread::run()
 
     if(socket->waitForConnected(-1)){
         while(true){
-
+            qDebug() << "DonDone";
             QJsonObject d;
             d["header"]="get_continuous_data";
-            d["username"]=user_unique_id;
+            d["username"] = user_unique_id;
+            d["active_chat"] = activeChat->id;
             QJsonDocument all(d);
             socket->write(all.toJson());
             socket->waitForReadyRead(-1);
@@ -32,6 +34,7 @@ void MyThread::run()
             sleep(1);
         }
     }
+
     // connect socket and signal
     // note - Qt::DirectConnection is used because it's multithreaded
     //        This makes the slot to be invoked immediately, when the signal is emitted.

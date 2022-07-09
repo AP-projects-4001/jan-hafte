@@ -66,7 +66,6 @@ private:
     myClient *e;
     QJsonObject all;
 
-
     CreateChatDialog *createChatDialog;
     SettingsDialog *settingsDialog;
 
@@ -74,11 +73,17 @@ private:
     QList <ChatLable*> listOfChats;
 
     chatData thisUser;
-    chatData selectedChat;
+
+    chatData *selectedChat;
+    bool anyChatIsActive = false;
     ChatLable *selectedChatLabel = nullptr;
+
     ChatLable *foundUserLable = nullptr;
 
     QString searchPattern;
+
+    void updateChatList();
+    void updateMessageList();
 };
 
 #endif // MAINWINDOW_H
