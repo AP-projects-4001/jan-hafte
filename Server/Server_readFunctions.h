@@ -129,7 +129,7 @@ QJsonObject messageFinder(QString msg_id) {
     return message;
 }
 // workin fine
-QJsonObject get_user_chats(QString username, QString active_chat_id="None") {
+QJsonObject get_user_chats(QString username, QString active_chat_id = "None") {
     // get username
     QFile file(USERS_PATH);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -397,7 +397,7 @@ void update_last_message(QString chat_id, QString chatType, QString last_message
     QJsonObject jsonObj2 = jsonDoc2.object();
     QJsonArray jsonArr2 = jsonObj2["users"].toArray();
     qDebug() << mypart;
-    for (int i=0; i < mypart.size(); i++) {
+    for (int i = 0; i < mypart.size(); i++) {
         qDebug() << mypart[i].toString();
         QJsonObject theUser = userFinder(mypart[i].toString());
         qDebug() << theUser;
@@ -698,8 +698,8 @@ inline QByteArray change_data(QJsonObject readData) {
     else if (readData["key"] == "email") {
         if (checkValidEmail(readData["value"].toString(), data)) {
             updateGlobalFile(USERS_PATH, "users", readData["username"].toString(), "username", "email", readData["value"].toString());
-                response["status"] = "valid";
-                response["email"] = readData["value"].toString();
+            response["status"] = "valid";
+            response["email"] = readData["value"].toString();
         }
         else {
             response["status"] = "not valid";
@@ -718,13 +718,15 @@ inline QByteArray change_data(QJsonObject readData) {
         }
     }
     else if (readData["key"] == "profile") {
-          updateGlobalFile(USERS_PATH, "users", readData["username"].toString(), "username", "profile", readData["value"].toString());
-          response["status"] = "valid";
-          response["profile"] = readData["value"].toString();
+        updateGlobalFile(USERS_PATH, "users", readData["username"].toString(), "username", "profile", readData["value"].toString());
+        response["status"] = "valid";
+        response["profile"] = readData["value"].toString();
     }
     else {
         response["status"] = "not valid";
     }
+    response["header"] = "change_data";
+    qDebug() << response;
     return QJsonDocument(response).toJson();
 }
 // workin fine
