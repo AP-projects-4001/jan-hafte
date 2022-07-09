@@ -781,37 +781,6 @@ inline QByteArray login_user(QJsonObject readData)
     QJsonArray content_array;
     QJsonArray myarr = myobj["users"].toArray();
     vector<QString> all_chats_vector;
-    //QJsonObject readData2;
-    //QJsonArray test;                           // |||||   FOR TESTING CREATE CHAT |||||
-    //test.append("mmd");
-    //test.append("chima");
-    //readData2["chat_type"] = "group_chat";
-    //readData2["creator"] = "Atid";
-    //readData2["participants"] = test;
-    //create_chat(readData2, "group_chat");
-
-    //QJsonObject readData2;
-    /*readData["old_username"] = "atid";
-    readData["key"] = "username";
-    readData["value"] = "atid2";
-    change_data(readData);*/
-    /*readData2["chat_id"] = "f013082e-8ba8-48d7-82c5-e0862130ffcc";
-    readData2["chat_type"] = "private_chat";
-    readData2["message_text"] = "Salam azizam!";
-    readData2["time"] = "12931231515";
-    readData2["sender"] = "atid";
-    save_message(readData2);*/
-    /*readData2["chat_id"] = "5ad27cd7-9cbc-4fe4-bb13-f0a0d39d19c2";
-    readData2["chat_type"] = "group_chat";
-    get_messages(readData2);*/
-    /*readData2["chat_id"] = "ce32f088-e046-4caf-9e00-2f45378929c1";
-    readData2["chat_type"] = "private_chat";
-    get_messages(readData2);*/
-    /*readData2["username"] = "atid";
-    QByteArray user;
-    user = get_this_user(readData2);
-    qDebug() << user;*/
-    //get_user_chats("Emad", "a5460c6b-5a41-4c15-a00f-f0efd1d36513");
     for (int i = 0; i < myarr.size(); i++)
     {
         QJsonObject user = myarr[i].toObject();
