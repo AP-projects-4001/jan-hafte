@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_createchatdialog.h"
 #include "ui_mainwindow.h"
-#include <QScrollBar>
 
 MainWindow::MainWindow(QWidget *parent, QString username) :
     QMainWindow(parent),
@@ -22,16 +21,12 @@ MainWindow::MainWindow(QWidget *parent, QString username) :
     createChatDialog->setWindowFlags(Qt::Popup | Qt::CustomizeWindowHint);
     connect(createChatDialog->ui->contactInfoInput, SIGNAL(textChanged(QString)), this, SLOT(on_contactInfoInput_textChanged(const QString&)));
     connect(createChatDialog->ui->MessageContactButton, SIGNAL(clicked()), this, SLOT(on_MessageContactButton_clicked()));
+    connect(createChatDialog->ui->createGroupButton, SIGNAL(clicked()), this, SLOT(on_createGroupButton_clicked()));
 
 
     settingsDialog = new SettingsDialog(this);
     settingsDialog->setWindowFlags(Qt::Popup | Qt::CustomizeWindowHint);
 
-    /*
-    for(int i = 0; i < 5; i++) {
-        ChatLable *label = new ChatLable(ui->chatListAreaContentSlot, true, true);
-        connect(label, SIGNAL(click(ChatLable*)), this, SLOT(onChatLableClick(ChatLable*)));
-    }*/
 
     GraphView *graphView = new GraphView(ui->graphViewArea);
     ui->graphViewArea->layout()->addWidget(graphView);
@@ -65,9 +60,6 @@ void MainWindow::getdata(QJsonObject data)
             tempData.phoneNumber = chats[i].toObject()["phone"].toString();
             tempData.lastMessage = chats[i].toObject()["last_message"].toString();
             tempData.lastMessageTime = QDateTime::fromString(chats[i].toObject()["last_message_time"].toString());
-
-            qDebug() << tempData.profile;
-
             ChatLable *chat = new ChatLable (ui->chatListAreaContentSlot, true, true, tempData);
             connect(chat, SIGNAL(click(ChatLable*)), this, SLOT(onChatLableClick(ChatLable*)));
             if(tempData.id == selectedChat->id && anyChatIsActive) chat->setChecked(true);
@@ -178,6 +170,9 @@ void MainWindow::onChatLableClick(ChatLable *label)
         label->setChecked(true);
     }
         *selectedChat = label->getData();
+        ui->activeChatProfile->setPixmap(Utilities::maskImage(label->getData().profile));
+        ui->activeChatName->setText(label->getData().name);
+        ui->activeChatDetail->setText(label->getData().phoneNumber);
 }
 
 void MainWindow::on_contactInfoInput_textChanged(const QString &arg1)
@@ -195,6 +190,50 @@ void MainWindow::on_MessageContactButton_clicked()
     QJsonArray participants;
     participants.append(QJsonValue(inputUsername));
     createpv(participants);
+}
+
+void MainWindow::on_createGroupButton_clicked()
+{
+    QJsonArray participants;
+    for(int i =0; i < groupUsersSelection.size(); i++) {
+        if(groupUsersSelection[i]->getChecked()) {
+            QString username;
+            if(groupUsersSelection[i]->getData().creator == thisUser.username) {
+                if(groupUsersSelection[i]->getData().reciever != thisUser.username) {
+                    username = groupUsersSelection[i]->getData().reciever;
+                    participants.append(QJsonValue(username));
+                }
+            } else if (groupUsersSelection[i]->getData().reciever == thisUser.username) {
+                username = groupUsersSelection[i]->getData().creator;
+                participants.append(QJsonValue(username));
+            } else {
+
+            }
+        }
+    }
+    creategroup(participants);
+}
+
+void MainWindow::on_createChannelButton_clicked()
+{
+    QJsonArray participants;
+    for(int i =0; i < channelUsersSelection.size(); i++) {
+        if(channelUsersSelection[i]->getChecked()) {
+            QString username;
+            if(channelUsersSelection[i]->getData().creator == thisUser.username) {
+                if(channelUsersSelection[i]->getData().reciever != thisUser.username) {
+                    username = channelUsersSelection[i]->getData().reciever;
+                    participants.append(QJsonValue(username));
+                }
+            } else if (channelUsersSelection[i]->getData().reciever == thisUser.username) {
+                username = channelUsersSelection[i]->getData().creator;
+                participants.append(QJsonValue(username));
+            } else {
+
+            }
+        }
+    }
+    creategroup(participants);
 }
 
 void MainWindow::connectedToServer(QString temp_id)
@@ -216,7 +255,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
 
 void MainWindow::on_sendButton_clicked()
 {
@@ -355,12 +393,23 @@ void MainWindow::save_message(QString chat_unique_id, QString chat_type, QString
 
 void MainWindow::on_createNewChatButton_clicked()
 {
+    for (int i = 0; i < listOfChats.size(); i++) {
+        if(listOfChats[i]->getData().type == "private_chat") {
+            ChatLable *channelUser = new ChatLable(createChatDialog->ui->channelMembers, false, true, listOfChats[i]->getData());
+            ChatLable *groupUser = new ChatLable(createChatDialog->ui->groupMembers, false, true, listOfChats[i]->getData());
+            groupUsersSelection.append(groupUser);
+            channelUsersSelection.append(channelUser);
+        }
+    }
     createChatDialog->exec();
+    qDeleteAll(groupUsersSelection);
+    qDeleteAll(channelUsersSelection);
+    groupUsersSelection.clear();
+    channelUsersSelection.clear();
 }
 
 void MainWindow::on_settingsButton_clicked()
 {
-    //getThisUserInfo("Yasin");
     settingsDialog->setUpData(thisUser.name, thisUser.emailAddress, thisUser.phoneNumber, thisUser.profile);
     settingsDialog->show();
 }
@@ -383,6 +432,6 @@ void MainWindow::on_showGraphViewButton_clicked()
 
 void MainWindow::on_searchBar_textChanged(const QString &arg1)
 {
-
+    searchPattern = arg1;
 }
 

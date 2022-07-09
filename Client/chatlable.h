@@ -18,10 +18,11 @@ public:
     void mouseReleaseEvent(QMouseEvent *me);
     void setChecked(bool val);
     void setCheckable (bool val);
+    bool getChecked() const;
+    bool getCheckable() const;
 
 
-
-    chatData getData();
+    chatData getData() const;
 
 signals:
     void click(ChatLable* label);

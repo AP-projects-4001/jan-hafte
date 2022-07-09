@@ -511,12 +511,98 @@ border-left: 2px solid #9e9e9e;
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>64</height>
+           <height>72</height>
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">QLabel#activeChatName {
+	font: 800 14pt &quot;Helvetica Now Display&quot;;
+}
+QLabel#activeChatDetail {
+	font: 400 12pt &quot;Helvetica Now Display&quot;;
+}</string>
          </property>
+         <widget class="QLabel" name="activeChatProfile">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>4</y>
+            <width>64</width>
+            <height>64</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>64</width>
+            <height>64</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>64</width>
+            <height>64</height>
+           </size>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="Resources.qrc">:/Graphics/Graphics/icons8_test_account_64px.png</pixmap>
+          </property>
+         </widget>
+         <widget class="QLabel" name="activeChatName">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>10</y>
+            <width>200</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Name</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="activeChatDetail">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>35</y>
+            <width>200</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Detail</string>
+          </property>
+         </widget>
         </widget>
        </item>
        <item>
@@ -576,7 +662,7 @@ border-bottom: 2px solid #9e9e9e;
                 <x>0</x>
                 <y>0</y>
                 <width>678</width>
-                <height>459</height>
+                <height>451</height>
                </rect>
               </property>
               <property name="styleSheet">

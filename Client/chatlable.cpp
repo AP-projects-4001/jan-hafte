@@ -61,7 +61,18 @@ void ChatLable::setCheckable(bool val)
     isCheckable = val;
 }
 
-chatData ChatLable::getData()
+bool ChatLable::getChecked() const
+{
+    return isChecked;
+}
+
+bool ChatLable::getCheckable() const
+{
+    return isCheckable;
+}
+
+
+chatData ChatLable::getData() const
 {
     return data;
 }

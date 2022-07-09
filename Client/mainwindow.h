@@ -12,6 +12,8 @@
 #include "utilities.h"
 #include "settingsdialog.h"
 #include "graphview.h"
+#include <QScrollBar>
+
 
 
 namespace Ui {
@@ -58,6 +60,10 @@ private slots:
 
     void on_MessageContactButton_clicked();
 
+    void on_createGroupButton_clicked();
+
+    void on_createChannelButton_clicked();
+
     void connectedToServer(QString temp_id);
 
 private:
@@ -70,11 +76,9 @@ private:
     SettingsDialog *settingsDialog;
 
     QList <MessageBox*> listOfMessages;
-    QList <ChatLable*> listOfChats;
+    QList <ChatLable*> listOfChats, groupUsersSelection, channelUsersSelection;
 
-    chatData thisUser;
-
-    chatData *selectedChat;
+    chatData thisUser, *selectedChat;
     bool anyChatIsActive = false;
     ChatLable *selectedChatLabel = nullptr;
 

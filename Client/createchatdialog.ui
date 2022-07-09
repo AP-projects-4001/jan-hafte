@@ -349,7 +349,9 @@ border:none;
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
            <item>
-            <layout class="QVBoxLayout" name="channelMembersLayout"/>
+            <widget class="QWidget" name="channelMembers" native="true">
+             <layout class="QVBoxLayout" name="channelMembersLayout"/>
+            </widget>
            </item>
            <item>
             <spacer name="verticalSpacer">
@@ -510,7 +512,9 @@ background:white;
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_6">
            <item>
-            <layout class="QVBoxLayout" name="groupMembersLayout"/>
+            <widget class="QWidget" name="groupMembers" native="true">
+             <layout class="QVBoxLayout" name="groupMembersLayout"/>
+            </widget>
            </item>
            <item>
             <spacer name="verticalSpacer_2">
