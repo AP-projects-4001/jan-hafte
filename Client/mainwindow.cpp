@@ -69,7 +69,7 @@ void MainWindow::getdata(QJsonObject data)
         qDeleteAll(listOfMessages.begin(), listOfMessages.end());
         listOfMessages.clear();
         QJsonArray messages = data["messages"].toArray();
-        for (int i =0; i < messages.size(); i++) {
+        for (int i = 0; i < messages.size(); i++) {
             QString text = messages[i].toObject()["message_text"].toString();
             QString sender = messages[i].toObject()["sender"].toString();
             bool isSender = (sender == thisUser.username);
@@ -211,7 +211,9 @@ void MainWindow::on_createGroupButton_clicked()
             }
         }
     }
-    creategroup(participants);
+
+    QString name = createChatDialog->ui->groupNameInput->text();
+    creategroup(participants, name, Utilities::imageToString(Utilities::createPixBasedOnName(name)));
 }
 
 void MainWindow::on_createChannelButton_clicked()
@@ -233,7 +235,7 @@ void MainWindow::on_createChannelButton_clicked()
             }
         }
     }
-    creategroup(participants);
+    //creategroup(participants);
 }
 
 void MainWindow::connectedToServer(QString temp_id)
@@ -302,12 +304,14 @@ void MainWindow::createpv(QJsonArray participants_username)
     e->writedata(d.toJson());
 }
 
-void MainWindow::creategroup(QJsonArray participants_username)
+void MainWindow::creategroup(QJsonArray participants_username, const QString& name, const QString& profile)
 {
     QJsonObject o;
     o["header"]="create_chat";
-    o["chatType"] = "group";
-    o["creator"]=thisUser.username;
+    o["chatType"] = "group_chat";
+    o["creator"] = thisUser.username;
+    o["name"] = name;
+    o["profile"] = profile;
     o["participants"] = participants_username;
     QJsonDocument d(o);
     e->writedata(d.toJson());
@@ -317,7 +321,7 @@ void MainWindow::createchannel(QJsonArray participants_username)
 {
     QJsonObject o;
     o["header"]="create_chat";
-    o["chatType"] = "channel";
+    o["chatType"] = "channel_chat";
     o["creator"]=thisUser.username;
     o["participants"] = participants_username;
     QJsonDocument d(o);
