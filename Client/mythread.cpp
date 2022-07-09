@@ -31,7 +31,7 @@ void MyThread::run()
             QJsonDocument doc = QJsonDocument::fromJson(res);
             QJsonObject obj = doc.object();
             emit recievemessage(obj);
-            sleep(1);
+            msleep(500);
         }
     }
 

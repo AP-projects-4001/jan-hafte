@@ -8,16 +8,16 @@
 
 class chatData {
 public:
-    enum Type {channel, group, contact};
+    //enum Type {channel, group, contact};
     QString name;
     QString creator;
     QString reciever;
     QString id;
     QString username;
-    Type type;
+    QString type;
     QString phoneNumber;
     QString emailAddress;
-    QImage profile;
+    QImage  profile;
     QString lastMessage;
     QDateTime lastMessageTime;
 

@@ -60,7 +60,7 @@ void MainWindow::getdata(QJsonObject data)
             tempData.creator = chats[i].toObject()["creator"].toString();
             tempData.reciever = chats[i].toObject()["reciever"].toString();
             tempData.name = chats[i].toObject()["name"].toString();
-
+            tempData.type = chats[i].toObject()["chat_type"].toString();
             tempData.profile = Utilities::stringToImage(chats[i].toObject()["profile"].toString());
             tempData.phoneNumber = chats[i].toObject()["phone"].toString();
             tempData.lastMessage = chats[i].toObject()["last_message"].toString();
@@ -227,8 +227,7 @@ void MainWindow::on_sendButton_clicked()
     MessageBox *message = new MessageBox(ui->chatViewScrollAreaContent, true, inpMessage, time);
     listOfMessages.append(message);
 
-    save_message(selectedChat->id, )
-
+    save_message(selectedChat->id, selectedChat->type, inpMessage, time.toString());
 }
 
 void MainWindow::getThisUserInfo(QString user_unique_id)
@@ -339,6 +338,7 @@ void MainWindow::changephone(QString newdata)
 
 void MainWindow::save_message(QString chat_unique_id, QString chat_type, QString message, QString time)
 {
+    //qDebug() <<
     QJsonObject o;
     o["header"]="save_message";
     o["chat_id"] = chat_unique_id;
