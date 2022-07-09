@@ -13,7 +13,7 @@ class MessageBox : public QWidget
 {
     Q_OBJECT
 public:
-    explicit MessageBox(QWidget *parent = nullptr, bool isSender = true, QString text = "", QDateTime time = QDateTime());
+    explicit MessageBox(QWidget *parent = nullptr, bool isSender = true, QString text = "", QString name = "" , QDateTime time = QDateTime());
 
     void setText(const QString text);
 

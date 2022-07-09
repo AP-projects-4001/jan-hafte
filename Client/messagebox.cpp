@@ -1,6 +1,6 @@
 #include "messagebox.h"
 
-MessageBox::MessageBox(QWidget *parent, bool isSender, QString text, QDateTime time)
+MessageBox::MessageBox(QWidget *parent, bool isSender, QString text, QString name, QDateTime time)
     : QWidget{parent}, message(text), time(time)
 {
     messageFrame = new QFrame(this);
@@ -43,7 +43,8 @@ MessageBox::MessageBox(QWidget *parent, bool isSender, QString text, QDateTime t
     messageText->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
     parent->layout()->addWidget(this);
-    messageText->setText(text);
+    QString content = name + ":\n" + text;
+    messageText->setText(content);
 }
 
 void MessageBox::setText(const QString text)

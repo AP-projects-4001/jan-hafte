@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent, QString username) :
     connect(createChatDialog->ui->contactInfoInput, SIGNAL(textChanged(QString)), this, SLOT(on_contactInfoInput_textChanged(const QString&)));
     connect(createChatDialog->ui->MessageContactButton, SIGNAL(clicked()), this, SLOT(on_MessageContactButton_clicked()));
     connect(createChatDialog->ui->createGroupButton, SIGNAL(clicked()), this, SLOT(on_createGroupButton_clicked()));
+    connect(createChatDialog->ui->createChannelButton, SIGNAL(clicked()), this, SLOT(on_createChannelButton_clicked()));
 
 
     settingsDialog = new SettingsDialog(this);
@@ -45,7 +46,9 @@ MainWindow::MainWindow(QWidget *parent, QString username) :
 
 void MainWindow::getdata(QJsonObject data)
 {
-    //qDebug() << "ASdDoneDone";
+    qDebug() << "ASdDoneDone";
+    qDebug() << data["header"];
+
     if (data["header"]=="get_all_users"){
 
     }
@@ -78,9 +81,10 @@ void MainWindow::getdata(QJsonObject data)
         for (int i = 0; i < messages.size(); i++) {
             QString text = messages[i].toObject()["message_text"].toString();
             QString sender = messages[i].toObject()["sender"].toString();
+            QString chatType = messages[i].toObject()["chat_type"].toString();
             bool isSender = (sender == thisUser.username);
             QDateTime time = QDateTime::fromString(messages[i].toObject()["time"].toString());
-            MessageBox *message = new MessageBox(ui->chatViewScrollAreaContent, isSender, text);
+            MessageBox *message = new MessageBox(ui->chatViewScrollAreaContent, isSender, text, sender, time);
             listOfMessages.append(message);
         }
 
@@ -96,6 +100,7 @@ void MainWindow::getdata(QJsonObject data)
             thisUser.profile = Utilities::stringToImage(data["profile"].toString());
             thisUser.name = data["name"].toString();
             settingsDialog->setUpData(thisUser.name, thisUser.emailAddress, thisUser.phoneNumber, thisUser.profile);
+            ui->usernameHeader->setText(thisUser.name);
         }
         else if (status == "not valid"){
 
@@ -167,7 +172,7 @@ void MainWindow::getdata(QJsonObject data)
         else if (status == "not valid"){
 
         }
-        else{
+        else {
 
         }
     }
@@ -251,8 +256,9 @@ void MainWindow::on_createChannelButton_clicked()
             }
         }
     }
+
     QString name = createChatDialog->ui->channelNameInput->text();
-    creategroup(participants, name, Utilities::imageToString(Utilities::createPixBasedOnName(name)));
+    createchannel(participants, name, Utilities::imageToString(Utilities::createPixBasedOnName(name)));
 }
 
 void MainWindow::connectedToServer(QString temp_id)
@@ -303,7 +309,7 @@ void MainWindow::on_sendButton_clicked()
 
     QDateTime time = QDateTime::currentDateTimeUtc();
 
-    MessageBox *message = new MessageBox(ui->chatViewScrollAreaContent, true, inpMessage, time);
+    MessageBox *message = new MessageBox(ui->chatViewScrollAreaContent, true, inpMessage, thisUser.username ,time);
     listOfMessages.append(message);
 
     ui->chatViewScrollArea->verticalScrollBar()->setValue(ui->chatViewScrollArea->verticalScrollBar()->maximum());
