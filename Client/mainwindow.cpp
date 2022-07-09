@@ -8,14 +8,9 @@ MainWindow::MainWindow(QWidget *parent, QString username) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-<<<<<<< Updated upstream
-    MyThread *thread = new MyThread(username);
-    //thread->start();
-=======
     selectedChat = new chatData;
     MyThread *thread = new MyThread(username, selectedChat);
     thread->start();
->>>>>>> Stashed changes
     e = new myClient();
     e->connectingToServer();
     connect(e, SIGNAL(recievemessage(QJsonObject)), this, SLOT(getdata(QJsonObject)));
@@ -114,6 +109,7 @@ void MainWindow::getdata(QJsonObject data)
     }
 
     else if (data["header"]=="create_chat"){
+
         QString status = data["status"].toString();
         if (status == "valid") {
 
@@ -225,12 +221,13 @@ void MainWindow::on_sendButton_clicked()
     QString inpMessage = ui->chatLineEdit->toPlainText().trimmed();
     ui->chatLineEdit->clear();
     if(inpMessage.isEmpty()) return;
-    MessageBox *message = new MessageBox(ui->chatViewScrollAreaContent);
-    message->setText(inpMessage);
+
+    QDateTime time = QDateTime::currentDateTimeUtc();
+
+    MessageBox *message = new MessageBox(ui->chatViewScrollAreaContent, true, inpMessage, time);
     listOfMessages.append(message);
-    MessageBox *answer = new MessageBox (ui->chatViewScrollAreaContent, false);
-    answer->setText("This is A random answer");
-    listOfMessages.append(answer);
+
+    save_message(selectedChat->id, )
 
 }
 
