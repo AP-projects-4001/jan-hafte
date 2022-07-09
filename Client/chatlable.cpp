@@ -21,7 +21,7 @@ ChatLable::ChatLable(QWidget *parent, bool lastMessage, bool isCheckable, chatDa
     setStyleSheet("QFrame[clicked=\"true\"] { background-color: #956cec; } "
                   "QFrame[clicked=\"false\"] { background-color: white; }"
                   "QFrame:hover[clicked=\"false\"]{background: #e9e9e9;}"
-                  "");
+                  "QLabel{}");
 
     nameField->setText(data.name);
     profilePicSlot->setPixmap(Utilities::maskImage(data.profile, 64));

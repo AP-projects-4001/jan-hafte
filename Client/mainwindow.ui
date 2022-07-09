@@ -400,7 +400,7 @@ border:none;
                 <widget class="QWidget" name="chatListAreaContentSlot" native="true">
                  <layout class="QVBoxLayout" name="verticalLayout_11">
                   <property name="spacing">
-                   <number>5</number>
+                   <number>0</number>
                   </property>
                   <property name="leftMargin">
                    <number>0</number>

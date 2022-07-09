@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_createchatdialog.h"
 #include "ui_mainwindow.h"
-
+#include <QScrollBar>
 
 MainWindow::MainWindow(QWidget *parent, QString username) :
     QMainWindow(parent),
@@ -85,6 +85,7 @@ void MainWindow::getdata(QJsonObject data)
             MessageBox *message = new MessageBox(ui->chatViewScrollAreaContent, isSender, text);
             listOfMessages.append(message);
         }
+
     }
 
     else if (data["header"] == "get_this_user") {
@@ -153,6 +154,7 @@ void MainWindow::getdata(QJsonObject data)
         QString status = data["status"].toString();
         if (status == "valid") {
             qDebug()<<"saved";
+            ui->chatViewScrollArea->verticalScrollBar()->setValue(ui->chatViewScrollArea->verticalScrollBar()->maximum());
         }
         else if (status == "not valid"){
 
@@ -227,6 +229,7 @@ void MainWindow::on_sendButton_clicked()
     MessageBox *message = new MessageBox(ui->chatViewScrollAreaContent, true, inpMessage, time);
     listOfMessages.append(message);
 
+    ui->chatViewScrollArea->verticalScrollBar()->setValue(ui->chatViewScrollArea->verticalScrollBar()->maximum());
     save_message(selectedChat->id, selectedChat->type, inpMessage, time.toString());
 }
 
