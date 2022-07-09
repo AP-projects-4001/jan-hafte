@@ -46,8 +46,11 @@ MainWindow::MainWindow(QWidget *parent, QString username) :
 void MainWindow::getdata(QJsonObject data)
 {
     //qDebug() << "ASdDoneDone";
+    if (data["header"]=="get_all_users"){
 
-    if (data["header"]=="get_continuous_data"){
+    }
+
+    else if (data["header"]=="get_continuous_data"){
 
         qDeleteAll(listOfChats.begin(), listOfChats.end());
         listOfChats.clear();
