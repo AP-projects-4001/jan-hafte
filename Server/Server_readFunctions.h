@@ -83,6 +83,7 @@ QJsonObject chatFinder(QString chat_id) {
     QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
     QJsonObject obj = doc.object();
     QJsonArray chats = obj["chats"].toArray();
+    file.close();
     QJsonArray channel = chats[0].toObject()["channel_chat"].toArray();
     QJsonArray group = chats[1].toObject()["group_chat"].toArray();
     QJsonArray private_chat = chats[2].toObject()["private_chat"].toArray();
@@ -116,6 +117,7 @@ QJsonObject messageFinder(QString msg_id) {
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return message;
     QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+    file.close();
     QJsonObject obj = doc.object();
     QJsonArray messages = obj["messages"].toArray();
     for (int i = 0; i < messages.size(); i++) {
@@ -583,6 +585,7 @@ inline QByteArray search_user(QJsonObject readData)
         qDebug() << "Error opening file";
     }
     QByteArray data = file.readAll();
+    file.close();
     QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
     QJsonObject jsonObj = jsonDoc.object();
     QJsonArray jsonArr = jsonObj["users"].toArray();
@@ -758,6 +761,7 @@ inline QByteArray login_user(QJsonObject readData)
         qDebug() << "Error opening file";
     }
     QByteArray data = file.readAll();
+    file.close();
     if (checkValidUsername(readData["username"].toString(), data) == 1)
     {
         response["status"] = "not valid";
@@ -827,7 +831,6 @@ inline QByteArray login_user(QJsonObject readData)
     }
     return QJsonDocument(response).toJson();
 }
-
 
 
 // TODO:
