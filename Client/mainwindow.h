@@ -36,10 +36,7 @@ public:
     void changeemail(QString newdata);
     void changephone(QString newdata);
     void changeprofile(QString newdata);
-<<<<<<< Updated upstream
     void getallusers();
-=======
->>>>>>> Stashed changes
     void save_message(QString chat_unique_id, QString chat_type, QString message, QString time);
     void clearCreateChatWindow() ;
     ~MainWindow();
