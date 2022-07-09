@@ -35,8 +35,15 @@ private slots:
 
 public slots:
     void changeUsername(QString newUsername);
-    void changePhone(QString newUsername);
-    void changeEmail(QString newUsername);
+    void changePhone(QString newPhone);
+    void changeEmail(QString newEmail);
+    void changeProfile(QString newProfile);
+
+signals:
+    void userNameChangeRequest(QString val);
+    void emailChangeRequest(QString val);
+    void phoneChangeRequest (QString val);
+    void profileChangeRequest (QString val);
 
 private:
     Ui::SettingsDialog *ui;

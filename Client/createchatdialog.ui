@@ -243,7 +243,7 @@ border-radius: 15px;
 }</string>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="channelPage">
       <property name="sizePolicy">
@@ -337,8 +337,8 @@ border:none;
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>387</width>
-            <height>144</height>
+            <width>63</width>
+            <height>42</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -611,6 +611,9 @@ color: #956cec;
            <width>0</width>
            <height>40</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: blue;</string>
          </property>
          <property name="placeholderText">
           <string>Enter The Person's Username or Phone Number...</string>

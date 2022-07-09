@@ -38,10 +38,6 @@ private slots:
 
 private:
     Ui::CreateChatDialog *ui;
-    enum chatType {Channel, Group, Contact};
-    chatType selectedType;
-
-
     friend MainWindow;
 };
 

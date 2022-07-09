@@ -7,7 +7,6 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui(new Ui::SettingsDialog)
 {
     ui->setupUi(this);
-
     //ui->profilePic->setPixmap(QPixmap::fromImage());
 }
 
@@ -75,19 +74,23 @@ void SettingsDialog::on_addPhoneBlacklistButton_clicked()
 }
 
 
-
 void SettingsDialog::changeUsername(QString newUsername)
 {
-
+    emit userNameChangeRequest(newUsername);
 }
 
-void SettingsDialog::changePhone(QString newUsername)
+void SettingsDialog::changePhone(QString newPhone)
 {
-
+    emit phoneChangeRequest(newPhone);
 }
 
-void SettingsDialog::changeEmail(QString newUsername)
+void SettingsDialog::changeEmail(QString newEmail)
 {
+    emit emailChangeRequest(newEmail);
+}
 
+void SettingsDialog::changeProfile(QString newProfile)
+{
+    emit profileChangeRequest(newProfile);
 }
 

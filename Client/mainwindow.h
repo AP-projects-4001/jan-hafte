@@ -15,7 +15,6 @@
 #include <QScrollBar>
 
 
-
 namespace Ui {
 class MainWindow;
 }
@@ -37,11 +36,15 @@ public:
     void changeemail(QString newdata);
     void changephone(QString newdata);
     void changeprofile(QString newdata);
+<<<<<<< Updated upstream
     void getallusers();
+=======
+>>>>>>> Stashed changes
     void save_message(QString chat_unique_id, QString chat_type, QString message, QString time);
+    void clearCreateChatWindow() ;
     ~MainWindow();
 
-private slots:
+  private slots:
     void on_sendButton_clicked();
 
     void on_createNewChatButton_clicked();
@@ -67,6 +70,11 @@ private slots:
     void on_createChannelButton_clicked();
 
     void connectedToServer(QString temp_id);
+
+    void onUsernameChangeRequest(QString newUsername);
+    void onEmailChangeRequest(QString newEmail);
+    void onPhoneChangeRequest(QString newPhone);
+    void onProfileChangeRequest(QString newProfile);
 
 private:
     Ui::MainWindow *ui;

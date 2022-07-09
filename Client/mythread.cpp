@@ -19,7 +19,6 @@ void MyThread::run()
 
     if(socket->waitForConnected(-1)){
         while(true){
-            qDebug() << "DonDone";
             QJsonObject d;
             d["header"]="get_continuous_data";
             d["username"] = user_unique_id;
