@@ -168,10 +168,14 @@ QJsonObject get_user_chats(QString username, QString active_chat_id="None") {
                     if (founded_chat["creator"].toString() == username) {
                         chatForClient["phone"] = userFinder(founded_chat["reciever"].toString())["phone"];
                         chatForClient["profile"] = userFinder(founded_chat["reciever"].toString())["profile"];
+                        //tof
+                        chatForClient["name"] = userFinder(founded_chat["reciever"].toString())["name"];
                     }
                     else {
                         chatForClient["phone"] = userFinder(founded_chat["creator"].toString())["phone"];
                         chatForClient["profile"] = userFinder(founded_chat["creator"].toString())["profile"];
+                        //tof
+                        chatForClient["name"] = userFinder(founded_chat["creator"].toString())["name"];
                     }
 
                 }

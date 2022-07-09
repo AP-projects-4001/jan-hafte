@@ -235,7 +235,7 @@ void MainWindow::on_createChannelButton_clicked()
             }
         }
     }
-    //creategroup(participants);
+
 }
 
 void MainWindow::connectedToServer(QString temp_id)
@@ -317,12 +317,14 @@ void MainWindow::creategroup(QJsonArray participants_username, const QString& na
     e->writedata(d.toJson());
 }
 
-void MainWindow::createchannel(QJsonArray participants_username)
+void MainWindow::createchannel(QJsonArray participants_username, const QString& name, const QString& profile)
 {
     QJsonObject o;
     o["header"]="create_chat";
     o["chatType"] = "channel_chat";
     o["creator"]=thisUser.username;
+    o["name"] = name;
+    o["profile"] = profile;
     o["participants"] = participants_username;
     QJsonDocument d(o);
     e->writedata(d.toJson());

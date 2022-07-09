@@ -30,7 +30,7 @@ public:
     void gettingchat(QString chat_unique_id, QString chat_type);
     void createpv(QJsonArray participants_username);
     void creategroup(QJsonArray participants_username, const QString& name, const QString& profile);
-    void createchannel(QJsonArray participants_username);
+    void createchannel(QJsonArray participants_username, const QString& name, const QString& profile);
     void searchChat(QString chat_unique_id);
     void searchUser(QString user_unique_id);
     void changeusername(QString newdata);
