@@ -191,6 +191,13 @@ void MainWindow::onChatLableClick(ChatLable *label)
         label->setChecked(true);
     }
         *selectedChat = label->getData();
+        if(label->getData().type == "channel_chat") {
+            if(label->getData().creator != thisUser.username) {
+                ui->chatViewTypeArea->hide();
+            }
+        } else {
+            ui->chatViewTypeArea->show();
+        }
         ui->activeChatProfile->setPixmap(Utilities::maskImage(label->getData().profile));
         ui->activeChatName->setText(label->getData().name);
         ui->activeChatDetail->setText(label->getData().phoneNumber);
