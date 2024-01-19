@@ -1,7 +1,3 @@
-ابتدا پروژه را در سیستم خود کلون کنید
-سپس با کمک Qt creator فایل پروژه server را اجرا و ران کنید
-سپس فولدر Client‌ را اجرا کنید.
-
-صفحه رجیستر که به شما نمایش داده می‌شود، ثبت نام کنید. حال می‌توانید از چت با کاربران دیگر لذت ببرید (دقت کنید ایمیل خود را صحیح وارد کنید)
-
-پروژه بصورت مالتی ترد پیاده‌سازی شده است. 
+First, clone the project on your system. Then, using Qt Creator, run and execute the server project file. Afterward, run the Client folder.
+On the registration page that appears, sign up. Now, you can enjoy chatting with other users (make sure to enter your email correctly).
+The project has been implemented in a multi-threaded manner.
